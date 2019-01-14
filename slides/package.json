@@ -1,0 +1,49 @@
+{
+  "name": "netology-html-base",
+  "description": "Base course about HTML and CSS",
+  "version": "0.0.2",
+  "author": {
+    "name": "Dima Fitiskin",
+    "url": "https://fb.me/dfitiskin"
+  },
+  "homepage": "https://github.com/dfitiskin/html-base",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/dfitiskin/html-base.git"
+  },
+  "license": "MIT",
+  "keywords": [
+    "html",
+    "css"
+  ],
+  "files": [
+    "pictures/**",
+    "index.html",
+    "LICENSE.md",
+    "README.md"
+  ],
+  "dependencies": {
+    "shower-core": "^2.1.0",
+    "shower-material": "^1.0.5",
+    "shower-ribbon": "^2.1.0"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.13.0",
+    "del": "^2.2.2",
+    "fs": "0.0.2",
+    "gulp": "^3.9.1",
+    "gulp-gh-pages": "^0.5.4",
+    "gulp-rename": "^1.4.0",
+    "gulp-replace": "^0.5.4",
+    "gulp-rsync": "0.0.6",
+    "gulp-zip": "^3.2.0",
+    "merge-stream": "^1.0.1",
+    "run-sequence": "^1.2.2"
+  },
+  "scripts": {
+    "prepare": "gulp prepare",
+    "archive": "gulp archive",
+    "publish": "gulp publish",
+    "start": "browser-sync start --server --files '*.html' 'css/*.css' 'js/*.js'"
+  }
+}

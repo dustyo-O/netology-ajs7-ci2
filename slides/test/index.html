@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <title>Тестирование и сборка</title>
+    <meta charset="utf-8">
+    <link rel="shortcut icon" href="../i/favicon.ico" type="image/x-icon">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../node_modules/shower-ribbon/styles/screen-4x3.css">
+    <link rel="stylesheet" href="../css/prism.css">
+    <link rel="stylesheet" href="../css/prism-fix.css">
+    <link rel="stylesheet" href="../css/netology.css">
+    <link rel="stylesheet" href="../css/fake-browser.css">
+  </head>
+  <body class="shower">
+    <header class="caption">
+      <h1>Тестирование и сборка</h1>
+      <p>Денис Ежков</p>
+    </header>
+
+    <section class="slide" id="cover">
+      <h2>Тестирование и сборка</h2>
+      <p>
+        <img src="../i/ezhkov.jpg" alt="" class="avatar">
+        Денис Ежков
+      </p>
+    </section>
+
+    <section class="slide author" id="author">
+      <img src="../i/ezhkov.jpg" alt="">
+      <h1>Денис Ежков</h1>
+      <p class="position">Frontend-разработчик в «Ростелеком IT»</p>
+      <ul class="contacts">
+        <li><a href="skype:aka_SKIff"><i class="fa fa-skype" aria-hidden="true"></i>aka_SKIff</a></li>
+        <li><a href="https://facebook.com/ezhkov"><i class="fa fa-facebook" aria-hidden="true"></i>facebook.com/ezhkov</a></li>
+        <li><a href="https://t.me/ezhkov"><i class="fa fa-skype" aria-hidden="true"></i>@ezhkov</a></li>
+      </ul>
+    </section>
+
+    <section class="slide" id="roadmap">
+      <h2>План занятия</h2>
+      <ol>
+        <li><a href="#unit">Unit-тестирование</a></li>
+        <li><a href="#jest">Jest</a></li>
+        <li><a href="#coverage">Покрытие кода</a></li>
+        <li><a href="#mock">Mock'и</a></li>
+        <li><a href="#webpack">Webpack</a></li>
+      </ol>
+    </section>
+
+    <section class="slide chapter" id="unit">
+      <h2>Unit-тестирование</h2>
+    </section>
+
+    <section class="slide">
+      <h2>Зачем нужны авто-тесты?</h2>
+      <blockquote>Зачем нужны авто-тесты, мне проще проверить руками</blockquote>
+      <blockquote>Зачем нужны авто-тесты, у меня итак всё работает</blockquote>
+    </section>
+
+    <section class="slide">
+      <h2>Действительно, зачем?</h2>
+      <p>Авто-тесты - это возможность обезопасить себя от потенциальных ошибок (при создании нового кода или модификации существующего).</p>
+      <p>Это некая гарантия того, что то, что работало до этого - не сломалось, и то, что мы пишем сейчас - работает так, как мы задумываем.</p>
+    </section>
+
+    <section class="slide">
+      <h2>Best Practices</h2>
+      <p>В современном мире разработки написание авто-тестов считается одной из лучших практик создания поддерживаемого и качественного кода.</p>
+    </section>
+
+    <section class="slide">
+      <h2>Как и что тестировать?</h2>
+      <p>Тестирование - отдельная большая область знаний, со своими методами, подходами и теорией.</p>
+      <p>На самом базовом уровне: запускаем программу или отдельный её кусочек (например, функцию) и сравниваем полученный результат с тем, что должен был получиться.</p>
+      <p>Результат совпадает - всё ок, нет - ошибка.</p>
+      <p>Если начнёте с этого - будет уже большой шаг вперёд, после чего нужно ознакомиться с тест-анализом, тест-дизайном и комбинаторикой.</p>
+    </section>
+
+    <section class="slide chapter" id="jest">
+      <h2>Jest</h2>
+    </section>
+
+    <section class="slide">
+      <h2>Фреймворк тестирования</h2>
+      <p>Чтобы нам не делать этого каждый раз вручную, нам нужен инструмент, который будет запускать наши функции, сравнивать результат и собирать статистику.</p>
+      <p>Инструментов достаточно много, мы с вами будем рассматривать <a href="https://jestjs.io/en/">Jest</a>.</p>
+    </section>
+
+    <section class="slide">
+      <h2>Установка</h2>
+      <p>Для установки Jest выполним следующую команду:</p>
+      <pre style="font-size: 20px;">
+        <code class="lang-bash">
+          $ npm install --save-dev jest babel-jest babel-core@^7.0.0-bridge.0
+        </code>
+      </pre>
+      <p>Пропишем скрипт <code>test</code>:</p>
+      <pre>
+        <code class="lang-json">
+          "scripts": {
+            "start": "live-server dist",
+            "test": "jest",
+            "lint": "eslint .",
+            "build": "babel src -d dist"
+          },
+        </code>
+      </pre>
+    </section>
+
+    <section class="slide">
+      <h2>Общий вид теста</h2>
+      <pre class="line-numbers">
+        <code class="lang-js">
+          test('<описание того, что проверяем>', () => {
+            // Функция проверки
+            
+            // 1. Выполняем нужные нам действия
+            TODO:
+            
+            // 2. Проверяем результат с помощью:
+            expect(<что получили>).toBe(<что должно быть>);
+          })
+        </code>
+      </pre>
+    </section>
+
+    <section class="slide">
+      <h2>Примитивный тест</h2>
+      <pre class="line-numbers">
+        <code class="lang-js">
+          test('should add two numbers', () => {
+            const received = 1 + 1;
+            const expected = 2;
+          
+            expect(received).toBe(expected);
+          })
+        </code>
+      </pre>
+    </section>
+
+    <section class="slide">
+      <h2>ESlint & Jest</h2>
+      <p>Чтобы ESLint не ругался на Jest, мы можем либо добавить каталог с тестами в <code>.eslintignore</code> (плохая идея), либо прописать Jest в секцию <code>env</code> файла <code>.eslintrc.json</code>:</p>
+      <pre>
+        <code class="lang-json">
+          "env": {
+              ...
+              "jest": true
+          }
+        </code>
+      </pre>
+    </section>
+
+    <section class="slide">
+      <h2>Запуск авто-тестов</h2>
+      <pre>
+        <code class="lang-bash">
+          $ npm test
+        </code>
+      </pre>
+      <figure style="width: 283px;">
+        <img src="../pic/test/pass.png" alt="">
+      </figure>
+    </section>
+
+    <section class="slide">
+      <h2>Fail</h2>
+      <p>В случае, если тесты завершатся с ошибкой, мы увидим:</p>
+      <figure style="width: 505px;">
+        <img src="../pic/test/fail.png" alt="">
+      </figure>
+    </section>
+
+    <section class="slide">
+      <h2>Задача</h2>
+      <p>Перед нами стоит следующая задача: написать функцию, которая рассчитывает сумму покупок в магазине.</p>
+      <p>Покупки приходят в следующем виде:</p>
+      <pre class="line-numbers">
+        <code class="lang-js">
+          [
+            {id: 1, name: '...', price: 100, count: 3},
+            {id: 2, name: '...', price: 55, count: 2},
+          ]
+        </code>
+      </pre>
+      <p>Давайте попробуем написать эту функцию и авто-тесты для неё.</p>
+    </section>
+
+    <section class="slide">
+      <h2>Функция</h2>
+      <p>Начнём с самой простой реализации (файл <code>script.js</code>):</p>
+      <pre class="line-numbers">
+        <code class="lang-js">
+          function calculateTotal(purchases) {
+            let result = 0;
+            for (const purchase of purchases) {
+              result += purchase.price * purchase.count;
+            }
+            
+            return result;
+          }
+        </code>
+      </pre>
+    </section>
+
+    <section class="slide">
+      <h2>Тест</h2>
+      <p>Подумаем, как должен выглядеть тест для этой функции:</p>
+      <pre class="line-numbers fz21" >
+        <code class="lang-js">
+          test('should calculate total for purchases', () => {
+            const input = [
+              {
+                id: 1, name: '...', price: 33, count: 3,
+              },
+              {
+                id: 2, name: '...', price: 55, count: 2,
+              },
+            ];
+            const expected = 1099;
+            
+            const received = calculateTotal(input);
+            
+            expect(received).toBe(expected);
+          });
+        </code>
+      </pre>
+    </section>
+
+    <section class="slide">
+      <h2>Системы модулей</h2>
+      <p>Раньше в JS не было такого понятия, как модуль и браузер фактически «объединял» все подключаемые скрипты.</p>
+      <p>Это очень неудобно при разработке больших приложений, поэтому были разработаны системы, обеспечивающие модульность.</p>
+    </section>
+
+    <section class="slide">
+      <h2>Системы модулей</h2>
+      <p>На текущий момен наиболее распространёнными являются следующие системы модулей:</p>
+      <ul>
+        <li><b>CommonJS</b> – система модулей, нативно поддерживается на платформе Node.js;</li>
+        <li><b>ES Modules</b> – система модулей, нативно поддерживаются в браузерах (текущий статус поддержки).</li>
+      </ul>
+      <p>Под модулем мы будем понимать js-файл (достаточно упрощённое представление, но достаточное для нас на данном этапе).</p>
+      <p>Более подробно про модули мы поговорим на лекции, посвящённой модулям, сейчас же нам нужно понять ключевые моменты.</p>
+    </section>
+
+    <section class="slide">
+      <h2>Зачем нам две?</h2>
+      <p>Большинство инструментов для JS написаны с использованием платформы Node.js, поэтому для них придётся использовать либо CommonJS, либо Babel (который обеспечит поддержку импорта в стиле ES Modules).</p>
+      <p>Поэтому придётся научиться использовать оба.</p>
+    </section>
+
+    <section class="slide">
+      <h2>Export / module.exports</h2>
+      <p>Если мы хотим сделать имя (функцию, переменную либо объект) доступным из нашего модуля, то в ES Modules:</p>
+      <pre class="line-numbers">
+        <code class="lang-js">
+            export &lt;some_name&gt;;
+            export function &lt;some_function&gt;() { ... };
+        </code>
+      </pre>
+      <p>В CommonJS:</p>
+      <pre class="line-numbers">
+        <code class="lang-js">
+          module.exports = {
+            &lt;some_name&gt;: &lt;some_object&gt;,
+            &lt;some_function&gt;: function() { ... }
+          };
+        </code>
+      </pre>
+    </section>
+
+    <section class="slide">
+      <h2>Import / require</h2>
+      <p>Если мы хотим использовать имя, экспортированное из другого модуля, в своём модуле, то в ES Modules:</p>
+      <pre>
+        <code class="lang-js">
+          import { &lt;name&gt; } from '&lt;path_to_module&gt;';
+        </code>
+      </pre>
+      <p>В CommonJS:</p>
+      <pre>
+        <code class="lang-js">
+          const &lt;name&gt; = require('&lt;path_to_module&gt;').&lt;name&gt;;
+        </code>
+      </pre>
+    </section>
+
+    <section class="slide">
+      <h2>Default export</h2>
+      <p>Если вы экспортируете из модуля всего одно имя, то лучше использовать <code>default export</code>:</p>
+      <pre>
+        <code class="lang-js">
+          export default function &lt;some_function&gt;() { ... }
+        </code>
+      </pre>
+      <pre>
+        <code class="lang-js">
+          import &lt;some_function&gt; from '&lt;path_to_module&gt;';
+        </code>
+      </pre>
+    </section>
+
+    <section class="slide">
+      <h2>Jest import/export</h2>
+      <p>Jest в связке с Babel у нас настроен таким образом, что поддерживает <code>import</code>/<code>export</code>, но для этого нужно экспортировать нашу функцию:</p>
+      <pre class="line-numbers">
+        <code class="lang-js">
+          export default function calculateTotal(purchases) {
+            let result = 0;
+            for (const purchase of purchases) {
+              result += purchase.price * purchase.count;
+            }
+            
+            return result;
+          }
+        </code>
+      </pre>
+    </section>
+
+    <section class="slide">
+      <h2>Тест</h2>
+      <pre class="line-numbers fz21">
+        <code class="lang-js">
+          import puchasesTotal from '../src/js/script';
+
+          test('should calculate total for purchases', () => {
+            const input = [
+              {
+                id: 1, name: '...', price: 33, count: 3,
+              },
+              {
+                id: 2, name: '...', price: 55, count: 2,
+              },
+            ];
+            const expected = 209;
+            
+            const received = calculateTotal(input);
+            
+            expect(received).toBe(expected);
+          });
+        </code>
+      </pre>
+    </section>
+
+    <section class="slide">
+      <h2>Tests & Git</h2>
+      <p>Авто-тесты должны храниться вместе с нашим приложением, как и другие исходники. Таким образом, любой участник нашей команды, меняя что-то в нашем приложении сможет удостовериться, что ничего не сломал.</p>
+    </section>
+
+    <section class="slide">
+      <h2>Используем <code>reduce</code></h2>
+      <p>Попробуем воспользоваться методом массива <code>reduce</code> вместо цикла <code>for..of</code>:</p>
+      <pre class="line-numbers">
+        <code class="lang-js">
+          return purchases.reduce(
+            (acc, curr) =&gt; acc + curr.price * curr.count,
+            0,
+          );
+        </code>
+      </pre>
+      <p>У нас есть авто-тесты, мы можем их запустить, чтобы усдостовериться, что всё работает.</p>
+    </section>
+
+    <section class="slide">
+      <h2>Важно</h2>
+      <p>Важно понимать, что польза от авто-тестов появляется только тогда, когда вы их регулярно пишите и используете.</p>
+      <p>А кроме того, постоянно совершенствуетесь в навыке написания тестов.</p>
+    </section>
+
+    <section class="slide chapter" id="coverage">
+      <h2>Покрытие кода</h2>
+    </section>
+
+    <section class="slide">
+      <h2>Code Coverage</h2>
+      <p>Code Coverage - метрика, показывающая, насколько наш код покрыт авто-тестами.</p>
+      <pre>
+        <code class="lang-bash">
+          $ npm test -- --coverage
+        </code>
+      </pre>
+      <figure style="width: 628px;">
+        <img src="../pic/test/coverage.png" alt="">
+      </figure>
+    </section>
+    
+    <section class="slide">
+      <h2>Добавим логику</h2>
+      <p>Пришло время модифицировать нашу функцию: в зависимости от переданного флага к итоговой сумме покупок должна применяться скидка 6.1%:</p>
+      <pre class="line-numbers fz18">
+        <code class="lang-js">
+          export default function calculateTotal(purchases, applyDiscount = false) {
+            ...
+            
+            if (applyDiscount) {
+               return result * 0.939; // bad practice
+            }
+          }
+        </code>
+      </pre>
+    </section>
+
+    <section class="slide">
+      <h2>Посмотрим на покрытие</h2>
+      <figure style="width: 628px;">
+        <img src="../pic/test/coverage-2.png" alt="">
+      </figure>
+      <p>В каталоге <code>coverage/lcov-report</code> расположен отчёт о покрытии:</p>
+      <figure style="width: 628px;">
+        <img src="../pic/test/cover-report.png" alt="">
+      </figure>
+    </section>
+
+    <section class="slide">
+      <h2>Напишем тест</h2>
+      <pre class="line-numbers fz20">
+        <code class="lang-js">
+          test('should calculate total for purchases with discount', () => {
+            ...
+            const expected = 196.25;
+          
+            const received = purchasesTotal(input, true);
+          
+            expect(received).toBe(expected);
+          });
+        </code>
+      </pre>
+      <p>Тест упал:</p>
+      <figure style="width: 472px;">
+        <img src="../pic/test/fail-2png.png" alt="">
+      </figure>
+    </section>
+
+    <section class="slide">
+      <h2>Matchers</h2>
+      <p>
+        Jest нам предлагает различные виды проверок (не только на точное соответствие).<br>
+        Полный перечень Matcher'ов можно найти на странице: <a href="https://jestjs.io/docs/en/expect">https://jestjs.io/docs/en/expect</a>
+      </p>
+      <p>В частности, в нашем случае хорошо бы подошёл <code>toBeCloseTo</code>.</p>
+    </section>
+
+    <section class="slide">
+      <h2>Как понять, что тестов достаточно?</h2>
+      <p>Тесты должны помогать в разработке а не мешать. Именно они должны показывать, какие условия не протестированы, какие участки кода никогда не используются.</p>
+      <p>Значит:</p>
+      <ol>
+        <li>Либо избыточны;</li>
+        <li>Либо мы не можем сказать, что они работают корректно.</li>
+      </ol>
+      <p>Используйте подход TDD, который позволит уменьшить и количество разрабатываемого кода и количество разрабатываемых тестов.</p>
+    </section>
+
+    <section class="slide chapter" id="mock">
+      <h2>Mock'и</h2>
+    </section>
+
+    <section class="slide">
+      <h2>Mocks</h2>
+      <p>Как протестировать функцию, которая взаимодействует с внешним миром (HTTP, файловая система и т.д.)? Неужели на каждый тест будет выполняться отдельный HTTP-запрос на сервер?</p>
+      <p>Конечно же, нет. Для этого существуют Mock'и.</p>
+    </section>
+
+    <section class="slide">
+      <h2>Mocks</h2>
+      <pre class="line-numbers fz21">
+        <code class="lang-js">
+          import { httpGet } from './http';
+
+          export default function loadUser(id) {
+            // bad practice
+            const data = httpGet(`http://server:8080/users/${id}`); 
+            return JSON.parse(data);
+          }
+        </code>
+      </pre>
+    </section>
+
+    <section class="slide">
+      <h2>Mocks</h2>
+      <pre class="line-numbers fz21">
+        <code class="lang-js">
+          import loadUser from '../src/js/user';
+          import { httpGet } from '../src/js/http';
+            
+          jest.mock('../src/js/http');
+            
+          beforeEach(() => {
+            jest.resetAllMocks();
+          });
+            
+          test('should call loadUser once', () => {
+            httpGet.mockReturnValue(JSON.stringify({}));
+          
+            loadUser(1);
+            expect(httpGet).toBeCalledWith('http://server:8080/users/1');
+          });
+        </code>
+      </pre>
+    </section>
+
+    <section class="slide">
+      <h2>Setup & TearDown</h2>
+      <ul>
+        <li><code>beforeEach</code>;</li>
+        <li><code>afterEach</code>;</li>
+        <li><code>beforeAll</code>;</li>
+        <li><code>afterAll</code>.</li>
+      </ul>
+      <a href="https://jestjs.io/docs/en/setup-teardown">https://jestjs.io/docs/en/setup-teardown</a>
+    </section>
+
+    <section class="slide">
+      <h2>Mocks</h2>
+      <p>Использование mock'ов - не всегда хорошая идея, т.к. влечёт к избыточному усложнению тестового кода.</p>
+    </section>
+
+    <section class="slide">
+      <h2>Jest Extension</h2>
+      <p>Для VSCode предоставляется плагин Jest за авторством Orta, который в автоматическом режиме перезапускает ваши тесты и отображает статус:</p>
+      <figure style="width: 359px;">
+        <img src="../pic/test/jest-vscode.png" alt="">
+      </figure>
+      <p>А также позволяет отлаживать их:</p>
+      <figure style="width: 467px;">
+        <img src="../pic/test/jest-vscode-2.png" alt="">
+      </figure>
+    </section>
+
+    <section class="slide chapter" id="webpack">
+      <h2>Webpack</h2>
+    </section>
+
+    <section class="slide">
+      <h2>Webpack</h2>
+      <figure>
+        <img src="../pic/test/webpack.png" alt="">
+      </figure>
+    </section>
+
+    <section class="slide">
+      <h2>Webpack</h2>
+      <p><a href="https://webpack.js.org/">Webpack</a> - Module Bundler для JS-приложений. Позволяет объединять все ресурсы нашего приложения в Bundle (преобразованные, минимизированные, оптимизированные) и готовые для использования в продакшн-среде.</p>
+      <p>На сегодняшний день - самый популярный инструмент сборки в мире JS. Содержит интеграции с большинством ругих популярных инструментов.</p> 
+    </section>
+
+    <section class="slide">
+      <h2>Установка</h2>
+      <p>Для установки Webpack и поддержки Babel выполним следующую команду:</p>
+      <pre class="fz21">
+        <code class="lang-bash">
+          $ npm install --save-dev webpack webpack-cli babel-loader
+        </code>
+      </pre>
+      <p>В скриптах заменим <code>build</code>:</p>
+      <pre>
+        <code class="lang-js">
+          "scripts": {
+              ...
+              "build": "webpack --mode production"
+          },
+        </code>
+      </pre>
+    </section>
+
+    <section class="slide">
+      <h2>Сборка</h2>
+      <p>Выполним сборку:</p>
+      <pre>
+        <code class="lang-bash">
+          $ npm run build
+        </code>
+      </pre>
+      <p>Удостоверимся, что появился каталог <code>dist</code>, в котором находится минимизированный файл <code>main.js</code>.</p>
+    </section>
+
+    <section class="slide">
+      <h2>HTML Plugin</h2>
+      <p>Для сборки HTML-файлов нужен отдельный плагин: HTML Plugin</p>
+      <p>Для установки выполним следующую команду:</p>
+      <pre class="fz21">
+        <code class="lang-bash">
+          $ npm install --save-dev html-webpack-plugin html-loader
+        </code>
+      </pre>
+    </section>
+
+    <section class="slide">
+      <h2>HTML Plugin</h2>
+      <pre class="line-numbers fz21">
+        <code class="lang-js">
+          module: {
+            rules: [
+              {
+                test: /\.html$/,
+                use: [
+                  {
+                    loader: "html-loader"
+                  }
+                ]
+              }
+            ],
+          },
+          plugins: [
+            new HtmlWebPackPlugin({
+              template: "./src/index.html",
+              filename: "./index.html"
+            })
+          ]
+        </code>
+      </pre>
+    </section>
+
+    <section class="slide">
+      <h2>CSS Plugin</h2>
+      <p>Для поддержки CSS нам нужен отдельный плагин: Mini CSS Extract Plugin:</p>
+      <pre class="fz21">
+        <code class="lang-bash">
+            $ npm  install --save-dev mini-css-extract-plugin css-loader
+        </code>
+      </pre>
+    </section>
+
+    <section class="slide">
+      <h2>Mini CSS Extract Plugin</h2>
+      <pre class="line-numbers fz21">
+        <code class="lang-js">
+          module.exports = {
+            module: {
+              rules: [
+                ...
+                {
+                  test: /\.css$/,
+                  use: [
+                    MiniCssExtractPlugin.loader, 'css-loader',
+                  ],
+                },
+              ],
+            },
+            plugins: [
+              new MiniCssExtractPlugin({
+                filename: '[name].css',
+                chunkFilename: '[id].css',
+              }),
+            ],
+        </code></pre>
+    </section>
+
+    <section class="slide">
+      <h2>Подключение CSS</h2>
+      <p>Webpack требует использовать спец.синтаксис для построение графа зависимостей (чтобы подключить css):</p>
+      <pre class="line-numbers">
+        <code class="lang-js">
+          import '../css/styles.css';
+        </code>
+      </pre>
+    </section>
+
+    <section class="slide">
+      <h2>Webpack Dev Server</h2>
+      <p>После всех проделанных манипуляций, Live Server нам уже не поможет в разработке, т.к. мы достаточно глубоко интегрировали в свой проект Webpack.</p>
+      <p>Но решение есть - <a href="https://github.com/webpack/webpack-dev-server">Webpack Dev Server</a>.</p>
+    </section>
+
+    <section class="slide">
+      <h2>Установка</h2>
+      <p>Для установки выполним следующую команду:</p>
+      <pre>
+        <code class="lang-bash">
+          $ npm install --save-dev webpack-dev-server
+        </code>
+      </pre>
+      <p>И в скриптах заменим <code>start</code>:</p>
+      <pre>
+        <code class="lang-js">
+          "scripts": {
+              "start": "webpack-dev-server --mode development",
+              "test": "jest",
+              "lint": "eslint .",
+              "build": "webpack --mode production"
+          },
+        </code>
+      </pre>
+    </section>
+
+    <section class="slide">
+      <h2>Запуск</h2>
+      <p>Запустим Dev Server и удостоверимся, что Live Reload работает при изменении файлов:</p>
+      <pre>
+        <code class="lang-bash">
+            $ npm start
+        </code>
+      </pre>
+      <figure style="width: 457px;">
+        <img src="../pic/test/webpack-dev-start.png" alt="">
+      </figure>
+      <p>Итоговый настроенный проект вы сможете найти в материалах к этой лекции.</p>
+    </section>
+    
+    <section class="slide chapter">
+      <h2>Итоги</h2>
+    </section>
+
+    <section class="slide">
+      <h2>Итоги</h2>
+      <p>Сегодня мы с вами рассмотрели достаточно много важных вещей, а именно:</p>
+      <ol>
+        <li>Jest — позволяет создавать авто-тесты.</li>
+        <li>Webpack — позволяет организовать сборку приложения и настроить dev server.</li>
+      </ol>
+    </section>
+
+    <section class="slide">
+      <h2>Важно</h2>
+      <p>Начиная с сегодняшнего дня во всех домашних заданиях мы будем требовать от вас:</p>
+      <ol>
+        <li>Наличия авто-тестов на разрабатываемые функции;</li>
+        <li>100% покрытия тестируемых функций по строкам;</li>
+        <li>Использования Webpack для сборки ваших проектов.</li>
+      </ol>
+    </section>
+
+    <section class="slide">
+      <h2>Полезные ссылки</h2>
+      <ul>
+        <li><a href="https://jestjs.io/docs/en/getting-started">Документация Jest</a></li>
+        <li><a href="https://webpack.js.org/concepts/">Документация Webpack</a></li>
+        <li><a href="https://webpack.js.org/configuration/dev-server/">Документация Webpack Dev Server</a></li>
+      </ul>
+    </section>
+
+    <section class="slide last">
+      <p class="thanx">Задавайте вопросы и напишите отзыв о лекции!</p>
+        <address>Денис Ежков</address>
+      <ul class="contacts">
+        <li><a href="skype:aka_SKIff"><i class="fa fa-skype" aria-hidden="true"></i>aka_SKIff</a></li>
+        <li><a href="https://facebook.com/ezhkov"><i class="fa fa-facebook" aria-hidden="true"></i>facebook.com/ezhkov</a></li>
+        <li><a href="https://t.me/ezhkov"><i class="fa fa-skype" aria-hidden="true"></i>@ezhkov</a></li>
+      </ul>
+    </section>
+
+    
+    <div class="progress"></div>
+    <script src="../node_modules/shower-core/shower.min.js"></script>
+    <script src="../js/prism.js?v=2"></script>
+    <script src="https://use.fontawesome.com/8c6816e790.js"></script>
+  </body>
+  </html>
+  
