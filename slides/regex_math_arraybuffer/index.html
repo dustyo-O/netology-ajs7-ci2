@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <title>RegExp, Math, ArrayBuffer</title>
+    <meta charset="utf-8">
+    <link rel="shortcut icon" href="../i/favicon.ico" type="image/x-icon">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../node_modules/shower-ribbon/styles/screen-4x3.css">
+    <link rel="stylesheet" href="../css/prism.css">
+    <link rel="stylesheet" href="../css/prism-fix.css">
+    <link rel="stylesheet" href="../css/netology.css">
+    <link rel="stylesheet" href="../css/fake-browser.css">
+</head>
+  <body class="shower">
+	<header class="caption">
+	  <h1>RegExp, Math, ArrayBuffer</h1>
+	  <p>Лектор, компания</p>
+	</header>
+
+	<section class="slide" id="cover">
+	  <h2>RegExp, Math, ArrayBuffer</h2>
+	  <p>
+		<img src="../pic/regex_math_arraybuffer/speaker.jpg" alt="" class="avatar">
+		Лектор <span class="position">компания</span>
+	  </p>
+	</section>
+
+	<section class="slide author" id="author">
+	  <img style="width: 140px; height: 140px; object-fit: cover;" src="../pic/regex_math_arraybuffer/speaker.jpg" alt="">
+	  <h1 style="line-height:1.2em">Лектор</h1>
+	  <p class="position">front-end developer в </p>
+	</section>
+
+	<section class="slide" id="roadmap">
+	  <h2>План занятия</h2>
+	  <ul>
+		<li><a href="#regexp">RegExp</a></li>
+		<li><a href="#math">Math</a></li>
+		<li><a href="#arraybuffer">ArrayBuffer</a></li>
+		<li><a href="#links">Интересное чтиво</a></li>
+	  </ul>
+	</section>
+
+	<section id="regexp" class="slide chapter">
+		<h2>RegExp</h2>
+		<p><img width="100%" src="../pic/regex_math_arraybuffer/1.png" alt=""/></p>
+	</section>
+
+	<section  class="slide">
+		<h2>RegExp</h2>
+		<p>При поиске "regexp" Яндекс намекает на какие-то <i>регулярные выражения</i>:</p>
+		<p><img width="100%" src="../pic/regex_math_arraybuffer/2.png" alt=""/></p>
+	</section>
+
+	<section  class="slide">
+		<h2>Что такое "регулярные выражения"?</h2>
+		<p><a href="https://ru.wikipedia.org/wiki/Регулярные_выражения">Википедия</a>:</p>
+        <p><b>Регулярные выражения</b> - формальный язык поиска и осуществления манипуляций с подстроками в тексте,
+            основанный на использовании метасимволов.</p>
+        <p><i>Это общее название технологии для манипуляций с подстроками.</i></p>
+	</section>
+
+	<section  class="slide">
+		<h2>Что такое "регулярные выражения"?</h2>
+		<p><a href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Guide/Regular_Expressions">MDN Web Docs</a>:</p>
+        <p><b>Регулярные выражения</b> - это шаблоны используемые для сопоставления последовательностей символов в строках.</p>
+        <p><i>А также частное название самих выражений, на которых основана технология.</i></p>
+	</section>
+
+	<section  class="slide">
+        <h2>Что такое "регулярные выражения"?</h2>
+		<p>Ну, сопоставление последовательности символов мы выполнять умеем и без этих регулярных выражений.</p>
+        <p>Например, нам надо произвести валидацию адреса электронной почты: проверить, что адрес электронной
+            почты содержит знак <code>@</code>.</p>
+        <p>Каким способом можно это сделать?</p>
+	</section>
+
+
+	<section  class="slide">
+        <p>Можно перебрать каждый символ (самое неправильное решение):</p>
+		<pre>
+			<code class="language-js line-numbers">
+                function validateEmail(emailStr) {
+                  for (const itemSymbol of emailStr) {
+                    if (itemSymbol === '@') {
+                      return true;
+                    }
+                  }
+                  return false;
+                }
+
+                console.log(validateEmail('support@netology.ru'));
+                console.log(validateEmail('supportnetology.ru'));
+
+                // -> true
+                // -> false
+			</code>
+		</pre>
+	</section>
+
+	<section  class="slide">
+        <p>Можно перебрать каждый символ (самое неправильное решение):</p>
+		<pre>
+			<code class="language-js line-numbers">
+                function validateEmail(emailStr) {
+                  return emailStr.indexOf('@') !== -1;
+                }
+
+                console.log(validateEmail('support@netology.ru'));
+                console.log(validateEmail('supportnetology.ru'));
+
+                // -> true
+                // -> false
+			</code>
+		</pre>
+	</section>
+
+	<section  class="slide">
+        <p>Можно же найти по шаблону-регулярному выражению (пока непонятно, лучше ли):</p>
+		<pre>
+			<code class="language-js line-numbers">
+                function validateEmail(emailStr) {
+                  return emailStr.search(/@/) !== -1;
+                }
+
+                console.log(validateEmail('support@netology.ru'));
+                console.log(validateEmail('supportnetology.ru'));
+
+                // -> true
+                // -> false
+			</code>
+		</pre>
+	</section>
+
+	<section  class="slide">
+        <p>В реальных задачах редко требуется найти совпадение лишь по одному символу,
+            зачастую требуется, чтобы строка  нескольким условиям. </p>
+        <p>Например, чтобы понять, насколько жизнеспособно каждое из наших решений,
+            давайте введем еще одно правило - в адресе электронной почты после собаки должна
+            присутствовать точка.</p>
+	</section>
+
+    <section  class="slide">
+        <p>Первое выражение примет прямо-таки страшный вид:</p>
+        <pre>
+			<code class="language-js line-numbers">
+                function validateEmail(emailStr) {
+                  let foundComercialAt = false;
+                  for (const itemSymbol of emailStr) {
+                    if (itemSymbol === '@') {
+                      foundComercialAt = true;
+                    }
+                    if ((itemSymbol === '.') && (foundComercialAt)) {
+                      return true;
+                    }
+                  }
+                  return false;
+                }
+
+                console.log(validateEmail('support@netology.ru'));
+                console.log(validateEmail('support@netologyru'));
+                console.log(validateEmail('supportnetology.ru'));
+			</code>
+		</pre>
+    </section>
+
+    <section  class="slide">
+        <p>Второе решение попроще:</p>
+        <pre>
+			<code class="language-js line-numbers">
+                function validateEmail(emailStr) {
+                  const commercialAtPos = emailStr.indexOf('@');
+                  return (commercialAtPos !== -1) &&
+                    (commercialAtPos < emailStr.indexOf('.'));
+                }
+
+                console.log(validateEmail('support@netology.ru'));
+                console.log(validateEmail('support@netologyru'));
+                console.log(validateEmail('supportnetology.ru'));
+			</code>
+		</pre>
+    </section>
+
+    <section  class="slide">
+        <p>Решение с регулярным выражением же немного удивляет:</p>
+        <pre>
+			<code class="language-js line-numbers">
+                function validateEmail(emailStr) {
+                  return emailStr.search(/@\w+\./) !== -1;
+                }
+
+                console.log(validateEmail('support@netology.ru'));
+                console.log(validateEmail('support@netologyru'));
+                console.log(validateEmail('supportnetology.ru'));
+			</code>
+		</pre>
+    </section>
+
+    <section  class="slide">
+        <p>Если же еще ввести требования, что собака не является первым символом адреса,
+            а точка не является последней..</p>
+        <p>Первый и второй способ станут еще сложнее.</p>
+    </section>
+
+    <section  class="slide">
+        <p>Первый способ (не делайте такого, пожалуйста, в своей работе):</p>
+        <pre style="font-size: large">
+			<code class="language-js line-numbers">
+                function validateEmail(emailStr) {
+                  let foundComercialAt = false;
+                  const cuttedEmailStr = emailStr.substring(1, emailStr.length - 1);
+                  for (const itemSymbol of cuttedEmailStr) {
+                    if (itemSymbol === '@') {
+                      foundComercialAt = true;
+                    }
+                    if ((itemSymbol === '.') && (foundComercialAt)) {
+                      return true;
+                    }
+                  }
+                  return false;
+                }
+			</code>
+		</pre>
+    </section>
+
+    <section  class="slide">
+        <pre style="font-size: large">
+			<code class="language-js">
+                console.log(validateEmail('support@netology.ru'));
+                console.log(validateEmail('support@netologyru'));
+                console.log(validateEmail('@supportnetology.ru'));
+                console.log(validateEmail('support@netologyru.'));
+                console.log(validateEmail('supportnetology.ru'));
+                console.log(validateEmail('supportnetologyru'));
+
+                // -> true
+                // -> false
+                // -> false
+                // -> false
+                // -> false
+                // -> false
+			</code>
+		</pre>
+    </section>
+
+    <section  class="slide">
+        <p>Второй способ:</p>
+        <pre style="font-size: large">
+			<code class="language-js line-numbers">
+                function validateEmail(emailStr) {
+                  const commercialAtPos = emailStr.indexOf("@");
+                  const dotPos = emailStr.indexOf(".");
+                  if (commercialAtPos <= 0) {
+                    return false;
+                  }
+                  if (dotPos < commercialAtPos) {
+                    return false;
+                  }
+                  if (dotPos === emailStr.length - 1) {
+                    return false;
+                  }
+                  return true;
+                }
+			</code>
+		</pre>
+    </section>
+
+    <section  class="slide">
+        <pre style="font-size: large">
+			<code class="language-js">
+                console.log(validateEmail('support@netology.ru'));
+                console.log(validateEmail('support@netologyru'));
+                console.log(validateEmail('@supportnetology.ru'));
+                console.log(validateEmail('support@netologyru.'));
+                console.log(validateEmail('supportnetology.ru'));
+                console.log(validateEmail('supportnetologyru'));
+
+                // -> true
+                // -> false
+                // -> false
+                // -> false
+                // -> false
+                // -> false
+			</code>
+		</pre>
+    </section>
+
+    <section  class="slide">
+        <p>Третий же притерпит всего пару изменений:</p>
+        <pre>
+			<code class="language-js line-numbers">
+                function validateEmail(emailStr) {
+                  return emailStr.search(/\w@\w+\.\w/) !== -1;
+                }
+
+                console.log(validateEmail('support@netology.ru'));
+                console.log(validateEmail('support@netologyru'));
+                console.log(validateEmail('@supportnetology.ru'));
+                console.log(validateEmail('support@netologyru.'));
+                console.log(validateEmail('supportnetology.ru'));
+                console.log(validateEmail('supportnetologyru'));
+
+                // -> true
+                // -> false
+                // -> false
+                // -> false
+                // -> false
+                // -> false
+			</code>
+		</pre>
+    </section>
+
+    <section  class="slide">
+        <h2>Регулярное выражение - это шаблон подстроки.</h2>
+        <p>Например, строка <code>\w@\w+\.\w</code> читается как:</p>
+        <ol>
+            <li><code>\w</code> - любая цифра, буква или знак подчеркивания</li>
+            <li><code>@</code> - символ @</li>
+            <li><code>\w+</code> - любая цифра, буква или знак подчеркивания, один символ или более</li>
+            <li><code>\.</code> - точка</li>
+        </ol>
+        <p>И функция <code>search()</code> производит поиск последовательности,
+            подходящей под шаблон в строке <code>emailStr</code></p>
+    </section>
+
+    <section  class="slide">
+        <h2>Регулярное выражение - это шаблон подстроки.</h2>
+        <p>С помощью сайта <a href="https://regex101.com">https://regex101.com</a>
+            можно посмотреть совпадение подстроки с шаблоном.</p>
+        <p><img width="100%" src="../pic/regex_math_arraybuffer/3.png" alt=""/></p>
+    </section>
+
+    <section  class="slide">
+        <h2>Синтаксис</h2>
+        <p>Синтаксис регулярок (регулярных выражений) достаточно прост.</p>
+
+        <p><code>/регулярное выражение/</code> записывается между символами "/"</p>
+
+        <p>например: <code>/my_regexp/</code></p>
+
+        <p>регулярное выражение записывается с помощью специального языка.</p>
+        <p>Например:</p>
+        <ul>
+            <li><code>\d</code> - десятичная цифра</li>
+            <li><code>\D</code> - любой символ, кроме десятичной цифры</li>
+        </ul>
+        <p>Многие символы в регулярках можно писать явно:</p>
+        <ul>
+            <li><code>a</code> - символ "a"</li>
+            <li><code>Я</code> - буква "Я"</li>
+        </ul>
+    </section>
+
+    <section  class="slide">
+        <h2>Регулярные выражения</h2>
+        <p>У регулярных выражений достаточно большое количество различных возможностей,
+            все их осветить в рамках данной лекции не удастся, однако изучить их стоит. </p>
+        <p>Сам язык регулярных выражений во многих языках программирования единый,
+            поэтому освоить его стоит в любом случае.</p>
+        <p>В конце презентации есть шпаргалка по возможностям регулярок.</p>
+        <p>В ходе занятия же мы рассмотрим некоторые из них при знакомстве с функциями.</p>
+    </section>
+
+    <section  class="slide">
+        <h2>str.search(RegExp)</h2>
+        <p>Этот метод возвращает позицию первого совпадения с шаблоном регулярного выражения.</p>
+        <p>Если совпадения нет, то результатом выполнения будет <code>-1</code></p>
+        <p>Синтаксис:</p>
+        <pre>
+			<code class="language-js">
+                str.search(RegExp);
+			</code>
+		</pre>
+        <p>Один пример использования рассмотрен выше.</p>
+    </section>
+
+    <section  class="slide">
+        <h2>str.search(RegExp)</h2>
+        <pre>
+			<code class="language-js line-numbers">
+                function validateEmail(emailStr) {
+                  return emailStr.search(/\w@\w+\.\w/) !== -1;
+                }
+
+                console.log(validateEmail('support@netology.ru'));
+                console.log(validateEmail('support@netologyru'));
+                console.log(validateEmail('@supportnetology.ru'));
+                console.log(validateEmail('support@netologyru.'));
+                console.log(validateEmail('supportnetology.ru'));
+                console.log(validateEmail('supportnetologyru'));
+			</code>
+		</pre>
+        <p>В этом примере производится поиск совпадения с шаблоном. Если поиск удачен,
+            то возвращается число большее или равное нулю, на что и производится
+            проверка в условии.</p>
+    </section>
+
+    <section  class="slide">
+        <h2>str.match(RegExp)</h2>
+        <p>Возвращает результат совпадения с шаблоном.</p>
+        <p>Попробуем записать предыдущую проверку через <code>match()</code>.
+            Для наглядности пока просто выведем результат выполнения <code>match()</code></p>
+        <pre>
+			<code class="language-js line-numbers">
+                function validateEmail(emailStr) {
+                  return emailStr.match(/\w@\w+\.\w/);
+                }
+
+                console.log(validateEmail('support@netology.ru'));
+                console.log(validateEmail('support@netologyru'));
+                console.log(validateEmail('@supportnetology.ru'));
+                console.log(validateEmail('support@netologyru.'));
+                console.log(validateEmail('supportnetology.ru'));
+                console.log(validateEmail('supportnetologyru'));
+			</code>
+		</pre>
+    </section>
+
+    <section  class="slide">
+        <h2>str.match(RegExp)</h2>
+        <p>Если <code>search()</code> оповещает только о факте совпадения, то <code>match()</code>
+            нам показывает и сам результат сверки с шаблоном.</p>
+        <p><img width="80%" src="../pic/regex_math_arraybuffer/4.png" alt=""/></p>
+        <p>Т.е., если совпадений не найдено, то результатом <code>match()</code> будет <i>null</i></p>
+    </section>
+
+    <section  class="slide">
+        <h2>str.match(RegExp)</h2>
+        <p>Проверка приобретает такой вид:</p>
+        <pre>
+			<code class="language-js line-numbers">
+                function validateEmail(emailStr) {
+                  return emailStr.match(/\w@\w+\.\w/) !== null;
+                }
+
+                console.log(validateEmail('support@netology.ru'));
+                console.log(validateEmail('support@netologyru'));
+                console.log(validateEmail('@supportnetology.ru'));
+                console.log(validateEmail('support@netologyru.'));
+                console.log(validateEmail('supportnetology.ru'));
+                console.log(validateEmail('supportnetologyru'));
+			</code>
+		</pre>
+    </section>
+
+    <section  class="slide">
+        <h2>str.match(RegExp)</h2>
+        <p>Давайте изменим нашу регулярку:</p>
+        <pre>
+			<code class="language-js">
+                /^\w+@\w+\.\w+$/
+			</code>
+		</pre>
+        <p><code>^</code> обозначает начало строки (не внутри скобок)</p>
+        <p><code>$</code> обозначает конец строки</p>
+        <p>Это позволит нам валидировать строку полностью.</p>
+    </section>
+
+    <section  class="slide">
+        <h2>str.match(RegExp)</h2>
+        <pre>
+			<code class="language-js line-numbers">
+                function validateEmail(emailStr) {
+                  return emailStr.match(/^\w+@\w+\.\w+$/) !== null;
+                }
+
+                console.log(validateEmail('support@netology.ru'));
+                console.log(validateEmail('supp@rt@netologyru'));
+                console.log(validateEmail('$upport@netologyru'));
+                console.log(validateEmail('support@netologyru'));
+                console.log(validateEmail('@supportnetology.ru'));
+                console.log(validateEmail('support@netologyru.'));
+                console.log(validateEmail('supportnetology.ru'));
+                console.log(validateEmail('supportnetologyru'));
+			</code>
+		</pre>
+    </section>
+
+    <section  class="slide">
+        <h2>str.split(RegExp|str, limit)</h2>
+        <p>Функция <code>split()</code> позволяет разбить строку по какому-либо разделителю.</p>
+        <p>Как разделитель можно использовать как строку, так и регулярку.</p>
+        <p><code>limit</code> - необходимое количество полученных элементов массива, по умолчанию - неограничено.</p>
+    </section>
+
+    <section  class="slide">
+        <h2>str.split(RegExp|str, limit)</h2>
+        <p>Разобьем предложение на слова:</p>
+        <pre>
+			<code class="language-js line-numbers">
+                function separatePhrase(phrase) {
+                  return phrase.split(/[^(а-яёa-z@\.)]+/i);
+                }
+                console.log(separatePhrase('Support@netology.ru \
+                - адрес технической поддержки Нетологии.'));
+			</code>
+		</pre>
+        <p><code>^</code> внутри скобок используется для отрицания</p>
+        <p><code>[]</code> группа возможных символов</p>
+        <p><code>а-я</code> указывает на диапазон символов (от "а" до "я")</p>
+        <p>Флаг <code>i</code> указывает на игнорирование регистра.</p>
+    </section>
+
+    <section  class="slide">
+        <h2>str.replace(RegExp, str|func)</h2>
+        <p>Чудо, а не функция.</p>
+        <p>Позволяет произвести определенные операции с определенными участками текста.</p>
+    </section>
+
+    <section  class="slide">
+        <h2>str.replace(RegExp, str|func)</h2>
+        <p>Давайте напишем функцию перевода на "кирпичный язык".</p>
+        <p>Кто помнит, как перевести на "кирпичный"? Можно просто пример.</p>
+    </section>
+
+    <section  class="slide">
+        <h2>str.replace(RegExp, str|func)</h2>
+        <p>В круглых скобках указывается группа сиволов.</p>
+        <p>Для получения выбранной группы используем <code>$1</code></p>
+        <pre style="font-size: large">
+			<code class="language-js line-numbers">
+                function transferToBrick(phrase) {
+                  return phrase.toUpperCase().replace(/([АЯЭЕОЁУЮЫИ])/, '$1K$1');
+                }
+                console.log(transferToBrick('Привет, мир!'));
+			</code>
+		</pre>
+    </section>
+
+    <section  class="slide">
+        <h2>str.replace(RegExp, str|func)</h2>
+        <p>Флаг <code>g</code> указывает на то, что поиск будет производиться по всей фразе.</p>
+        <p>Без этого флага будет изменен только первый символ.</p>
+        <pre style="font-size: large">
+			<code class="language-js line-numbers">
+                function transferToBrick(phrase) {
+                  return phrase.toUpperCase().replace(/([АЯЭЕОЁУЮЫИ])/g, '$1K$1');
+                }
+                console.log(transferToBrick('Привет, мир!'));
+			</code>
+		</pre>
+    </section>
+
+    <section  class="slide">
+        <h2>RegExp.test(str)</h2>
+        <p>Функция, cхожая с <code>str.search(regexp) !== -1</code>. Проверяет, есть ли хоть одно совпадение.</p>
+        <pre>
+			<code class="language-js line-numbers">
+                function validateEmail(emailStr) {
+                  return /\w@\w+\.\w/.test(emailStr);
+                }
+
+                console.log(validateEmail('support@netology.ru'));
+                console.log(validateEmail('support@netologyru'));
+                console.log(validateEmail('@supportnetology.ru'));
+                console.log(validateEmail('support@netologyru.'));
+                console.log(validateEmail('supportnetology.ru'));
+                console.log(validateEmail('supportnetologyru'));
+			</code>
+		</pre>
+    </section>
+
+    <section  class="slide">
+        <h2>RegExp.exec(str)</h2>
+        <p>Функция, похожая на <code>str.match(RegExp)</code>. </p>
+        <p>Возвращает совпадение с шаблоном</p>
+        <pre>
+			<code class="language-js line-numbers">
+                function validateEmail(emailStr) {
+                  return /^\w+@\w+\.\w+$/.exec(emailStr) !== null;
+                }
+
+                console.log(validateEmail('support@netology.ru'));
+                console.log(validateEmail('supp@rt@netologyru'));
+                console.log(validateEmail('$upport@netologyru'));
+                console.log(validateEmail('support@netologyru'));
+                console.log(validateEmail('@supportnetology.ru'));
+                console.log(validateEmail('support@netologyru.'));
+                console.log(validateEmail('supportnetology.ru'));
+                console.log(validateEmail('supportnetologyru'));
+			</code>
+		</pre>
+    </section>
+
+    <section  class="slide">
+        <h2>RegExp.exec(str)</h2>
+        <p>Кстати, если нам потребуется извлечь адрес электронной почты из предложения:</p>
+        <p>Возвращает совпадение с шаблоном</p>
+        <pre>
+			<code class="language-js line-numbers">
+                function findEmail(emailStr) {
+                  return /\w+@\w+\.\w+/.exec(emailStr);
+                }
+
+                console.log(findEmail('Support@netology.ru \
+                - адрес технической поддержки Нетологии.')[0]);
+
+                // -> Support@netology.ru
+			</code>
+		</pre>
+        <p>Аналогичный результат принесёт и функция <code>str.match(RegExp)</code></p>
+    </section>
+
+    <section  class="slide">
+        <h2>RegExp.toString()</h2>
+        <p>Возвращает строковое представление регулярного выражения.</p>
+        <pre>
+			<code class="language-js line-numbers">
+                const myReg = /^\w+@\w+\.\w+$/g;
+                console.log(typeof(myReg));
+                console.log(typeof(myReg.toString()));
+
+                // -> object
+                // -> string
+			</code>
+		</pre>
+    </section>
+
+    <section  class="slide">
+        <h2>Возможности регулярных выражений в стандарте ES2018</h2>
+        <p>Эти возможности установлены стандартом ES2018, но ещё (на момент написания лекции)
+            реализованы не во всех браузерах.</p>
+        <ul>
+            <li>именованные группы;</li>
+            <li>±lookbehind, ±lookahead;</li>
+            <li>флаг <code>s</code>;</li>
+            <li>паттерны для работы с Unicode;</li>
+        </ul>
+        <p>Эти возможности установлены стандартом ES2018, но ещё (на момент написания лекции)
+            реализованы не во всех браузерах.</p>
+    </section>
+
+    <section  class="slide">
+        <h2>Именованные группы</h2>
+        <p>В "js будущего" появилась возможность давать группам наименования.</p>
+        <pre>
+			<code class="language-js line-numbers">
+                function findEmail(emailStr) {
+                  return /(?&lt;emailGroup&gt;\w+@\w+\.\w+)/.exec(emailStr);
+                }
+
+                const textStr = 'Support@netology.ru \
+                - адрес технической поддержки Нетологии.';
+                const emailStr = findEmail(textStr);
+                console.log(emailStr.groups.emailGroup);
+
+                // -> Support@netology.ru
+			</code>
+		</pre>
+    </section>
+
+    <section  class="slide">
+        <h2>lookbehind, lookahead</h2>
+        <p>"Взгляд назад" и "Взгляд вперёд":</p>
+        <ul>
+            <li><code>x(?=y)</code> - ищет соответствие паттерну x, когда он идёт перед y
+                (положительная опережающая проверка);</li>
+            <li><code>x(?!y)</code> - ищет соответствие паттерну x, когда он идёт не перед y
+                (негативная опережающая проверка);</li>
+            <li><code>(?&lt;=y)x</code> - ищет соответствие паттерну х, когда он идёт после y
+                (положительная ретроспективная проверка);</li>
+            <li><code>(?&lt;!y)x</code> - ищет соответствие паттерну х, когда он идёт не после y
+                (негативная ретроспективная проверка);</li>
+        </ul>
+    </section>
+
+    <section  class="slide">
+        <h2>lookbehind, lookahead</h2>
+        <pre style="font-size: large">
+			<code class="language-js line-numbers">
+                function findEmail(emailStr) {
+                  return emailStr.match(/\w+(?=@)/g);
+                }
+
+                textStr = 'admin@netology, email: support@netology.ru';
+                console.log(findEmail(textStr));
+
+                // -> ["admin", "support"]
+			</code>
+		</pre>
+    </section>
+
+    <section  class="slide">
+        <h2>Флаг <code>s</code> (dotAll)</h2>
+        <p>Хотя и считается, что символ точки соответствует любому одиночному символу,
+            он не соответствует некоторым символам, например, символу перевода строки <code>\n</code>.</p>
+        <pre>
+			<code class="language-js line-numbers">
+                function matchPhrase(phraseStr) {
+                  return /Нетология.онлайн-школа/.exec(phraseStr);
+                }
+
+                const textStr = 'Нетология\nонлайн-школа';
+                console.log(matchPhrase(textStr));
+
+                // -> null
+			</code>
+		</pre>
+    </section>
+
+    <section  class="slide">
+        <h2>Флаг <code>s</code> (dotAll)</h2>
+        <p>Флаг <code>s</code> позволяет видеть как точку абсолютно любой символ:</p>
+        <pre>
+			<code class="language-js line-numbers">
+                function matchPhrase(phraseStr) {
+                  return /Нетология.онлайн-школа/s.exec(phraseStr);
+                }
+
+                const textStr = 'Нетология\nонлайн-школа';
+                console.log(matchPhrase(textStr));
+
+                // -> ["Нетология↵онлайн-школа", index: 0,
+                // input: "Нетология↵онлайн-школа", groups: undefined]
+			</code>
+		</pre>
+    </section>
+
+    <section  class="slide">
+        <h2>Паттерны для работы с Unicode-символами</h2>
+        <p>Были расширены возможности для работы с Unicode:</p>
+        <pre style="font-size: large">
+			<code class="language-js line-numbers">
+                console.log(/\p{Emoji}/u.test('😀ΩU'));
+                console.log(/\p{Script=Greek}/u.exec('😀ΩU'));
+
+                // -> true
+                // -> ["Ω", index: 0, input: "😀ΩU", groups: undefined]
+			</code>
+		</pre>
+    </section>
+
+    <section  class="slide">
+        <h2>РЕГУЛЯРНОЕ ВЫРАЖЕНИЕ - ЗЛО, если...</h2>
+        <p>Регулярные выражения - удобный, полезный, высокопроизводительный и простой инструмент.</p>
+        <p>Однако, важно помнить, что:</p>
+        <ul>
+            <li>как и любой другой инструмент, он НЕ универсален;</li>
+            <li>регулярное выражение сложно читаемо.</li>
+        </ul>
+        <p>Достаточно часто разработчики могут создать "дьявольское" регулярное выражение. </p>
+        <p>Так же, среди разработчиков бытует мнение, что "регулярки пишутся в одну сторону" -
+            то есть их пишут, но не читают, регулярное выражение проще написать с нуля,
+            чем разобраться в готовом.</p>
+    </section>
+
+    <section  class="slide">
+        <p>Поэтому, </p>
+        <h2>РЕГУЛЯРНОЕ ВЫРАЖЕНИЕ - ЗЛО, если:</h2>
+        <p><b>1. Есть более подходящие инструменты.</b></p>
+        <p>Например, для проверки кода есть большое количество готовых синтаксических анализаторов.
+            Неправильно проверять "правильно ли сформирован JSON" собственной регуляркой.</p>
+        <p>Например, если требуется только определить наличие единственного символа в строке,
+            с этим справится и функция <code>str.indexOf()</code>.</p>
+    </section>
+
+    <section  class="slide">
+        <p>Поэтому, </p>
+        <h2>РЕГУЛЯРНОЕ ВЫРАЖЕНИЕ - ЗЛО, если:</h2>
+        <p><b>1. Есть более подходящие инструменты.</b></p>
+        <p>Например, Вам требуется найти наличие двух подстрок в тексте. Может быть,
+            код для поиска двух подстрок будет эффективнее, чем одна регулярка?</p>
+        <p>Например, не пытайтесь проверить текст на цензурность с помощью одной регулярки.
+            Эта проблема эффективнее решается несколькими различными инструментами,
+            где регулярным выражениям отведена вспомогательная роль.</p>
+    </section>
+
+    <section  class="slide">
+        <h2>РЕГУЛЯРНОЕ ВЫРАЖЕНИЕ - ЗЛО, если:</h2>
+        <p><b>2. Вы пытаетесь решить одной регуляркой задачу,
+            которую НУЖНО решать несколькими регулярными выражениями</b></p>
+        <p>Например, Вам требуется проверить серию и номер документа.
+            Если у вас допускается два документа (например, паспорт и свидетельство о рождении),
+            не стоит пытаться объединить два шаблона для проверки в один.
+            Даже если Вы получите выигрыш в производительности (что маловероятно),
+            Вы существенно потеряете в читаемости кода.</p>
+    </section>
+
+    <section  class="slide">
+        <h2>РЕГУЛЯРНОЕ ВЫРАЖЕНИЕ - ЗЛО, если:</h2>
+        <p><b>3. Регулярное выражение нечитаемо.</b></p>
+        <p>Например, с вероятностью 99,9% другой разработчик не станет разбираться в смысле следующей регулярки:</p>
+    </section>
+
+    <section  class="slide">
+        <pre>
+			<code class="language-js">
+                (([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}
+                |([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:)
+                {1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}
+                (:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}
+                (:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}
+                (:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}
+                (:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:
+                ((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4})
+                {1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}
+                %[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}
+                ((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}
+                (25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|
+                ([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}
+                [0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}
+                [0-9]){0,1}[0-9]))
+			</code>
+		</pre>
+    </section>
+
+    <section  class="slide">
+        <h2>РЕГУЛЯРНОЕ ВЫРАЖЕНИЕ - ЗЛО, если:</h2>
+        <p><b>4. Вы не умеете писать регулярные выражения или Ваш код "грязный".</b></p>
+        <p>Если регулярное выражение не работает - оно вредит.</p>
+        <p>Если регулярное выражение слишком требовательное к ресурсам - оно вредит.</p>
+        <p>Если в мешанине кода всплывает регулярное выражение - оно вредит.</p>
+    </section>
+
+    <section id="math" class="slide chapter">
+        <h2>Math</h2>
+        <p><img width="90%" src="../pic/regex_math_arraybuffer/5.jpg" alt=""/></p>
+    </section>
+
+    <section  class="slide chapter">
+        <p>Объект <code>Math</code> содержит набор математических функций и констант.</p>
+    </section>
+
+    <section  class="slide">
+        <h2>Свойства (математические константы):</h2>
+        <p style="margin-top: 12px"><code>Math.E</code> - число Эйлера, так же известное, как математическая константа,
+            обозначаемая символом <i>e</i>.</p>
+        <p style="margin-top: 12px"><code>Math.PI</code> - отношение длины окружности её диаметру, так же известно как
+            "число пи".</p>
+        <p style="margin-top: 12px"><code>Math.LN2</code> - натуральный логарифм из 2.</p>
+        <p style="margin-top: 12px"><code>Math.LN10</code> - натуральный логарифм из 10.</p>
+        <p style="margin-top: 12px"><code>Math.LOG2E</code> - двоичный логарифм из числа Эйлера.</p>
+        <p style="margin-top: 12px"><code>Math.LOG10E</code> - десятичный логарифм из числа Эйлера.</p>
+        <p style="margin-top: 12px"><code>Math.SQRT1_2</code> - квадратный корень из 1/2.</p>
+        <p style="margin-top: 12px"><code>Math.SQRT2</code> - квадратный корень из 2.</p>
+    </section>
+
+    <section  class="slide">
+        <h2>Округление:</h2>
+        <p>
+            <code>Math.ceil(x)</code> - возвращает наименьшее целое число,
+            большее, либо равное указанному числу ("округление вверх").
+        </p>
+        <p>
+            <code>Math.floor(x)</code> - возвращает наибольшее целое число,
+            меньшее, либо равное указанному числу ("округление вниз").
+        </p>
+        <p>
+            <code>Math.round(x)</code> - возвращает значение числа, округлённое до ближайшего целого.
+        </p>
+        <p>
+            <code>Math.trunc(x)</code> - возвращает целую часть числа, убирая дробные цифры.
+        </p>
+    </section>
+
+    <section  class="slide">
+        <h2>Тригонометрические функции:</h2>
+        <p><code>Math.acos(x)</code> - возвращает арккосинус числа.</p>
+        <p><code>Math.asin(x)</code> - возвращает арксинус числа.</p>
+        <p><code>Math.atan(x)</code> - возвращает арктангенс числа.</p>
+        <p><code>Math.cos(x)</code> - возвращает косинус числа.</p>
+        <p><code>Math.sin(x)</code> - возвращает синус числа.</p>
+        <p><code>Math.tan(x)</code> - возвращает тангенс числа.</p>
+        <p><i>Внимание! Тригонометрические функции  принимают в
+            параметрах или возвращают углы в радианах.</i></p>
+    </section>
+
+    <section  class="slide">
+        <h2>Тригонометрические функции:</h2>
+        <p><code>Math.abs(x)</code> - возвращает абсолютное значение (модуль) числа.</p>
+        <p><code>Math.sqrt(x)</code> - возвращает положительный квадратный корень числа.</p>
+        <p><code>Math.cbrt(x)</code> - возвращает кубический корень числа.</p>
+        <p><code>Math.max([x[, y[, …]]])</code> - возвращает наибольшее число из своих аргументов.</p>
+        <p><code>Math.min([x[, y[, …]]])</code> - возвращает наименьшее число из своих аргументов.</p>
+        <p><code>Math.random()</code> - возвращает псевдослучайное число в диапазоне от 0 до 1.</p>
+        <p><code>Math.log(x)</code> - возвращает натуральный логарифм числа.</p>
+    </section>
+
+    <section  class="slide">
+        <h2>Math</h2>
+        <p>Это далеко не полный перечень.</p>
+        <p>Современный объект <code>Math</code> дает полноценный математический инструментарий.</p>
+    </section>
+
+    <section  class="slide chapter">
+        <p>Чтобы использовать этот инструментарий, требуется обратиться к объекту <code>Math</code></p>
+        <pre>
+			<code class="language-js line-numbers">
+                const randomDigit = Math.random();
+                console.log(randomDigit);
+
+                const xGrad = Math.round(randomDigit * 180);
+                console.log(xGrad);
+
+                const xRad = xGrad * Math.PI / 180;
+                console.log(xRad);
+
+                const cosX = Math.cos(xRad);
+                const sinX = Math.sin(xRad);
+
+                console.log(cosX);
+                console.log(sinX);
+                console.log(cosX**2 + sinX**2);
+			</code>
+		</pre>
+    </section>
+
+    <section  class="slide">
+        <h2>Math</h2>
+        <p>Как найти длину гипотенузы при известных катетах через JS?</p>
+        <p>Напомню, квадрат гипотенузы равен сумме квадратов катетов</p>
+        <pre>
+			<code class="language-js line-numbers">
+                const cathetusFirst = 3;
+                const cathetusSecond = 4;
+                const hypotenuse = .....;
+
+                console.log(hypotenuse);
+			</code>
+		</pre>
+    </section>
+
+    <section  class="slide chapter">
+        <pre>
+			<code class="language-js line-numbers">
+                const cathetusFirst = 3;
+                const cathetusSecond = 4;
+                const hypotenuse = Math.hypot(cathetusFirst, cathetusSecond);
+
+                console.log(hypotenuse);
+			</code>
+		</pre>
+    </section>
+
+    <section id="arraybuffer" class="slide chapter">
+        <h2>ArrayBuffer</h2>
+        <p><img width="85%" src="../pic/regex_math_arraybuffer/6.jpg" alt=""/></p>
+    </section>
+
+    <section class="slide">
+        <h2>Управление памятью</h2>
+        <p>Автоматическое управление памятью упрощает разработку приложения,
+            однако снижает производительность программ.</p>
+        <p>Например, когда вы создаёте переменную, js-движок определяет,
+            какого типа будет эта переменная, какой объем памяти ей потребуется. </p>
+        <p>Достаточно часто это ведет к резервированию большего объема памяти,
+            чем на самом деле нужно для хранения переменной.
+            При этом требуемый размер может быть в 2-8 раз меньше,
+            чем резервируемый. Это приводит к неэффективному использованию памяти.</p>
+    </section>
+
+    <section class="slide">
+        <h2>Управление памятью</h2>
+        <p>Во многих случаях, автоматическое управление памятью не вызывает проблем.
+            Большинство JS-приложений не настолько требовательны к производительности,
+            чтоб им было необходимо ручное управление памятью.
+            Однако, ручное управление памятью негативно влияет на производительность труда программиста.</p>
+        <p>Случаи, в которых требуется ручное управление памятью -
+            это случаи требовательных к оперативной памяти js-приложений.</p>
+    </section>
+
+    <section class="slide">
+        <h2>ArrayBuffer</h2>
+        <p>Как одно из решений для ручного контроля управления памятью можно рассмотреть
+            <code>ArrayBuffer</code>.</p>
+    </section>
+
+    <section class="slide">
+        <h2>new ArrayBuffer</h2>
+        <p>ArrayBuffer представляет собой ссылку на поток "сырых" данных.</p>
+        <p>Например, если создать <code>ArrayBuffer</code> длины 4:</p>
+        <pre>
+			<code class="language-js line-numbers">
+                const buffer = new ArrayBuffer(4);
+			</code>
+		</pre>
+        <p>Мы получим просто данные следующего вида (в байтах): <code>0000</code></p>
+    </section>
+
+    <section class="slide">
+        <h2>Представление ArrayBuffer</h2>
+        <p>Эти данные можно представить в разных вариантах: разделив по байту, 2 байта, или четыре.</p>
+        <p>Чтобы представить <code>ArrayBuffer</code> в каком-либо виде, требуется создать его представление:</p>
+        <pre>
+			<code class="language-js line-numbers">
+                const buffer = new ArrayBuffer(4);
+                const buffer8BitView = new Int8Array(buffer);
+
+                console.log(buffer8BitView);
+
+                // -> Int8Array(4)[0, 0, 0, 0];
+			</code>
+		</pre>
+    </section>
+
+    <section class="slide">
+        <h2>Представление ArrayBuffer</h2>
+        <p>Этому же буферу можно задать и другое представление:</p>
+        <pre>
+			<code class="language-js line-numbers">
+                const buffer = new ArrayBuffer(4);
+                const buffer8BitView = new Int8Array(buffer);
+                const buffer16BitView = new Int16Array(buffer);
+
+                console.log(buffer8BitView);
+                console.log(buffer16BitView);
+
+                // -> Int8Array(4)[0, 0, 0, 0];
+                // -> Int16Array(2)[0, 0];
+			</code>
+		</pre>
+    </section>
+
+    <section class="slide">
+        <h2>Представление ArrayBuffer</h2>
+        <p>После создания представления можно в <code>ArrayBuffer</code> внести данные или изъять из него:</p>
+        <pre>
+			<code class="language-js line-numbers">
+                const buffer = new ArrayBuffer(4);
+                const buffer8BitView = new Int8Array(buffer);
+                const buffer16BitView = new Int16Array(buffer);
+
+                buffer16BitView[0] = 1000;
+
+                console.log(buffer16BitView[0] + 1);
+
+                // -> 1001
+			</code>
+		</pre>
+    </section>
+
+    <section class="slide">
+        <h2>Представление ArrayBuffer</h2>
+        <p>Обратите внимание, что доступ к одному представлению не прекращается при использовании другого:</p>
+        <pre>
+			<code class="language-js line-numbers">
+                const buffer = new ArrayBuffer(4);
+                const buffer8BitView = new Int8Array(buffer);
+                const buffer16BitView = new Int16Array(buffer);
+
+                buffer16BitView[0] = 1000;
+
+                console.log(buffer8BitView);
+                console.log(buffer16BitView);
+
+                // -> Int8Array(4) [-24, 3, 0, 0]
+                // -> Int16Array(2) [1000, 0]
+			</code>
+		</pre>
+    </section>
+
+    <section class="slide">
+        <h2>Представление ArrayBuffer</h2>
+        <p>Доступны следующие представления:</p>
+        <p style="margin-top: 12px"><code>Int8Array()</code> - восьмибитное число со знаком</p>
+        <p style="margin-top: 12px"><code>Uint8Array()</code> - беззнаковое восьмибитное число</p>
+        <p style="margin-top: 12px"><code>Uint8ClampedArray()</code> - беззнаковое восьмибитное число ("зажатое")</p>
+        <p style="margin-top: 12px"><code>Int16Array()</code> - шестнадцитибитное число со знаком</p>
+        <p style="margin-top: 12px"><code>Uint16Array()</code> - беззнаковое шестнадцитибитное число</p>
+        <p style="margin-top: 12px"><code>Int32Array()</code> - 32-битное число со знаком</p>
+        <p style="margin-top: 12px"><code>Uint32Array()</code> - беззнаковое 32-битное число</p>
+        <p style="margin-top: 12px"><code>Float32Array()</code> - 32-битное вещественное число</p>
+        <p style="margin-top: 12px"><code>Float64Array()</code> - 64-битное вещественное число</p>
+    </section>
+
+    <section class="slide">
+        <h2>Представление ArrayBuffer</h2>
+        <p>Чтоб понять разницу между <code>Uint8Array</code> и <code>Uint8ClampedArray</code>,
+            давайте проведем следующий опыт:</p>
+        <pre style="font-size: large">
+			<code class="language-js line-numbers">
+                const buffer = new ArrayBuffer(2);
+                const notClampedBufferView = new Uint8Array(buffer);
+                const clampedBufferView = new Uint8ClampedArray(buffer);
+
+                console.log('Step 1');
+                notClampedBufferView[0] = 100;
+                clampedBufferView[1] = 100;
+                console.log(notClampedBufferView[0]);
+                console.log(clampedBufferView[1]);
+                console.log('-----');
+			</code>
+		</pre>
+    </section>
+
+    <section class="slide">
+        <pre style="font-size: large">
+			<code class="language-js line-numbers">
+                console.log('Step 2');
+                notClampedBufferView[0] += 100;
+                clampedBufferView[1] += 100;
+                console.log(notClampedBufferView[0]);
+                console.log(clampedBufferView[1]);
+                console.log('-----');
+
+                console.log('Step 3');
+                notClampedBufferView[0] += 100;
+                clampedBufferView[1] += 100;
+                console.log(notClampedBufferView[0]);
+                console.log(clampedBufferView[1]);
+                console.log('-----');
+			</code>
+		</pre>
+    </section>
+
+    <section class="slide">
+        <h2>Представление ArrayBuffer</h2>
+        <p>Что произошло?</p>
+        <p>Почему такая разница?</p>
+    </section>
+
+    <section class="slide">
+        <h2>Представление ArrayBuffer</h2>
+        <p>Не стоит забывать, что в ArrayBuffer можно хранить и двоичное представление других (нечисловых) данных:</p>
+        <pre style="font-size: large">
+			<code class="language-js line-numbers">
+                const helloStr = 'Hello, world!';
+
+                const buffer = new ArrayBuffer(helloStr.length);
+                const bufferView = new Uint8Array(buffer);
+
+
+                for (let i = 0; i < bufferView.length; i += 1) {
+                  bufferView[i] = helloStr.charCodeAt(i);
+                }
+
+                for (let i = 0; i < bufferView.length; i += 1) {
+                  console.log(String.fromCharCode(bufferView[i]));
+                }
+			</code>
+		</pre>
+    </section>
+
+    <section class="slide chapter">
+        <h2>Итак, подведём итоги</h2>
+        <p><b>На этой лекции были рассмотрены следующие инструменты</b>:</p>
+        <ul>
+            <li>Регулярные выражения</li>
+            <li>Объект <code>Math</code></li>
+            <li>Объект <code>ArrayBuffer</code></li>
+        </ul>
+    </section>
+
+	<section id="links" class="slide">
+		<h2>Интересное чтиво</h2>
+		<p>Регулярные выражения:</p>
+		<ul  style="margin-top: 0">
+			<li>
+                <a href="http://website-lab.ru/article/regexp/shpargalka_po_regulyarnyim_vyirajeniyam/">
+                    Шпаргалка по регулярным выражениям
+                </a>
+            </li>
+			<li>
+                <a href="https://regex101.com">
+                    regex101.com - проверить свою регулярку
+                </a>
+            </li>
+			<li>
+                <a href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/RegExp">
+                    MDN - сводка по RegExp
+                </a>
+            </li>
+			<li>
+                <a href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Guide/Regular_Expressions">
+                    MDN - Руководcтво по JavaScript: Регулярные выражения
+                </a>
+            </li>
+			<li>
+                <a href="https://blog.codinghorror.com/regex-use-vs-regex-abuse/">
+                    Пример, так делать НЕЛЬЗЯ
+                </a>
+            </li>
+			<li>
+                <a href="https://habr.com/company/ruvds/blog/353174/">
+                    Обзор новшеств ES2016-ES2018
+                </a>
+            </li>
+		</ul>
+		<p>Math:</p>
+		<ul  style="margin-top: 0">
+			<li>
+                <a href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Math">
+                    MDN - Math
+                </a>
+            </li>
+		</ul>
+		<p>ArrayBuffer:</p>
+		<ul  style="margin-top: 0">
+			<li>
+                <a href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Typed_arrays">
+                    MDN - Типизованные массивы JavaScript
+                </a>
+            </li>
+			<li>
+                <a href="https://habr.com/company/ruvds/blog/331760/">
+                    Habr - ArrayBuffer и SharedArrayBuffer
+                </a>
+            </li>
+		</ul>
+	</section>
+
+	<section class="slide last">
+        <p class="thanx">Спасибо за внимание!!! Жду ваших вопросов 🙂</p>
+	  <address>Лектор</address>
+	  <ul class="contacts">
+		<li><a href="mailto:#"><i class="fa fa-telegram" aria-hidden="true"></i>#</a></li>
+		<li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i>#</a></li>
+	  </ul>
+	</section>
+
+	<div class="progress"></div>
+    <script src="../node_modules/shower-core/shower.min.js"></script>
+    <script src="../js/prism.js?v=2"></script>
+    <script src="https://use.fontawesome.com/8c6816e790.js"></script>
+  </body>
+</html>
