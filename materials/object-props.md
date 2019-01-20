@@ -1,10 +1,10 @@
 ---
-title: Свойства объекта и обёртки
+title: Свойства объекта, for-in, обёртки для примитивов
 slideOptions:
   transition: slide
 ---
 
-# AJS. Свойства объекта и обёртки
+# Свойства объекта, for-in, обёртки для примитивов
 
 ###### tags: `netology` `advanced js`
 
