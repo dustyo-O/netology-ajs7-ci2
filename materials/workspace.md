@@ -450,9 +450,18 @@ ESLint будет хранить свои настройки в файле `.esl
     "env": {
         "es6": true,
         "browser": true
+    },
+    "rules": {
+        "no-restricted-syntax": [
+            "error",
+            "LabeledStatement",
+            "WithStatement"
+        ]
     }
 }
 ```
+
+Мы можем изменить, дополнить правила с помощью секции `rules`.
 
 ---
 

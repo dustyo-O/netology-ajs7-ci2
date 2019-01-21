@@ -506,17 +506,25 @@
     <section class="slide">
       <h2><code>.eslintrc.json</code></h2>
       <p>ESLint будет хранить свои настройки в файле <code>.eslintrc.json</code>:</p>
-      <pre class="line-numbers">
+      <pre class="line-numbers fz20">
         <code class="lang-json">
           {
               "extends": "airbnb-base",
               "env": {
                   "es6": true,
                   "browser": true
+              },
+              "rules": {
+                  "no-restricted-syntax": [
+                      "error",
+                      "LabeledStatement",
+                      "WithStatement"
+                  ]
               }
           }
         </code>
       </pre>
+      <p>Мы можем изменить, дополнить правила с помощью секции <code>rules</code></p>
     </section>
 
     <section class="slide">
