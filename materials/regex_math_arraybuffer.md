@@ -1,9 +1,3 @@
----
-title: RegEx, Math, ArrayBuffer - Презентация
-slideOptions:
-  transition: slide
----
-
 # AJS. RegEx, Math, ArrayBuffer
 
 ###### tags: `netology` `advanced js`
@@ -47,7 +41,7 @@ slideOptions:
 ---
 
 Можно перебрать каждый символ (самое неправильное решение):
-```javascript=
+```javascript
 function validateEmail(emailStr) {
   for (const itemSymbol of emailStr) {
     if (itemSymbol === '@') {
@@ -65,7 +59,7 @@ console.log(validateEmail('supportnetology.ru'));
 
 Можно найти позицию вхождения подстроки (уже решение получше):
 
-```javascript=
+```javascript
 function validateEmail(emailStr) {
   return emailStr.indexOf("@") !== -1;
 }
@@ -79,7 +73,7 @@ console.log(validateEmail('supportnetology.ru'));
 
 Можно же найти по шаблону-регулярному выражению (пока непонятно, лучше ли):
 
-```javascript=
+```javascript
 function validateEmail(emailStr) {
   return emailStr.search(/@/) !== -1;
 }
@@ -98,7 +92,7 @@ console.log(validateEmail('supportnetology.ru'));
 ---
 
 Первое выражение примет прямо-таки страшный вид:
-```javascript=
+```javascript
 function validateEmail(emailStr) {
   let foundComercialAt = false;
   for (const itemSymbol of emailStr) {
@@ -121,7 +115,7 @@ console.log(validateEmail('supportnetology.ru'));
 
 Второе решение попроще:
 
-```javascript=
+```javascript
 function validateEmail(emailStr) {
   const commercialAtPos = emailStr.indexOf("@");
   return (commercialAtPos !== -1) && (commercialAtPos < emailStr.indexOf("."));
@@ -137,7 +131,7 @@ console.log(validateEmail('supportnetology.ru'));
 
 Решение с регулярным выражением же немного удивляет:
 
-```javascript=
+```javascript
 function validateEmail(emailStr) {
   return emailStr.search(/@\w+\./) !== -1;
 }
@@ -158,7 +152,7 @@ console.log(validateEmail('supportnetology.ru'));
 > без демонстрации в консоли
 
 Первый способ (не делайте такого, пожалуйста, в своей работе):
-```javascript=
+```javascript
 function validateEmail(emailStr) {
   let foundComercialAt = false;
   const cuttedEmailStr = emailStr.substring(1, emailStr.length - 1);
@@ -184,7 +178,7 @@ console.log(validateEmail('supportnetologyru'));
 ---
 
 Второй способ:
-```javascript=
+```javascript
 function validateEmail(emailStr) {
   const commercialAtPos = emailStr.indexOf("@");
   const dotPos = emailStr.indexOf(".");
@@ -211,7 +205,7 @@ console.log(validateEmail('supportnetologyru'));
 ---
 
 Третий же притерпит всего пару изменений:
-```javascript=
+```javascript
 function validateEmail(emailStr) {
   return emailStr.search(/\w@\w+\.\w/) !== -1;
 }
@@ -283,7 +277,7 @@ str.search(RegExp);
 
 ---
 
-```javascript=
+```javascript
 function validateEmail(emailStr) {
   return emailStr.search(/\w@\w+\.\w/) !== -1;
 }
@@ -307,7 +301,7 @@ console.log(validateEmail('supportnetologyru'));
 Попробуем записать предыдущую проверку через `match()`.
 Для наглядности пока просто выведем результат выполнения `match()`
 
-```javascript=
+```javascript
 function validateEmail(emailStr) {
   return emailStr.match(/\w@\w+\.\w/);
 }
@@ -332,7 +326,7 @@ console.log(validateEmail('supportnetologyru'));
 
 Проверка приобретает такой вид:
 
-```javascript=
+```javascript
 function validateEmail(emailStr) {
   return emailStr.match(/\w@\w+\.\w/) !== null;
 }
@@ -359,7 +353,7 @@ console.log(validateEmail('supportnetologyru'));
 
 ---
 
-```javascript=
+```javascript
 function validateEmail(emailStr) {
   return emailStr.match(/^\w+@\w+\.\w+$/) !== null;
 }
@@ -387,7 +381,7 @@ console.log(validateEmail('supportnetologyru'));
 
 Разобьем предложение на слова:
 
-```javascript=
+```javascript
 function separatePhrase(phrase) {
   return phrase.split(/[^(а-яёa-z@\.)]+/i);
 }
@@ -421,7 +415,7 @@ console.log(separatePhrase('Support@netology.ru - адрес техническ�
 
 Для получения выбранной группы используем `$1`
 
-```javascript=
+```javascript
 function transferToBrick(phrase) {
   return phrase.toUpperCase().replace(/([АЯЭЕОЁУЮЫИ])/, '$1K$1');
 }
@@ -433,7 +427,7 @@ console.log(transferToBrick('Привет, мир!'));
 Флаг `g` указывает на то, что поиск будет производиться по всей фразе. Без этого флага будет изменен только первый символ. 
 
 
-```javascript=
+```javascript
 function transferToBrick(phrase) {
   return phrase.toUpperCase().replace(/([АЯЭЕОЁУЮЫИ])/g, '$1K$1');
 }
@@ -446,7 +440,7 @@ console.log(transferToBrick('Привет, мир!'));
 
 Функция, cхожая с `str.search(regexp) !== -1`. Проверяет, есть ли хоть одно совпадение.
 
-```javascript=
+```javascript
 function validateEmail(emailStr) {
   return /\w@\w+\.\w/.test(emailStr);
 }
@@ -465,7 +459,7 @@ console.log(validateEmail('supportnetologyru'));
 
 Функция, похожая на `str.match(RegExp)`
 
-```javascript=
+```javascript
 function validateEmail(emailStr) {
   return /^\w+@\w+\.\w+$/.exec(emailStr) !== null;
 }
@@ -484,7 +478,7 @@ console.log(validateEmail('supportnetologyru'));
 
 Кстати, если нам потребуется вычленить адрес электронной почты из предложения:
 
-```javascript=
+```javascript
 function findEmail(emailStr) {
   return /\w+@\w+\.\w+/.exec(emailStr);
 }
@@ -524,7 +518,7 @@ console.log(typeof(myReg.toString()));
 **Именованные группы**
 В "js будущего" появилась возможность давать группам наименования.
 
-```javascript=
+```javascript
 function findEmail(emailStr) {
   return /(?<emailGroup>\w+@\w+\.\w+)/.exec(emailStr);
 }
@@ -543,7 +537,7 @@ console.log(emailStr.groups.emailGroup);
 * (?<=y)x - ищет соответствие паттерну х, когда он идёт после y (положительная ретроспективная проверка)
 * (?<!y)x - ищет соответствие паттерну х, когда он идёт не после y (негативная ретроспективная проверка)
 
-```javascript=
+```javascript
 function findEmail(emailStr) {
   return emailStr.match(/\w+(?=@)/g);
 }
@@ -560,7 +554,7 @@ console.log(findEmail(textStr));
 
 Хотя и считается, что символ точки соответствует любому одиночному символу, он не соответствует некоторым символам, например, символу перевода строки `\n`.
 
-```javascript=
+```javascript
 function matchPhrase(phraseStr) {
   return /Нетология.онлайн-школа/.exec(phraseStr);
 }
@@ -573,7 +567,7 @@ console.log(matchPhrase(textStr));
 
 Флаг `s` позволяет видеть как точку абсолютно любой символ:
 
-```javascript=
+```javascript
 function matchPhrase(phraseStr) {
   return /Нетология.онлайн-школа/s.exec(phraseStr);
 }
@@ -733,7 +727,7 @@ console.log(/\p{Script=Greek}/u.exec('😀ΩU'));
 
 Чтобы использовать этот инструментарий, требуется обратиться к объекту `Math`
 
-```javascript=
+```javascript
 const randomDigit = Math.random();
 console.log(randomDigit);
 
@@ -806,7 +800,7 @@ ArrayBuffer представляет собой ссылку на поток "с
 
 Например, если создать `ArrayBuffer` длины 4:
 
-```javascript=
+```javascript
 const buffer = new ArrayBuffer(4);
 ```
 
@@ -864,7 +858,7 @@ console.log(buffer16BitView[0] + 1);
 
 Обратите внимание, что доступ к одному представлению не прекращается при использовании другого:
 
-```javascript=
+```javascript
 const buffer = new ArrayBuffer(4);
 const buffer8BitView = new Int8Array(buffer); 
 const buffer16BitView = new Int16Array(buffer); 
@@ -892,7 +886,7 @@ console.log(buffer16BitView);
 
 Чтоб понять разницу между `Uint8Array` и `Uint8ClampedArray` давайте проведем следующий опыт:
 
-```javascript=
+```javascript
 const buffer = new ArrayBuffer(2);
 const notClampedBufferView = new Uint8Array(buffer);
 const clampedBufferView = new Uint8ClampedArray(buffer);
@@ -931,7 +925,7 @@ console.log('-----');
 
 Не стоит забывать, что в ArrayBuffer можно хранить и двоичное представление других (нечисловых) данных:
 
-```javascript=
+```javascript
 const helloStr = 'Hello, world!';
 
 const buffer = new ArrayBuffer(helloStr.length);
