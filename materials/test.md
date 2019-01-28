@@ -9,8 +9,8 @@
 1. [Unit-тестирование](#unit-тестирование)
 1. [Jest](#jest)
 1. [Покрытие кода](#покрытие-кода)
-1. [Mock'и](#mock'и)
-1. [Webpack](webpack)
+1. [Mock'и](#mockи)
+1. [Webpack](#webpack)
 
 ---
 
