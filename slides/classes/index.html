@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+	<title>Классы и наследование</title>
+	<meta charset="utf-8">
+	<link rel="shortcut icon" href="../i/favicon.ico" type="image/x-icon">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="../node_modules/shower-ribbon/styles/screen-4x3.css">
+	<link rel="stylesheet" href="../css/prism.css">
+	<link rel="stylesheet" href="../css/prism-fix.css">
+	<link rel="stylesheet" href="../css/netology.css">
+	<link rel="stylesheet" href="../css/fake-browser.css">
+	<link rel="stylesheet" href="../css/added-styles.css">
+</head>
+  <body class="shower">
+	<header class="caption">
+	  <h1>Классы и наследование</h1>
+	  <p>Михаил Ларченко, Tech Lead</p>
+	</header>
+
+		<section class="slide" id="cover">
+	  <h2>Классы<br> и наследование</h2>
+	  <p>
+		<img src="" alt="" class="avatar">
+		Лектор <span class="position">должность</span>
+	  </p>
+	</section>
+
+	<section class="slide author" id="author">
+	  <img src="" alt="">
+	  <h1 style="line-height:1.2em">Лектор</h1>
+	  <p class="position">должность</p>
+	  <ul class="contacts">
+		<li><a href=""><i class="fa fa-telegram" aria-hidden="true"></i></a></li>
+		<!-- <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i>#</a></li> -->
+	  </ul>
+	</section>
+
+	<section class="slide" id="roadmap">
+	  <h2>План занятия</h2>
+	  <ol>
+		<li><a href="#hierarchy">Иерархия наследования</a></li>
+		<li><a href="#classes">Классы</a></li>
+		<li><a href="#constructors">Конструкторы</a></li>
+		<li><a href="#inheritance">Наследование</a></li>
+		<li><a href="#static-methods">Статические методы</a></li>
+	  </ol>
+	</section>
+
+	<section class="slide">
+		<h2>Повторение</h2>
+		<p>На предыдущих лекциях мы с вами рассмотрели:</p>
+		<ul>
+			<li>цепочки прототипов и свойство <code>__proto__</code></li>
+			<li>функции конструкторы и свойство <code>prototype</code></li>
+		</ul>
+	</section>
+
+	<section id="hierarchy" class="slide chapter">
+		<h2>Иерархия наследования</h2>
+	</section>
+
+	<section class="slide">
+		<h2>Наследование</h2>
+		<p>Наследование (Inheritance) — механизм, подразумевающий переиспользование свойств «родительского объекта» или «родительского класса» в дочернем.</p>
+		<p>При этом выделяют два ключевых вида наследования:</p>
+		<ul>
+			<li>на базе прототипов (на базе объектов)</li>
+			<li>на базе классов</li>
+		</ul>
+	</section>
+
+	<section class="slide">
+		<h2>Наследование в JS</h2>
+		<p>Наследование в JS строится на базе цепочки прототипов<br> (уже рассмотренного нами механизма). Т.е. любое свойство сначала ищется в самом объекте, потом в прототипе объекта, потом в прототипе прототипа и т.д.</p>
+	</section>
+
+	<section class="slide">
+		<h2>Задача</h2>
+		<p>Перед нами встала задача организовать веб-мессенджер. В базовой версии он должен позволять обмениваться сообщениями только пользователям, зарегистрированным в нашей системе. А затем мы хотим подготовить специализированные версии, которые позволят общаться<br> с пользователями других мессенджеров, например, Viber.</p>
+	</section>
+
+	<section class="slide">
+		<h2>Old Style</h2>
+	</section>
+
+	<section class="slide">
+		<h2>Функция конструктор</h2>
+		<pre style="font-size: 0.7em;"><code class="language-js line-numbers">
+			function Messenger(name) {
+			  this.name = name;
+			}
+		</code></pre>
+	</section>
+
+	<section class="slide">
+		<h2>Метод в прототипе</h2>
+		<pre style="font-size: 0.7em;"><code class="language-js line-numbers">
+			Messenger.prototype = {
+			  send(recipient, msg) {
+			    // TODO: send text message
+			  },
+			};
+		</code></pre>
+	</section>
+
+	<section class="slide">
+		<h2>Специализация</h2>
+		<p>Первое, чего мы хотим добиться, — чтобы у каждого специализированного мессенджера были в наличии все те же свойства, что есть и в базовом.</p>
+	</section>
+
+	<section class="slide">
+		<h2>Наследование свойств</h2>
+		<pre style="font-size: 0.7em;"><code class="language-js line-numbers">
+			function Messenger(name) {
+			  this.name = name;
+			}
+
+			function MultiMessenger(name) {
+			  Messenger.call(this, name); // <-
+			}
+			MultiMessenger.prototype = Object.create(Messenger.prototype);
+			MultiMessenger.prototype.constructor = MultiMessenger;
+
+			const viber = new MultiMessenger('Viber');
+			console.log(viber.name); // Viber
+		</code></pre>
+	</section>
+
+	<section class="slide">
+		<h2>Object.create</h2>
+		<p>Метод, позволяющий создать новый объект с установленным объектом прототипа. Фактически, мы в свойство <code>prototype</code> нашей функции конструктора прописываем объект, у которого в прототипе будет свойство <code>prototype</code> из <code>Messenger</code>.</p>
+	</section>
+
+	<section class="slide">
+		<h2>Специализация</h2>
+		<p>Второе, — нужно иметь возможность добавлять собственные свойства.</p>
+	</section>
+
+	<section class="slide">
+		<h2>Добавление свойств</h2>
+		<pre style="font-size: 0.7em;"><code class="language-js line-numbers">
+			function Messenger(name) {
+			  this.name = name;
+			}
+
+			function MultiMessenger(name, logo) {
+			  Messenger.call(this, name);
+			  this.logo = logo; // <-
+			}
+			MultiMessenger.prototype = Object.create(Messenger.prototype);
+			MultiMessenger.prototype.constructor = MultiMessenger;
+
+			const viber = new MultiMessenger('Viber', 'V');
+			console.log(viber.name); // Viber
+			console.log(viber.logo); // V
+		</code></pre>
+	</section>
+
+	<section class="slide">
+		<h2>Методы</h2>
+		<p>Посмотрим, что с методами.</p>
+	</section>
+
+	<section class="slide">
+		<h2>Наследование методов</h2>
+		<pre style="font-size: 0.7em;"><code class="language-js line-numbers">
+			function Messenger() { ... }
+			Messenger.prototype = {
+			  send(recipient, msg) {
+			    // TODO: send text message
+			  },
+			};
+
+			function MultiMessenger() { ... }
+			MultiMessenger.prototype = Object.create(Messenger.prototype);
+			MultiMessenger.prototype.constructor = MultiMessenger;
+
+			const viber = MultiMessenger();
+			viber.send('...');
+		</code></pre>
+	</section>
+
+	<section class="slide">
+		<h2>Методы</h2>
+		<p>Теперь нужно добавить свои — так, чтобы можно было посылать сообщения пользователям Viber.</p>
+	</section>
+
+	<section class="slide">
+		<h2>Переопределение метода</h2>
+		<p style="margin-bottom: 0.7em;">Можем ли мы переопределить метод <code>send</code> в <code>MultiMessenger</code>?</p>
+		<pre style="font-size: 0.7em;"><code class="language-js line-numbers">
+			function Messenger() { ... }
+			Messenger.prototype = {
+			  send(recipient, msg) {
+			    // TODO: send text message
+			  },
+			};
+
+			function MultiMessenger() { ... }
+			MultiMessenger.prototype = Object.create(Messenger.prototype);
+			MultiMessenger.prototype.send = function(recipient, msg) { ... };
+			MultiMessenger.prototype.constructor = MultiMessenger;
+
+			const viber = MultiMessenger();
+			viber.send('...');
+		</code></pre>
+	</section>
+
+	<section class="slide">
+		<h2>Методы</h2>
+		<p>Стоп, но тогда мы уже не сможем отправлять сообщения пользователям нашего сервиса. Как это исправить?</p>
+	</section>
+
+	<section class="slide">
+		<h2>Вызов родительского метода</h2>
+		<pre style="font-size: 0.7em;"><code class="language-js line-numbers">
+			function Messenger() { ... }
+			Messenger.prototype = {
+			  send(recipient, msg) {
+			    // TODO: send text message
+			  },
+			};
+
+			function MultiMessenger() { ... }
+			MultiMessenger.prototype = Object.create(Messenger.prototype);
+			MultiMessenger.prototype.send = function(recipient, msg) {
+			  if (&lt;recipient is from our service&gt;) {
+			    Messenger.prototype.send.call(this, recipient, msg);
+			    return;
+			  }
+			  
+			  // esle send via Viber
+			};
+			MultiMessenger.prototype.constructor = MultiMessenger;
+
+			const viber = MultiMessenger();
+			viber.send('...');
+		</code></pre>
+	</section>
+
+	<section class="slide">
+		<h2>ES6</h2>
+		<p>Манипуляция прототипами позволяет добиться нужного уровня гибкости, но в большинстве случаев является избыточной.</p>
+		<p>ES6 принёс нам ключевые слова <code>class</code> и <code>extends</code>, позволяющие использовать аналогичные другим языкам конструкции для создания функций-конструкторов и цепочек прототипов.</p>
+	</section>
+
+	<section id="classes" class="slide chapter">
+	  <h2>Классы</h2>
+	</section>
+
+	<section class="slide">
+		<h2>class</h2>
+		<p>Удобная форма или «синтаксический сахар», позволяющий объединить создание функции-конструктора и добавление функций в прототипы.</p>
+	</section>
+
+	<section class="slide">
+		<h2>class</h2>
+		<pre style="font-size: 0.7em;"><code class="language-js line-numbers">
+			class Messenger {
+			  constructor(name) { // Аналог функции конструктора
+			    this.name = name;
+			  }
+			  
+			  send(recipient, msg) { // Аналог .prototype.send
+			  
+			  }
+			}
+
+			const messenger = new Messenger('...');
+		</code></pre>
+	</section>
+
+	<section id="constructors" class="slide chapter">
+	  <h2>Конструкторы</h2>
+	</section>
+
+	<section class="slide">
+		<h2>constructor</h2>
+		<p><code>constructor</code> не является обязательным. Вы можете не создавать его,<br> если он вам не нужен.</p>
+	</section>
+
+	<section class="slide">
+		<h2>Поля</h2>
+		<p>Почему нельзя написать поле выше конструктора, как в других языках<br> (не писать <code>this.field</code>)</p>
+		<p class="bar" style="margin-bottom: 0.7em;">Данный синтаксис пока не поддерживается</p>
+		<p>Есть ли инкапсуляция, как в других языках?</p>
+		<p class="bar" style="margin-bottom: 0.7em;">На данный момент нет. Возможна реализация с помощью обходных путей.</p>
+	</section>
+
+	<section class="slide">
+		<h2>class</h2>
+		<p style="margin-bottom: 0.7em;">Важные моменты:</p>
+		<pre style="font-size: 0.7em;"><code class="language-js line-numbers">
+			console.log(typeof Messenger); // function
+			console.log(messenger instanceOf Messenger);
+			console.log(messenger.constructor.name);
+		</code></pre>
+		<figure style="width: 40%;">
+			<img src="../pic/classes/classes-1.png" alt="">
+		</figure>
+	</section>
+
+	<section class="slide">
+		<h2>Особенности</h2>
+		<ol>
+			<li>Все методы — не перечисляемы:
+				<figure style="width: 50%; margin-left: 35px;">
+					<img src="../pic/classes/classes-2.png" alt="">
+				</figure>
+			</li>
+			<li>Нельзя использовать без <code>new</code>:
+				<figure style="width: 100%; margin-left: 35px;">
+					<img src="../pic/classes/classes-3.png" alt="">
+				</figure>
+			</li>
+			<li>Нельзя переопределить <code>prototype</code>:
+				<figure style="width: 50%; margin-left: 35px;">
+					<img src="../pic/classes/classes-4.png" alt="">
+				</figure>
+			</li>
+		</ol>
+	</section>
+
+	<section class="slide">
+		<h2>Зачем нужны классы?</h2>
+		<p style="margin-bottom: 0.7em;">Зачем нужны классы, если есть функции-конструкторы и прототипы?</p>
+		<p class="bar" style="margin-bottom: 0.7em;">Во-первых, классы позволяют писать более лаконичный код.<br>
+		Во-вторых, это современный стиль написания JS-кода.</p>
+	</section>
+
+	<section class="slide">
+		<h2>Функции-конструкторы и цепочки прототипов</h2>
+		<p>Как теперь быть с цепочками прототипов и функциями конструкторов — их больше нет?</p>
+		<p class="bar" style="margin-bottom: 0.7em;">Они по-прежнему остались и работают, но скрыты от нас «синтаксическим сахаром»</p>
+	</section>
+
+	<section class="slide">
+		<h2>Advanced</h2>
+		<p>Вопрос:</p>
+		<p class="bar" style="margin-bottom: 0.7em;">А что, если я хочу использовать тонкую настройку свойств через <code>Object.defineProperty</code>?</p>
+		<p>Ответ:</p>
+		<p class="bar" style="margin-bottom: 0.7em;">Это можно сделать в конструкторе.</p>
+	</section>
+
+	<section class="slide">
+		<h2>extends</h2>
+		<p style="margin-bottom: 0.7em;">Позволяет организовать наследование:</p>
+		<pre style="font-size: 0.7em;"><code class="language-js line-numbers">
+			class MultiMessenger extends Messenger { }
+
+			const viber = new MultiMessenger('viber');
+			console.log(viber.name); // viber
+		</code></pre>
+		<p>Все существующие свойства уже наследуются.</p>
+	</section>
+
+	<section id="inheritance" class="slide chapter">
+	  <h2>Наследование</h2>
+	</section>
+
+	<section class="slide">
+		<h2>Для чего нужно наследование</h2>
+		<p>Для чего нужно наследование, я ведь могу просто создавать нужные мне классы?</p>
+		<p class="bar" style="margin-bottom: 0.7em;">Для переиспользования кода и построения иерархий<br>
+Наследование не всегда является хорошим решением, но это вопрос архитектуры</p>
+	</section>
+
+	<section class="slide">
+		<h2>Добавление свойств</h2>
+		<pre style="font-size: 0.7em;"><code class="language-js line-numbers">
+			class MultiMessenger extends Messenger {
+			  constructor(name, logo) {
+			    super(name); // <- Messenger.call(this, name): вызов конструктора родителя
+			    this.logo = logo;
+			  }
+			}
+		</code></pre>
+	</section>
+
+	<section class="slide">
+		<h2>super()</h2>
+		<p><code>super()</code> можно использовать только в конструкторе и только первым вызовом.</p>
+	</section>
+
+	<section class="slide">
+		<h2>extends без constructor</h2>
+		<p style="margin-bottom: 0.7em;">На самом деле</p>
+		<pre style="font-size: 0.7em;"><code class="language-js">
+			class MultiMessenger extends Messenger { }
+		</code></pre>
+		<p style="margin-bottom: 0.7em;">Эквивалентно:</p>
+		<pre style="font-size: 0.7em;"><code class="language-js line-numbers">
+			class MultiMessenger extends Messenger {
+			  constructor(...params) {
+			    super(...params);
+			  }
+			}
+		</code></pre>
+	</section>
+
+	<section class="slide">
+		<h2>Переопределение метода</h2>
+		<pre style="font-size: 0.7em;"><code class="language-js line-numbers">
+			class MultiMessenger extends Messenger {
+			  send(recipient, msg) {
+			    // TODO: send message
+			  }
+			}
+		</code></pre>
+	</section>
+
+	<section class="slide">
+		<h2>Вызов родительского метода</h2>
+		<pre style="font-size: 0.7em;"><code class="language-js line-numbers">
+			class MultiMessenger extends Messenger {
+			  send(recipient, msg) {
+			    if (&lt;recipient is from our service&gt;) {
+			      super.send(recipient, msg);
+			      return;
+			    }
+			  }
+			}
+		</code></pre>
+	</section>
+
+	<section class="slide">
+		<h2>super</h2>
+		<p style="margin-bottom: 0.7em;"><code>super</code> позволяет получать доступ к свойствам и методам «родителя». Причём не важно, как этот самый родитель был установлен:</p>
+		<pre style="font-size: 0.7em;"><code class="language-js line-numbers">
+			const basic = {
+			  send(msg) {
+			    // TODO: send message
+			  },
+			};
+
+			const viber = {
+			  send(msg) {
+			    super.send(msg);
+			  },
+			};
+
+			Object.setPrototypeOf(viber, basic);
+			viber.send('hello from viber');
+		</code></pre>
+	</section>
+
+	<section id="static-methods" class="slide chapter">
+	  <h2>Статические методы</h2>
+	</section>
+
+	<section class="slide">
+		<h2>Статические методы</h2>
+		<p style="margin-bottom: 0.7em;">До ES6 статические методы (методы, которым для функционирования<br> не нужен объект), эмулировались просто через добавление свойства<br> в функцию-конструктор:</p>
+		<pre style="font-size: 0.7em;"><code class="language-js">
+			function Image() { ... }
+			Image.from = function(...) { ... };
+		</code></pre>
+		<p style="margin-bottom: 0.7em;">В ES6 для этого используется ключевое слово <code>static</code></p>
+		<pre style="font-size: 0.7em;"><code class="language-js line-numbers">
+			class Image {
+			  static from(...) {
+			    ...
+			  }
+			}
+		</code></pre>
+	</section>
+
+	<section class="slide">
+		<h2>Другие возможности классов</h2>
+		<ul>
+			<li>get/set</li>
+			<li>передача в функции</li>
+			<li>свойства с вычисляемыми именами</li>
+			<li>и т.д.</li>
+		</ul>
+	</section>
+
+	<section class="slide">
+		<h2>ES6 Style</h2>
+		<p>На сегодняшний день использование классов является предпочтительным.</p>
+	</section>
+
+	<section class="slide">
+		<h2>Хранение классов</h2>
+		<p>Где хранить определения классов — в отдельных файлах или прямо<br> в основном файле приложения?</p>
+		<p class="bar" style="margin-bottom: 0.7em;">Это вопрос к организации кода. Поскольку мы используем сборщик (Webpack), то требуем от вас хранения отдельного класса (либо группы связанных классов) в отдельном модуле.</p>
+	</section>
+
+	<section class="slide">
+		<h2>Итоги</h2>
+		<p>Сегодня мы с вами рассмотрели достаточно много важных вещей:</p>
+		<ol>
+			<li>Иерархия наследования</li>
+			<li>Классы</li>
+			<li>Конструкторы</li>
+			<li>Наследование</li>
+			<li>Статические методы</li>
+		</ol>
+	</section>
+
+	<section class="slide last">
+	  <p class="thanx">Спасибо за внимание!<br> Время задавать вопросы 🙂</p>
+	  <address>Лектор</address>
+	  <ul class="contacts">
+		<li><a href=""><i class="fa fa-telegram" aria-hidden="true"></i></a></li>
+		<!-- <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i>#</a></li> -->
+	  </ul>
+	</section>
+
+	<div class="progress"></div>
+	<script src="shower/shower.min.js"></script>
+	<script src="js/prism.js?v=2"></script>
+	<script src="https://use.fontawesome.com/8c6816e790.js"></script>
+  </body>
+</html>
