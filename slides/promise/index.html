@@ -173,15 +173,6 @@
 
 <section class="slide">
     <h2>Callbacks</h2>
-    <p>
-        Callbacks - подход, при котором вместо ожидания какого-либо события (например, завершения операции) либо
-        обработки какого-то элемента, мы передаём функцию (callback), которую нужно выполнить после наступления этого
-        события, либо для обработки этого элемента.
-    </p>
-</section>
-
-<section class="slide">
-    <h2>Callbacks</h2>
     <div class="alert-blue">
         <p>
             Важно: понятие callback используется не только в контексте асинхронности. Callback - является функцией,
@@ -292,7 +283,7 @@
     </ul>
     <p>
         И единственное, что может произойти с <code>Promise</code> - это переход из состояния <code>pending</code> в
-        состояние <code>fullfilled</code> или
+        состояние <code>fulfilled</code> или
         <code>rejected</code>.
     </p>
     <p>Произойти этот переход может только один раз.</p>
@@ -328,7 +319,7 @@
     <h2>Создание Promise</h2>
     <p>
         <code>resolve</code>, <code>reject </code>- функции, вызываемые по завершении операции и переводящие <code>Promise</code>
-        в состояние <code>fullfiled</code> или
+        в состояние <code>fulfilled</code> или
         <code>rejected</code>, соответственно.
     </p>
 </section>
@@ -336,7 +327,7 @@
 <section class="slide">
     <h2>then</h2>
     <p>
-        Метод, принимающий callback, который должен вызваться в случае перехода <code>Promise</code> в состояние <code>fullfilled</code>:
+        Метод, принимающий callback, который должен вызваться в случае перехода <code>Promise</code> в состояние <code>fulfilled</code>:
     </p>
     <pre>
       <code class="language-js  line-numbers">
@@ -391,7 +382,7 @@
         responsePromise.then((response) => {
           ...
         }).catch((error) => {
-        // calback for `rejected` и обработчик ошибок в `then`
+        // callback for `rejected` и обработчик ошибок в `then`
 
         });
       </code>
@@ -401,7 +392,7 @@
 <section class="slide">
     <h2>finally</h2>
     <p>
-        Метод, принимающий callback, который должен вызваться в случае перехода <code>Promise</code> в состояние <code>fullfilled</code>
+        Метод, принимающий callback, который должен вызваться в случае перехода <code>Promise</code> в состояние <code>fulfilled</code>
         или
         <code>rejected</code> (вне зависимости от того, в какое состояние перешёл <code>Promise</code>):
     </p>
@@ -430,7 +421,7 @@
     <h2>Promisification</h2>
     <p>Использование Promise потребовало переписывания старого кода.</p>
     <p>Переписывание старого кода (без <code>Promise</code>) с использованием <code>Promise</code> обозначают
-        термином<b>Promisification</b></p>
+        термином <b>Promisification</b></p>
 </section>
 
 <section class="slide">
@@ -521,7 +512,7 @@
     <ul class="fz-22">
         <li><code>then</code> возвращает <code>Promise</code></li>
         <li>если из <code>then</code> возвращается значение, то оно автоматически заворачивается в <code>Promise</code>,
-            который переходит в состояние <code>fullfilled</code></li>
+            который переходит в состояние <code>fulfilled</code></li>
         <li>соответственно, если из <code>then</code> ничего не возвращается, то в <code>Promise</code> кладётся
             значение <code>undefined</code></li>
         <li>если в <code>then</code> выбрасывается ошибка, то ошибка автоматически заворачивается в <code>Promise</code>,
@@ -538,7 +529,7 @@
     <ul class="fz-22">
         <li><code>catch</code> возвращает <code>Promise</code></li>
         <li>если из <code>catch</code> возвращается значение, то оно автоматически заворачивается в
-            <code>Promise</code>, который переходит в состояние <code>fullfilled</code></li>
+            <code>Promise</code>, который переходит в состояние <code>fulfilled</code></li>
         <li>соответственно, если из <code>catch</code> ничего не возвращается, то в <code>Promise</code> кладётся
             значение <code>undefined</code></li>
         <li>если в <code>catch</code> выбрасывается ошибка, то ошибка автоматически заворачивается в
@@ -553,15 +544,15 @@
     <h2>Статические методы Promise</h2>
     <p>Класс <code>Promise</code> содержит ещё ряд статических методов, предоставляющих удобную функциональность:</p>
     <ul>
-        <li><code>Promise.all(iterable)</code> - возвращает <code>Promise</code>, который переходит в состояние <code>fullfilled</code>,
+        <li><code>Promise.all(iterable)</code> - возвращает <code>Promise</code>, который переходит в состояние <code>fulfilled</code>,
             только если все
-            <code>Promise</code> из <code>iterable</code> перешли в состояние <code>fullfiled</code> (либо в <code>iterable</code>
+            <code>Promise</code> из <code>iterable</code> перешли в состояние <code>fulfilled</code> (либо в <code>iterable</code>
             не было <code>Promise</code> )
         </li>
         <li>
-            <code>Promise.race(iterable)</code> - возвращает <code>Promise</code>, который переходит в состояние <code>fullfilled</code>
+            <code>Promise.race(iterable)</code> - возвращает <code>Promise</code>, который переходит в состояние <code>fulfilled</code>
             или <code>rejected</code> как только любой из <code>Promise</code>, содержащихся в <code>iterable</code>
-            переходит в <code>fullfilled</code> или <code>rejected</code>
+            переходит в <code>fulfilled</code> или <code>rejected</code>
         </li>
     </ul>
 </section>
@@ -653,7 +644,7 @@
     <p>
         Кроме того, вы можете использовать <code>await</code> внутри <code>async</code> функции, которое дожидается
         перехода <code>Promise</code> (<code>await</code>
-        ставится перед <code>Promise</code>) в состояние <code>fullfilled</code> или <code>rejected</code>.
+        ставится перед <code>Promise</code>) в состояние <code>fulfilled</code> или <code>rejected</code>.
     </p>
 </section>
 
@@ -688,7 +679,7 @@
             }).catch((error) => {
               // handle error
             }).finally(() => {
-              // final handlings
+              // final handling
             })
       </code>
     </pre>
@@ -772,7 +763,7 @@
         Если вызова не будет, получим FAIL
     </p>
     <figure>
-        <img src="../pic/promisse/failTest.png" alt="failTest" height='280'>
+        <img src="../pic/promise/failTest.png" alt="failTest" height='280'>
     </figure>
 </section>
 
