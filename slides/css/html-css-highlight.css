@@ -1,0 +1,37 @@
+.h_token--tag {
+  color: #2880ce;
+}
+
+.h_token--attr {
+  color:#068fc2;
+}
+
+.h_token--value {
+  color:#7aaf73;
+}
+
+.h_token--string {
+  color:black;
+}
+
+
+.language-css,
+.language-css .language-css {
+  color:black;
+}
+
+.c_token--class {
+  color:black;
+}
+
+.c_token--key {
+  color:#075ebb;
+}
+
+.c_token--value {
+  color: #70a059;
+}
+
+.c_token--int {
+  color: #e94f17;
+}

@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+	<title>Свойства объекта, for-in, обёртки для примитивов</title>
+	<meta charset="utf-8">
+	<link rel="shortcut icon" href="../i/favicon.ico" type="image/x-icon">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="../node_modules/shower-ribbon/styles/screen-4x3.css">
+	<link rel="stylesheet" href="../css/prism.css">
+	<link rel="stylesheet" href="../css/prism-fix.css">
+	<link rel="stylesheet" href="../css/netology.css">
+	<link rel="stylesheet" href="../css/fake-browser.css">
+</head>
+  <body class="shower">
+	<header class="caption">
+	  <h1>Свойства объекта, for-in, обёртки для примитивов</h1>
+	  <p>Михаил Ларченко, Tech Lead</p>
+	</header>
+
+	<section class="slide" id="cover">
+	  <h2>Свойства объекта, for-in, обёртки<br> для примитивов</h2>
+	  <p>
+		<img src="../i/mlarchanka.png" alt="" class="avatar">
+		Михаил Ларченко <span class="position">Tech Lead</span>
+	  </p>
+	</section>
+
+	<section class="slide author" id="author">
+	  <img src="../i/mlarchanka.png" alt="">
+	  <h1 style="line-height:1.2em">Михаил Ларченко</h1>
+	  <p class="position">Tech Lead</p>
+	  <ul class="contacts">
+		<li><a href="mailto:larchanka@me.com"><i class="fa fa-telegram" aria-hidden="true"></i>larchanka@me.com</a></li>
+		<!-- <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i>#</a></li> -->
+	  </ul>
+	</section>
+
+	<section class="slide" id="roadmap">
+	  <h2>План занятия</h2>
+	  <ul>
+		<li><a href="#obj">Объекты</a></li>
+		<li><a href="#obj-prop">Свойства объекта</a></li>
+		<li><a href="#prototypes">Прототипы и цепочки прототипов</a></li>
+		<li><a href="#object">Object</a></li>
+		<li><a href="#props">Перебор свойств</a></li>
+		<li><a href="#get-set">get/set</a></li>
+		<li><a href="#primitives">Обёртки для примитивов</a></li>
+	  </ul>
+	</section>
+
+	<section id="obj" class="slide chapter">
+	  <h2>Объекты</h2>
+	</section>
+
+	<section class="slide">
+		<h2>Объекты</h2>
+		<p>В JS объекты представляют из себя набор свойств (пар ключ—значение).</p>
+		<p>Вопрос к аудитории:</p>
+		<p class="bar">Зачем нам нужны объекты?</p>
+	</section>
+
+	<section id="obj-prop" class="slide chapter">
+	  <h2>Свойства объекта</h2>
+	</section>
+
+	<section class="slide">
+		<h2>Свойства объекта</h2>
+		<p style="margin-bottom: 0.7em;">Вспомним варианты доступа к свойствам объекта:</p>
+		<pre><code class="language-js line-numbers">
+			const user = {
+			  name: 'Nemo',
+			  balance: 10000,
+			};
+			// Вариант 1: 'dot notation'
+			console.log(user.name);
+			// Вариант 2: 'bracket notation'
+			console.log(user['name']);
+		</code></pre>
+		<p>Вопрос к аудитории:</p>
+		<p class="bar">Когда и какой способ предпочтительнее?</p>
+	</section>
+
+	<section class="slide">
+		<h2>Извлечение свойств</h2>
+		<p style="margin-bottom: 0.7em;">ES6 предоставляет нам удобный способ извлечения свойств с помощью <b>Object Destructing</b>:</p>
+		<pre><code class="language-js">
+			const {name, balance} = user;
+		</code></pre>
+	</section>
+
+	<section class="slide">
+		<h2>Добавление и удаление свойств</h2>
+		<p style="margin-bottom: 0.7em;">В JS мы в любой момент можем как добавить объекту новое свойство,<br> так и удалить его:</p>
+		<pre><code class="language-js line-numbers">
+			user.address = '...';
+			user['address'] = '...';
+
+			delete user.address;
+		</code></pre>
+	</section>
+
+	<section class="slide">
+		<h2>Доступ к несуществующим свойствам</h2>
+		<p style="margin-bottom: 0.7em;">Если мы удалили свойство у объекта (или его просто никогда в объекте<br> не было), то попытка доступа закончится тем, что мы получим <code>undefined</code>:</p>
+		<pre><code class="language-js">
+			console.log(user.address);
+			// undefined
+		</code></pre>
+	</section>
+
+	<section class="slide">
+		<h2>Проверка на <code>undefined</code></h2>
+		<p>Вопрос к аудитории:</p>
+		<p class="bar" style="margin-bottom: 0.7em;">Чем плох следующий код?</p>
+		<pre><code class="language-js line-numbers">
+			if (user.address === undefined) {
+			  // No such property
+			}
+		</code></pre>
+	</section>
+
+	<section class="slide">
+		<h2>Проверка на <code>undefined</code></h2>
+		<p>На самом деле, свойство в объекте может и быть, а его значение может быть равным <code>undefined</code>. Тогда проверка и последующая логика будут некорректной.</p>
+	</section>
+
+	<section class="slide">
+		<h2>Object Destructing: Default Values</h2>
+		<p style="margin-bottom: 0.7em;">При <b>Object Destructing</b> мы можем назначать переменным default-значения, если таких полей в объекте нет:</p>
+		<pre><code class="language-js">
+			const {name, balance, address = 'Не указан'} = user;
+		</code></pre>
+	</section>
+
+	<section class="slide">
+		<h2>Nested Object Destructing</h2>
+		<p style="margin-bottom: 0.7em;">А что если объект включает в себя свойство, представляющее из себя объект. И нам нужно извлечь свойства из этого объекта? Поможет<br> ли <b>Object Destructing</b>?</p>
+		<pre><code class="language-js line-numbers">
+			user.manager = {
+			  name: 'Светлана',
+			  ...
+			};
+
+			const {manager: {name}} = user;
+		</code></pre>
+		<p>Но при этом имя менеджера сохранится в переменную <code>name</code> (а такая<br> уже создана).</p>
+	</section>
+
+	<section class="slide">
+		<h2>Переименование при Object Destructing</h2>
+		<pre><code class="language-js">
+			const {manager: {name: managerName}} = user;
+		</code></pre>
+		<p>Теперь имя менеджера сохранится в переменную <code>managerName</code>;</p>
+		<p style="margin-bottom: 0.7em;">Удалим свойство <code>manager</code>, чтобы оно нам в дальнейшем не мешало:</p>
+		<pre><code class="language-js">
+			delete user.manager;
+		</code></pre>
+	</section>
+
+	<section class="slide">
+		<h2>Rest</h2>
+		<p style="margin-bottom: 0.7em;">В ES2018 появилась возможность использовать конструкцию <code>...rest</code><br> при <code>Object destruction</code>:</p>
+		<pre><code class="language-js">
+			const {name, ...rest} = user;
+		</code></pre>
+		<p style="margin-bottom: 0.7em;">В <code>rest</code> будет:</p>
+		<pre><code class="language-js line-numbers">
+			{
+			  "balance": 10000
+			}
+		</code></pre>
+	</section>
+
+	<section class="slide">
+		<h2>Rest</h2>
+		<p style="margin-bottom: 0.7em;">Это даёт замечательные возможности по созданию <code>Shallow Copy</code><br> для объектов:</p>
+		<pre><code class="language-js">
+			const copy = {...user};
+		</code></pre>
+		<p style="margin-bottom: 0.7em;">А также для объединения нескольких объектов в один:</p>
+		<pre><code class="language-js">
+			const merged = {...first, ...second};
+		</code></pre>
+	</section>
+
+	<section class="slide">
+		<h2>Задача</h2>
+		<p>Представим, что мы реализуем CRM-систему, где объекту можно добавлять произвольные поля, например:</p>
+		<ol>
+			<li>Ответственный</li>
+			<li>Приоритет</li>
+			<li>Категория</li>
+			<li>и т.д.</li>
+		</ol>
+		<p>Т.е. у одних объектов такие свойства могут быть, а других — нет.<br> Как найти все объекты, у которых есть определённое свойство?</p>
+	</section>
+
+	<section class="slide">
+		<h2>in</h2>
+		<p style="margin-bottom: 0.7em;">Оператор <code>in</code> позволяет проверить наличие свойства в объекте*:</p>
+		<pre><code class="language-js line-numbers">
+			console.log('name' in user); // true
+			console.log('address' in user); // false
+			console.log('toString' in user); // true!
+		</code></pre>
+		<p>С первыми двумя примерами всё понятно, но почему в последнем <code>true</code>?</p>
+	</section>
+
+	<section id="prototypes" class="slide chapter">
+	  <h2>Прототипы и цепочки прототипов</h2>
+	</section>
+
+	<section class="slide">
+		<h2>Прототипы</h2>
+		<p class="plate-1">JS — объектно-ориентированный язык, основанный на прототипах</p>
+		<p>Т.е. у каждого объекта есть специальное свойство <code>__proto__</code>,<br> в котором может находиться другой объект. И когда мы пытаемся обратиться к определённому свойству нашего объекта, то JS сначала ищет<br> это свойство в нашем объекте, потом в прототипе, потом в прототипе прототипа и т.д.</p>
+	</section>
+
+	<section class="slide">
+		<h2>Прототипы</h2>
+		<pre><code class="language-js">
+			console.log(user.__proto__);
+		</code></pre>
+		<figure>
+			<img src="../pic/object-props/3.1-cons.png" alt="">
+		</figure>
+	</section>
+
+	<section class="slide">
+		<h2>Литеральная форма и прототипы</h2>
+		<p>Если вы создаёте объект с помощью литерала, то его прототипом автоматически назначается объект типа <a href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Object#Object_instances"><code>Object</code></a>, в котором<br> и определено свойство <code>toString</code>.</p>
+		<p>Если быть точнее, то <code>Object.prototype</code>.</p>
+	</section>
+
+	<section class="slide">
+		<h2>Прототипы</h2>
+		<pre><code class="language-js">
+			console.log(user.__proto__.__proto__);
+		</code></pre>
+		<figure style="width: 50%;">
+			<img src="../pic/object-props/3.2-cons.png" alt="">
+		</figure>
+	</section>
+
+	<section id="object" class="slide chapter">
+	  <h2>Object</h2>
+	</section>
+
+	<section class="slide">
+		<h2>Object</h2>
+		<p>JS содержит встроенный объект <a href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Object"><code>Object</code></a>, который содержит ряд полезных методов для работы с объектами.</p>
+		<p style="margin-bottom: 0.7em;">В частности, он содержит статический метод <code>setPrototypeOf</code>, который позволяет заменить прототип объекта.</p>
+		<pre style="font-size: 0.9em;"><code class="language-js line-numbers">
+			const entry = {
+			  id: 999,
+			};
+
+			Object.setPrototypeOf(user, entry);
+
+			console.log(user.id);
+		</code></pre>
+		<p class="plate-2">Не используйте метод <code>setPrototypeOf</code> в production-коде. Мы его используем только для демонстрации концепций языка</p>
+	</section>
+
+	<section class="slide">
+		<h2>Цепочка прототипов</h2>
+		<figure style="width: 70%;">
+			<img src="../pic/object-props/3.3-cons.png" alt="">
+		</figure>
+	</section>
+
+	<section class="slide">
+		<h2>Задача</h2>
+		<p>Хорошо, мы разобрались с тем, как проверить, есть свойство или нет (правда осталась проблема с прототипами), но что, если нам нужно вывести все свойства?</p>
+		<p>Например, мы хотим отобразить все свойства объекта в карточке (в виде таблички).</p>
+	</section>
+
+	<section id="props" class="slide chapter">
+	  <h2>Перебор свойств</h2>
+	</section>
+
+	<section class="slide">
+		<h2>Перебор свойств</h2>
+		<p style="margin-bottom: 0.7em;">Итак, мы посмотрели на оператор <code>in</code>, который позволяет проверять наличие свойства в объекте (включая цепочку прототипа), давайте посмотрим на <code>for...in</code>:</p>
+		<pre><code class="language-js line-numbers">
+			for (const prop in user) {
+			  console.log(prop);
+			}
+		</code></pre>
+		<figure style="width: 40%;">
+			<img src="../pic/object-props/3.4-cons.png" alt="">
+		</figure>
+	</section>
+
+	<section class="slide">
+		<h2>hasOwnProperties</h2>
+		<p style="margin-bottom: 0.7em;">Прототип <code>Object.prototype</code> дарит каждому объекту метод <code>hasOwnProperty</code>, который позволяет определить, принадлежит<br> ли свойство нашему объекту или берётся из цепочки прототипов:</p>
+		<pre><code class="language-js line-numbers">
+			for (const prop in user) {
+			  if (user.hasOwnProperty(prop)) {
+			    console.log(prop);
+			  }
+			}
+		</code></pre>
+		<figure style="width: 50%;">
+			<img src="../pic/object-props/3.5-cons.png" alt="">
+		</figure>
+	</section>
+
+	<section class="slide">
+		<h2>Нельзя ли попроще?</h2>
+		<p>Можно, есть статический метод <code>Object.keys</code>, который массив собственных перечисляемых свойств (не включая цепочку прототипов).</p>
+	</section>
+
+	<section class="slide">
+		<h2>Object.defineProperty & Object.defineProperties</h2>
+		<p>При создании свойства в объекте, мы можем определить ряд характеристик (дескриптор), которые определяют поведение этого свойства. Вот, что по этому поводу говорит <a href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty">MDN</a>:</p>
+		<ul>
+			<li>`configurable` — свойство может быть удалено из содержащего<br> его объекта</li>
+			<li>`enumerable` — свойство можно увидеть через перечисление свойств</li>
+			<li>`value` — значение, ассоциированное со свойством</li>
+			<li>`writable` — значение, ассоциированное со свойством, может быть изменено с помощью оператора <code>=</code></li>
+			<li>`get` — функция, используемая как <code>getter</code> свойства</li>
+			<li>`set` — функция, используемая как <code>setter</code> свойства</li>
+		</ul>
+	</section>
+
+	<section class="slide">
+		<h2>Object.getOwnPropertyDescriptor</h2>
+		<p style="margin-bottom: 0.7em;">Посмотрим на дескриптор собственных свойств объекта <code>user</code>:</p>
+		<pre style="font-size: 0.9em;"><code class="language-js">
+			console.log(Object.getOwnPropertyDescriptor(user, 'name'));
+		</code></pre>
+		<figure>
+			<img src="../pic/object-props/3.6-cons.png" alt="">
+		</figure>
+	</section>
+
+	<section class="slide">
+		<h2>Object.getOwnPropertyDescriptor</h2>
+		<p>Вот и ответ на вопрос, почему в <code>for..in</code> мы не видели некоторых свойств:</p>
+		<figure>
+			<img src="../pic/object-props/3.7-cons.png" alt="">
+		</figure>
+	</section>
+
+	<section class="slide">
+		<h2>Как перебрать все свойства объекта?</h2>
+		<p>Если вам нужны все перечисляемые, включая цепочку прототипов,<br> то через <code>for..in</code>.</p>
+		<p>Если вам нужны все перечисляемые собственные,<br> то <code>for..in</code> + <code>hasOwnProperty</code> (либо <code>Object.keys</code>)</p>
+	</section>
+
+	<section class="slide">
+		<h2>toString</h2>
+		<p style="margin-bottom: 0.7em;">Что происходит, когда мы пытаемся использовать объект в «строковом контексте»?</p>
+		<pre><code class="language-js">
+			console.log(`Current user: ${user}`);
+			// Current user: [object Object]
+		</code></pre>
+		<p>На самом деле вызывается метод <code>toString</code>, который определён<br> в цепочке прототипов.</p>
+		<p>Что будет, если мы напишем свой метод <code>toString</code>? Тогда по правилам<br> JS сначала будет искать это свойство в нашем объекте и только если<br> не найдёт — пойдёт искать по цепочке.</p>
+	</section>
+
+	<section class="slide">
+		<h2>toString</h2>
+		<pre><code class="language-js line-numbers">
+			user.toString = function() {
+			  return `User{${this.name}}`;
+			};
+		</code></pre>
+		<figure style="width: 50%;">
+			<img src="../pic/object-props/3.8-cons.png" alt="">
+		</figure>
+	</section>
+
+	<section class="slide">
+		<h2>Стрелочные функции</h2>
+		<p>Вопрос к аудитории:</p>
+		<p class="bar" style="margin-bottom: 0.7em;">Почему это не сработает?</p>
+		<pre><code class="language-js line-numbers">
+			user.toString = () => {
+			  return `User {${this.name}}`;
+			};
+		</code></pre>
+	</section>
+
+	<section class="slide">
+		<h2>Как правильно объявлять методы?</h2>
+		<p>Попробуем создать новый объект, в котором сразу в литеральной форме прописать метод.</p>
+		<p style="margin-bottom: 0.7em;">Вариант 1:</p>
+		<pre style="font-size: 0.85em;"><code class="language-js line-numbers">
+			const good = {
+			  code: '45007',
+			  name: 'Стильный чехол',
+			  description: '...',
+			  price: 1500,
+			  toString: function() {
+			    return `[${this.code}] ${this.name} за ${this.price} руб.`
+			  },
+			};
+		</code></pre>
+	</section>
+
+	<section class="slide">
+		<h2>Как правильно объявлять методы?</h2>
+		<p>ES2015 (либо транспайлеры) позволяют нам использовать сокращённый синтаксис.</p>
+		<p style="margin-bottom: 0.7em;">Вариант 2:</p>
+		<pre style="font-size: 0.85em;"><code class="language-js line-numbers">
+			const good = {
+			  code: '45007',
+			  name: 'Стильный чехол',
+			  description: '...',
+			  price: 1500,
+			  toString() { // ES2015
+			    return `[${this.code}] ${this.name} за ${this.price} руб.`
+			  },
+			};
+		</code></pre>
+		<p>Старайтесь использовать более новый синтаксис (при наличии возможности).</p>
+	</section>
+
+	<section class="slide">
+		<h2>Задача</h2>
+		<p>Возникает необходимость сравнения двух объектов (например,<br> при поиске или сортировке). Варианты решения:</p>
+		<ol>
+			<li>Сравнение свойств</li>
+			<li><code>valueOf</code></li>
+		</ol>
+		<p>Со сравнением свойств всё понятно, рассмотрим <code>valueOf</code>.</p>
+	</section>
+
+	<section class="slide">
+		<h2>valueOf</h2>
+		<p>Метод прототипа, вызывающийся при преобразовании объекта<br> к примитивному типу (не к строковому контексту).</p>
+		<p style="margin-bottom: 0.7em;">Например:</p>
+		<pre><code class="language-js line-numbers">
+			const project1 = { ... };
+			const project2 = { ... };
+
+			if (project1 > project2) {
+			  // TODO:
+			}
+		</code></pre>
+		<p>Переопределение <code>valueOf</code> позволяет нам задать «собственные правила сравнения».</p>
+	</section>
+
+	<section class="slide">
+		<h2>Как сравнивать объекты на равенство?</h2>
+		<p>Только через сравнение полей.</p>
+		<p>Если хотите сравнивать в контексте приведения к примитивным типам (либо приводить к ним), то переопределяйте <code>valueOf</code>.</p>
+	</section>
+
+	<section class="slide">
+		<h2>Другие полезные методы Object</h2>
+		<ul>
+			<li>Object.create(proto) — позволяет создать объект, используя объект (proto) в качестве прототипа</li>
+			<li>Object.getPrototypeOf(obj) — получение прототипа объекта</li>
+		</ul>
+	</section>
+
+	<section class="slide">
+		<h2>Задача</h2>
+		<p>Нужно разработать приложение, которое позволяет задавать гео-метки, причём делать это не только на карте, а указывая пару координат в виде строки в формате: ‘55.7887400, 49.1221400’, где первое — это широта, второе — долгота.</p>
+		<p>Как это реализовать?</p>
+	</section>
+
+	<section class="slide">
+		<h2>Свойство</h2>
+		<pre><code class="language-js line-numbers">
+			const mark = {
+			  coords: ...
+			};
+
+			mark.coords = '55.7887400, 49.1221400';
+		</code></pre>
+		<p>Но как тогда получать в удобном виде отдельно широту, отдельно долготу?<br> И как построить логику обработки ошибок?</p>
+	</section>
+
+	<section class="slide">
+		<h2>Методы</h2>
+		<pre><code class="language-js line-numbers">
+			const mark = {
+			  latitude: ...,
+			  longitude: ...,
+			  setCoords(value) {
+			    ...
+			  },
+			  getCoords() {
+			    ...
+			  },
+			};
+
+			mark.setCoords('55.7887400, 49.1221400');
+		</code></pre>
+	</section>
+
+	<section id="get-set" class="slide chapter">
+	  <h2>get/set</h2>
+	</section>
+
+	<section class="slide">
+		<h2>get/set</h2>
+		<p style="margin-bottom: 0.7em;">ES6 появилась возможность сделать подобные методы (их называют <i>access property</i>) в более удобном виде (скрыв факт того, что будет вызываться метод).</p>
+		<pre style="font-size: 0.9em;"><code class="language-js line-numbers">
+			const mark = {
+			  latitude: ...,
+			  longitude: ...,
+			  set coords(value) {
+			    ...
+			  },
+			  get coords() {
+			    ...
+			  },
+			};
+
+			mark.coords = '55.7887400, 49.1221400'; // вызов setter'а
+			console.log(mark.coords); // вызов getter'а
+		</code></pre>
+	</section>
+
+	<section id="primitives" class="slide chapter">
+	  <h2>Обёртки для примитивов</h2>
+	</section>
+
+	<section class="slide">
+		<h2>Обёртки для примитивов</h2>
+		<p>В JS все типы данных делятся на два больших класса:</p>
+		<ul>
+			<li>примитивы</li>
+			<li>объекты</li>
+		</ul>
+		<p style="margin-bottom: 0.7em;">Например, строка — это примитив. Но при этом возможно следующее:</p>
+		<pre><code class="language-js">
+			console.log('Hello world'.length);
+		</code></pre>
+		<p>Оператор <code>.</code> — обращение к свойству объекта, но строка — это примитив,<br> а не объект.</p>
+	</section>
+
+	<section class="slide">
+		<h2>Как это происходит?</h2>
+		<p>JS при использовании примитива с операторами, работающими<br> с объектами, производит следующую операцию: неявно заворачивает примитив в соответствующий объектный тип. Например, для строк —<br> это <a href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/String"><code>String</code></a>.</p>
+		<p>Для чисел и boolean это будет `Number` и `Boolean`, соответственно.</p>
+	</section>
+
+	<section class="slide">
+		<h2>Зачем нужны обёртки?</h2>
+		<p>Обёртки содержат полезные свойства для конкретного типа данных:</p>
+		<ul>
+			<li>для строк — методы поиска, замены, конвертация регистра;</li>
+			<li>для чисел — методы преобразования (различные системы счисления), константы, хранящие max и min-допустимые значения.</li>
+		</ul>
+	</section>
+
+	<section class="slide">
+		<h2>Чем отличаются обёртки<br> от примитивов?</h2>
+		<p>Оператор <code>typeof</code> вернёт разные значения для примитива и объекта.</p>
+		<p>Оператор <code>===</code> при сравнении объекта (даже если внутри то же значение)<br> с примитивом вернёт <code>false</code>.</p>
+	</section>
+
+	<section class="slide">
+		<h2>Итоги</h2>
+		<p>Сегодня мы с вами рассмотрели достаточно много важных вещей:</p>
+		<ol>
+			<li>Объекты</li>
+			<li>Свойства объекта</li>
+			<li>Прототипы и цепочки прототипов</li>
+			<li>Object</li>
+			<li>Перебор свойств</li>
+			<li>get/set</li>
+			<li>Обёртки для примитивов</li>
+		</ol>
+	</section>
+
+	<section class="slide last">
+	  <p class="thanx">Спасибо за внимание!<br> Время задавать вопросы 🙂</p>
+	  <address>Михаил Ларченко</address>
+	  <ul class="contacts">
+		<li><a href="mailto:larchanka@me.com"><i class="fa fa-telegram" aria-hidden="true"></i>larchanka@me.com</a></li>
+		<!-- <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i>#</a></li> -->
+	  </ul>
+	</section>
+
+	<div class="progress"></div>
+	<script src="shower/shower.min.js"></script>
+	<script src="js/prism.js?v=2"></script>
+	<script src="https://use.fontawesome.com/8c6816e790.js"></script>
+  </body>
+</html>
