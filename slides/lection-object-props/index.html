@@ -3,14 +3,14 @@
   <head>
 	<title>Свойства объекта, for-in, обёртки для примитивов</title>
 	<meta charset="utf-8">
-	<link rel="shortcut icon" href="../i/favicon.ico" type="image/x-icon">
+	<link rel="shortcut icon" href="../assets/i/favicon.ico" type="image/x-icon">
 	<meta http-equiv="x-ua-compatible" content="ie=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../node_modules/shower-ribbon/styles/screen-4x3.css">
-	<link rel="stylesheet" href="../css/prism.css">
-	<link rel="stylesheet" href="../css/prism-fix.css">
-	<link rel="stylesheet" href="../css/netology.css">
-	<link rel="stylesheet" href="../css/fake-browser.css">
+	<link rel="stylesheet" href="../assets/css/prism.css">
+	<link rel="stylesheet" href="../assets/css/prism-fix.css">
+	<link rel="stylesheet" href="../assets/css/netology.css">
+	<link rel="stylesheet" href="../assets/css/fake-browser.css">
 </head>
   <body class="shower">
 	<header class="caption">
@@ -21,13 +21,13 @@
 	<section class="slide" id="cover">
 	  <h2>Свойства объекта, for-in, обёртки<br> для примитивов</h2>
 	  <p>
-		<img src="../i/mlarchanka.png" alt="" class="avatar">
+		<img src="../assets/i/mlarchanka.png" alt="" class="avatar">
 		Михаил Ларченко <span class="position">Tech Lead</span>
 	  </p>
 	</section>
 
 	<section class="slide author" id="author">
-	  <img src="../i/mlarchanka.png" alt="">
+	  <img src="../assets/i/mlarchanka.png" alt="">
 	  <h1 style="line-height:1.2em">Михаил Ларченко</h1>
 	  <p class="position">Tech Lead</p>
 	  <ul class="contacts">
@@ -224,7 +224,7 @@
 			console.log(user.__proto__);
 		</code></pre>
 		<figure>
-			<img src="../pic/object-props/3.1-cons.png" alt="">
+			<img src="../assets/pic/object-props/3.1-cons.png" alt="">
 		</figure>
 	</section>
 
@@ -240,7 +240,7 @@
 			console.log(user.__proto__.__proto__);
 		</code></pre>
 		<figure style="width: 50%;">
-			<img src="../pic/object-props/3.2-cons.png" alt="">
+			<img src="../assets/pic/object-props/3.2-cons.png" alt="">
 		</figure>
 	</section>
 
@@ -267,7 +267,7 @@
 	<section class="slide">
 		<h2>Цепочка прототипов</h2>
 		<figure style="width: 70%;">
-			<img src="../pic/object-props/3.3-cons.png" alt="">
+			<img src="../assets/pic/object-props/3.3-cons.png" alt="">
 		</figure>
 	</section>
 
@@ -290,7 +290,7 @@
 			}
 		</code></pre>
 		<figure style="width: 40%;">
-			<img src="../pic/object-props/3.4-cons.png" alt="">
+			<img src="../assets/pic/object-props/3.4-cons.png" alt="">
 		</figure>
 	</section>
 
@@ -305,7 +305,7 @@
 			}
 		</code></pre>
 		<figure style="width: 50%;">
-			<img src="../pic/object-props/3.5-cons.png" alt="">
+			<img src="../assets/pic/object-props/3.5-cons.png" alt="">
 		</figure>
 	</section>
 
@@ -334,7 +334,7 @@
 			console.log(Object.getOwnPropertyDescriptor(user, 'name'));
 		</code></pre>
 		<figure>
-			<img src="../pic/object-props/3.6-cons.png" alt="">
+			<img src="../assets/pic/object-props/3.6-cons.png" alt="">
 		</figure>
 	</section>
 
@@ -342,7 +342,7 @@
 		<h2>Object.getOwnPropertyDescriptor</h2>
 		<p>Вот и ответ на вопрос, почему в <code>for..in</code> мы не видели некоторых свойств:</p>
 		<figure>
-			<img src="../pic/object-props/3.7-cons.png" alt="">
+			<img src="../assets/pic/object-props/3.7-cons.png" alt="">
 		</figure>
 	</section>
 
@@ -371,7 +371,7 @@
 			};
 		</code></pre>
 		<figure style="width: 50%;">
-			<img src="../pic/object-props/3.8-cons.png" alt="">
+			<img src="../assets/pic/object-props/3.8-cons.png" alt="">
 		</figure>
 	</section>
 
@@ -583,8 +583,8 @@
 	</section>
 
 	<div class="progress"></div>
-	<script src="shower/shower.min.js"></script>
-	<script src="js/prism.js?v=2"></script>
+	<script src="../node_modules/shower-core/shower.min.js"></script>
+	<script src="../assets/js/prism.js?v=2"></script>
 	<script src="https://use.fontawesome.com/8c6816e790.js"></script>
   </body>
 </html>
