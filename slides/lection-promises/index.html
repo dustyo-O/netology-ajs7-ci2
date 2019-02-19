@@ -472,6 +472,7 @@
         <li><code>Promise</code> не отменяют callback’и - их всё равно придётся использовать</li>
         <li>Переход из состояния <code>pending</code> в
             состояние <code>fulfilled</code> или <code>rejected</code> может произойти только один раз</li>
+        <li>Promise нельзя отменить</li>
     </ol>
 </section>
 
@@ -746,7 +747,7 @@
           // специальный аргумент
         test('should call our callback', (done) => {
           getData((data) => {
-            expect(data).toBe(...);
+            expect(data).toBe(...); // <- подумайте, какой матчер подойдёт
             done(); // <- указание на завершение теста
           });
         });
