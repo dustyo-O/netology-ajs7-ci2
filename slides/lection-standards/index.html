@@ -55,8 +55,8 @@
 <section class="slide">
 	<h2>Зачем это знать?</h2>
 	<ol>
-		<li>Точно знать какие именно возможности JavaScript можно использовать в конкретном проекте.</li>
-		<li>Использовать новейшую версию языка, предоставляющую больше возможностей и содержащую меньше недостатков в дизайне языка.</li>
+		<li>Точно знать какие именно возможности JavaScript можно использовать в конкретном проекте</li>
+		<li>Использовать новейшую версию языка, предоставляющую больше возможностей и содержащую меньше недостатков в дизайне языка</li>
 	</ol>
 </section>
 
@@ -73,10 +73,10 @@
 <section class="slide">
 	<h2>Редакции, стандарты, версии...?</h2>
 	<ol>
-		<li>Ecma International — организация, которая создает стандарты для технологий.</li>
-		<li><b>ECMA-262</b> — это <b>стандарт</b>, изданный Ecma International (в нём прописана спецификация скриптового языка общего назначения).</li>
-		<li><b>ECMA-262</b> можно считать учётным номером <b>ECMAScript</b>.</li>
-		<li><b>ES1-ES9</b> — это <b>редакции (версии)</b> стандарта ECMA-262.</li>
+		<li>Ecma International — организация, которая создает стандарты для технологий</li>
+		<li><b>ECMA-262</b> — это <b>стандарт</b>, изданный Ecma International (в нём прописана спецификация скриптового языка общего назначения)</li>
+		<li><b>ECMA-262</b> можно считать учётным номером <b>ECMAScript</b></li>
+		<li><b>ES1-ES9</b> — это <b>редакции (версии)</b> стандарта ECMA-262</li>
 	</ol>
 	<p>ECMAScript — стандарт, а JavaScript — самая популярная реализация этого стандарта.</p>
 </section>
@@ -93,15 +93,16 @@
 		<li>ES7 === ES2016</li>
 		<li>ES8 === ES2017</li>
 		<li>ES9 === ES2018</li>
+		<li>ES10 === ES2019 (ещё не принят)</li>
 	</ul>
 </section>
 
 <section class="slide">
 	<h2>ES5</h2>
 	<ul>
-		<li>Strict mode — специальная директива <code>"use strict"</code> указывается для перевода кода в режим полного соответствия ES5 (с отсутствием полной обратной совместимости);</li>
-		<li>объект <code>JSON</code> с методами <code>parse</code>, <code>stringify</code>;</li>
-		<li>новые методы <code>Array</code> (<code>indexOf</code>, <code>lastIndexOf</code>, <code>forEach</code>, <code>map</code>, <code>filter</code>, <code>reduce</code>);</li>
+		<li>Strict mode — специальная директива <code>"use strict"</code> указывается для перевода кода в режим полного соответствия ES5 (с отсутствием полной обратной совместимости)</li>
+		<li>объект <code>JSON</code> с методами <code>parse</code>, <code>stringify</code></li>
+		<li>новые методы <code>Array</code> (<code>indexOf</code>, <code>lastIndexOf</code>, <code>forEach</code>, <code>map</code>, <code>filter</code>, <code>reduce</code>)</li>
 		<li>новые методы <code>Object</code> и др.</li>
 	</ul>
 </section>
@@ -109,58 +110,68 @@
 <section class="slide">
 	<h2>ES6 / ES2015</h2>
 	<ul>
-		<li><code>let</code>, <code>const</code>;</li>
-		<li>стрелочные функции;</li>
-		<li>параметры по умолчанию;</li>
-		<li><code>spread</code> / <code>rest</code> оператор;</li>
-		<li>деструктуризация массивов и объектов;</li>
-		<li>тегированные шаблонные строки;</li>
-		<li>итераторы и генераторы;</li>
-		<li><code>Promise</code>;</li>
-		<li>новый синтаксис для классов;</li>
-		<li>тип данных <code>Symbol</code>;</li>
-		<li>контейнерные типы: <code>Map</code>, <code>WeakMap</code>, <code>Set</code>, <code>WeakSet</code>.</li>
+		<li><code>let</code>, <code>const</code></li>
+		<li>стрелочные функции</li>
+		<li>параметры по умолчанию</li>
+		<li><code>spread</code> / <code>rest</code> оператор</li>
+		<li>деструктуризация массивов и объектов</li>
+		<li>тегированные шаблонные строки</li>
+		<li>итераторы и генераторы</li>
+		<li><code>Promise</code></li>
+		<li>новый синтаксис для классов</li>
+		<li>тип данных <code>Symbol</code></li>
+		<li>контейнерные типы: <code>Map</code>, <code>WeakMap</code>, <code>Set</code>, <code>WeakSet</code></li>
 	</ul>
 </section>
 
 <section class="slide">
 	<h2>ES7 / ES2016</h2>
 	<ul>
-		<li>Метод <code>includes</code> для класса <code>Array</code>;</li>
-		<li>оператор для возведения в степень <code>**</code> (вместо <code>Math.pow</code>).</li>
+		<li>Метод <code>includes</code> для класса <code>Array</code></li>
+		<li>оператор для возведения в степень <code>**</code> (вместо <code>Math.pow</code>)</li>
 	</ul>
 </section>
 
 <section class="slide">
 	<h2>ES8 / ES2017</h2>
 	<ul>
-		<li>Конструкция <code>async</code> / <code>await</code>;</li>
-		<li><code>Object.values()</code> - функция, которая возвращает все значения собственных свойств объекта, исключая любые значения в цепочке прототипов;</li>
-		<li><code>Object.entries()</code> - метод, который возвращает ключи в виде массива в формате <code>[key, value]</code>;</li>
-		<li>дополнение строк до заданной длины: <code>String.prototype.padStart()</code> / <code>String.prototype.padEnd()</code>.</li>
+		<li>Конструкция <code>async</code>/<code>await</code></li>
+		<li><code>Object.values()</code> - функция, которая возвращает все значения собственных свойств объекта, исключая любые значения в цепочке прототипов</li>
+		<li><code>Object.entries()</code> - метод, который возвращает ключи в виде массива в формате <code>[key, value]</code></li>
+		<li>дополнение строк до заданной длины: <code>String.prototype.padStart()</code>/<code>String.prototype.padEnd()</code></li>
 	</ul>
 </section>
 
 <section class="slide">
 	<h2>ES9 / ES2018</h2>
 	<ul>
-		<li>Разделяемая память и атомарные операции;</li>
-		<li><code>Promise.prototype.finally()</code>;</li>
-		<li><code>for-await-of</code> для создания циклов, работающих с асинхронным кодом;</li>
-		<li>устранение некоторых ограничений тегированных шаблонных строк;</li>
-		<li>некоторые новые возможности работы с регулярными выражениями.</li>
+		<li>Разделяемая память и атомарные операции</li>
+		<li><code>Promise.prototype.finally()</code></li>
+		<li><code>for-await-of</code> для создания циклов, работающих с асинхронным кодом</li>
+		<li>устранение некоторых ограничений тегированных шаблонных строк</li>
+		<li>некоторые новые возможности работы с регулярными выражениями</li>
 	</ul>
+</section>
+
+<section class="slide">
+	<h2>ES10 / ES2019*</h2>
+	<ul>
+		<li>Объявления полей в классах</li>
+		<li>приватные поля и методы</li>
+		<li>класс <code>BigInt</code></li>
+		<li><code>Array.prototoype.flat</code>, <code>Array.prototype.flatMap</code></li>
+		<li>некоторые новые возможности работы с регулярными выражениями</li>
+	</ul>
+	<p class="note">* Стандарт ещё не принят, возможны изменения.</p>
 </section>
 
 <section class="slide">
 	<h2>ES.Next</h2>
-	<ul>
-		<li>Динамический указатель на последнюю, еще находящуюся в разработке версию ECMAScript.</li>
-	</ul>
+	<p>Динамический указатель на последнюю, еще находящуюся в разработке версию ECMAScript.</p>
 </section>
 
 <section class="slide">
-	<h2>Где узнать поддержку?</h2>
+	<h2>Где узнать про поддержку?</h2>
 	<ul>
 		<li><a href="https://caniuse.com">https://caniuse.com</a></li>
 		<li><a href="https://developer.mozilla.org">https://developer.mozilla.org</a></li>
@@ -168,6 +179,11 @@
 	<figure><img src="../assets/pic/standards/caniuse.png" alt="">
 		<figcaption>Поддержка стрелочных функций в браузерах, сайт caniuse.com</figcaption>
 	</figure>
+</section>
+
+<section class="slide">
+	<h2>Где узнать про стандартизацию?</h2>
+	<p><a href="https://github.com/tc39/ecma262">https://github.com/tc39/ecma262</a></p>
 </section>
 
 <section class="slide">
@@ -212,10 +228,10 @@
 	<h2>Чем отличаются <code>const</code> от <code>let</code>?</h2>
 	<p>Варианты ответа:</p>
 	<ol>
-		<li>Функция не может быть объявлена как <code>const</code>.</li>
-		<li><code>const</code>, в отличие от <code>let</code>, создает неизменяемую переменную.</li>
-		<li>Имеют разные области видимости.</li>
-		<li>Переменные, объявленные как <code>const</code>, обязательно должны иметь быть названы верхнем регистре.</li>
+		<li>Функция не может быть объявлена как <code>const</code></li>
+		<li><code>const</code>, в отличие от <code>let</code>, создает неизменяемую переменную</li>
+		<li>Имеют разные области видимости</li>
+		<li>Переменные, объявленные как <code>const</code>, обязательно должны иметь быть названы верхнем регистре</li>
 	</ol>
 </section>
 
@@ -225,7 +241,7 @@
 	<pre class="line-numbers">
 		<code class="lang-js">
 			const numberOfDays = 31;
-			//Uncaught TypeError: Assignment to constant variable
+			// Uncaught TypeError: Assignment to constant variable
 			numberOfDays = 28;
 		</code>
 	</pre>
@@ -237,13 +253,13 @@
 	<pre class="line-numbers">
 		<code class="lang-js">
 			const numberOfDaysInMonths = {
-				November: 30,
-				December: 31,
+				november: 30,
+				december: 31,
 			};
 
 			//Uncaught TypeError: Assignment to constant variable
 			numberOfDaysInMonths = {
-				November: 30,
+				november: 30,
 			};
 		</code>
 	</pre>
@@ -254,8 +270,8 @@
 	<p>Но можем изменить какое-то свойство или добавить новое:</p>
 	<pre class="">
 		<code class="lang-js">
-			numberOfDaysInMonths.January = 31;
-			console.log(numberOfDaysInMonths.January); // 31
+			numberOfDaysInMonths.january = 31;
+			console.log(numberOfDaysInMonths.january); // 31
 		</code>
 	</pre>
 </section>
@@ -269,7 +285,7 @@
 				31, 31, 30, 31, 30, 31,
 			];
 
-			//Uncaught TypeError: Assignment to constant variable
+			// Uncaught TypeError: Assignment to constant variable
 			numberOfDaysInMonths = [31, 28, 31];
 		</code>
 	</pre>
@@ -291,7 +307,7 @@
 	<h2>Отличия <code>var</code> от <code>let</code> / <code>const</code></h2>
 	<p><b>Область видимости</b></p>
 	<ul>
-		<li>Переменная, объявленная как <code>var</code>, доступна в функции, в которой объявлена.</li>
+		<li>Переменная, объявленная как <code>var</code>, доступна в функции, в которой объявлена</li>
 		<li>Переменная, объявленная как <code>let</code>, доступна только в рамках блока <code>{...}</code>, в котором объявлена. В качестве блока могут выступать: функции, <code>if</code>, <code>while</code> или <code>for</code> и др.</li>
 	</ul>
 </section>
@@ -364,13 +380,13 @@
 	<pre class="line-numbers">
 		<code class="lang-js">
 			// выведет цифры от 0 до 9
-			for (let i = 0; i < 10; i++){
-				setTimeout(() => console.log(i), 1000)
+			for (let i = 0; i < 10; i++) {
+				setTimeout(() => console.log(i), 1000);
 			}
 
 			// выведет 10 раз цифру 10
-			for (var i = 0; i < 10; i++){
-				setTimeout(() => console.log(i), 1000)
+			for (var i = 0; i < 10; i++) {
+				setTimeout(() => console.log(i), 1000);
 			}
 		</code>
 	</pre>
@@ -503,7 +519,7 @@
 </section>
 
 <section class="slide">
-	<h2>ES5: перебирем массив</h2>
+	<h2>ES5: переберём массив</h2>
 	<pre class="line-numbers">
 		<code class="lang-js">
 			let numbersAr = [10, 20, 30];
@@ -524,7 +540,7 @@
 </section>
 
 <section class="slide">
-	<h2>ES6: перебирем массив</h2>
+	<h2>ES6: переберём массив</h2>
 	<pre class="line-numbers">
 		<code class="lang-js">
 			let numbersAr = [10, 20, 30];
@@ -607,6 +623,7 @@
 		<code class="lang-js">
 			const person = 'В. Пупкин';
 			const numberOfPoints = 85;
+			// обратите внимание: ниже нет круглых скобок
 			const output = formatMark`Студент ${person} получил оценку ${numberOfPoints}`;
 			console.log(output); // Студент В. Пупкин получил оценку 4
 		</code>
@@ -620,11 +637,11 @@
 <section class="slide">
 	<h2>Чему мы научились</h2>
 	<ul>
-		<li>Узнали зачем нужны стандарты JavaScript, основные изменения в версиях ES5-ES9, как узнать поддерживает ли браузер ту или иную новую возможность JavaScript и как использовать свежие возможности.</li>
-		<li>Как объявить переменную при помощи <code>var</code>, <code>let</code>, <code>const</code>, и в чём разница.</li>
-		<li>Повторили как объявлять функции в ES5 и стрелочные функции в ES6.</li>
-		<li>Как перебирать итерируемые объекты с помощью <code>for...of</code> (ES6).</li>
-		<li>Как использовать тегированные шаблонные строки (ES6).</li>
+		<li>Узнали зачем нужны стандарты JavaScript, основные изменения в версиях ES5-ES9, как узнать поддерживает ли браузер ту или иную новую возможность JavaScript и как использовать свежие возможности</li>
+		<li>Как объявить переменную при помощи <code>var</code>, <code>let</code>, <code>const</code>, в чём разница</li>
+		<li>Повторили как объявлять функции в ES5 и стрелочные функции в ES6</li>
+		<li>Как перебирать итерируемые объекты с помощью <code>for...of</code> (ES6)</li>
+		<li>Как использовать тегированные шаблонные строки (ES6)</li>
 	</ul>
 </section>
 
