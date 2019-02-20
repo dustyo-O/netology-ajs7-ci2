@@ -47,12 +47,12 @@
 </head>
 <body class="shower list">
 <header class="caption">
-    <h1>Promises, async/await</h1>
+    <h1>Promise, async/await</h1>
     <p>Игорь Лобанов</p>
 </header>
 
 <section class="slide" id="cover">
-    <h2>Promises, async/await</h2>
+    <h2>Promise, async/await</h2>
     <p>
         <img src="../assets/i/lobanov.png" alt="lobanov" class="avatar">
         Игорь Лобанов
@@ -83,7 +83,7 @@
 <section class="slide">
     <h2>Синхронный код</h2>
     <p>
-        JS исполняет приложения в одном потоке*, т.е. может выполнять одну операцию в единицу времени.
+        JS исполняет приложения в одном потоке* (упрощённый взгляд), т.е. может выполнять одну операцию в единицу времени.
     </p>
     <p>
         Это нас ограничивает с точки зрения создания современных приложений, особенно связанных с обработкой различных
@@ -275,7 +275,7 @@
 
 <section class="slide">
     <h2>Идея Promise</h2>
-    <p>Ключевая идея Promise - это объект, который можем находится всего в трёх состояниях:</p>
+    <p>Ключевая идея Promise - это объект, который может находиться всего в трёх состояниях:</p>
     <ul>
         <li><code>pending</code></li>
         <li><code>fulfilled</code></li>
@@ -394,7 +394,7 @@
     <p>
         Метод, принимающий callback, который должен вызваться в случае перехода <code>Promise</code> в состояние <code>fulfilled</code>
         или
-        <code>rejected</code> (вне зависимости от того, в какое состояние перешёл <code>Promise</code>):
+        <code>rejected</code> (вне зависимости от того, в какое состояние перешёл <code>Promise</code>).
     </p>
 </section>
 
@@ -471,14 +471,13 @@
         </li>
         <li><code>Promise</code> не отменяют callback’и - их всё равно придётся использовать</li>
         <li>Переход из состояния <code>pending</code> в
-            состояние <code>fulfilled</code> или <code>rejected</code> может произойти только один раз</li>
+            состояние <code>fulfilled</code> или <code>rejected</code> может произойти <b>только один раз</b></li>
         <li>Promise нельзя отменить</li>
     </ol>
 </section>
 
 <section class="slide">
     <h2>В каком порядке вызывается <code>then</code>, <code>catch</code>?</h2>
-    <p style="margin-bottom: 20px">Зачем нужны <code>Promise</code>, почему не делать всё на callback’ах?</p>
     <p class="grayBorderRight">В том, в котором записаны</p>
 </section>
 
@@ -704,6 +703,25 @@
 </section>
 
 <section class="slide">
+    <h2>async/await & Promise</h2>
+    <p>"Конкурентные" запросы:</p>
+    <pre class="fz-22">
+      <code class="language-js  line-numbers">
+          const [resp1, resp2] = await Promise.all(
+            getResponse(&lt;from server1&gt;), getResponse(&lt;from server2&gt;)
+          );
+      </code>
+    </pre>
+    <p>Последовательные запросы:</p>
+    <pre class="fz-22">
+      <code class="language-js  line-numbers">
+          await getResponse(&lt;from server1&gt;);
+          await getResponse(&lt;from server2&gt;);
+      </code>
+    </pre>
+</section>
+
+<section class="slide">
     <h2>Babel</h2>
     <pre class="fz-22">
       <code class="language-js  line-numbers">
@@ -747,7 +765,7 @@
           // специальный аргумент
         test('should call our callback', (done) => {
           getData((data) => {
-            expect(data).toBe(...); // <- подумайте, какой матчер подойдёт
+            expect(data).toEqual(...);
             done(); // <- указание на завершение теста
           });
         });
@@ -763,7 +781,7 @@
         - 5 секунд).
     </p>
     <p>
-        Если вызова не будет, получим FAIL
+        Если вызова не будет, получим FAIL:
     </p>
     <figure>
         <img src="../assets/pic/promise/failTest.png" alt="failTest" height='280'>
@@ -778,10 +796,10 @@
     </p>
     <pre class="fz-22">
       <code class="language-js  line-numbers">
-          // async
+        // async
         test('should work with promise and async/await', async () => {
           const data = await getData();
-          expect(data).toBe(...);
+          expect(data).toEqual(...);
         });
       </code>
     </pre>
@@ -791,15 +809,16 @@
     <h2>Error handling</h2>
     <pre class="fz-22">
       <code class="language-js  line-numbers">
-          // async
-          test('should handle errors', async () => {
+        // async
+        test('should handle errors', async () => {
           // сообщаем Jest, что у нас один assert,
           // который нужно проверить
           expect.assertions(1);
           try {
             const data = await getData();
           } catch (e) {
-            expect(e).toBe(...);
+            // получаем аналог .catch()
+            expect(e).toEqual(...);
           }
         });
       </code>
