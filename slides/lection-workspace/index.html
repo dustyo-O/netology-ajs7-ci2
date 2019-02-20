@@ -56,9 +56,9 @@
       <h2>Рабочее окружение</h2>
       <p>Под рабочим окружением мы будем понимать не только (и не столько) настройку редактора кода или IDE, сколько использование инструментов, не завязанных на IDE и облегчающих:</p>
       <ul>
-        <li>разработку;</li>
-        <li>тестирование;</li>
-        <li>соблюдение правилa.</li>
+        <li>разработку</li>
+        <li>тестирование</li>
+        <li>соблюдение правилa</li>
       </ul>
     </section>
 
@@ -76,9 +76,9 @@
     <section class="slide">
       <h2>Причины использовать HTTP-сервер</h2>
       <ol>
-        <li>Повышается скорость разработки из-за использования профессиональных инструментов.</li>
-        <li>Разработка в команде требует знания и умения работать с общепринятыми инструментами.</li>
-        <li>Некоторые приложения невозможно протестировать оффлайн, без HTTP-сервера.</li>
+        <li>Повышается скорость разработки из-за использования профессиональных инструментов</li>
+        <li>Разработка в команде требует знания и умения работать с общепринятыми инструментами</li>
+        <li>Некоторые приложения невозможно протестировать оффлайн, без HTTP-сервера</li>
       </ol>
     </section>
 
@@ -102,6 +102,7 @@
       <h2>Установка</h2>
       <p>npm уже входит в состав <a href="https://nodejs.org">Node.js</a>*.</p>
       <p class="note">*Должен быть установлен на ваш ПК перед началом курса.</p>
+      <p><a href="https://github.com/netology-code/js-advanced-homeworks/blob/master/software.md" target="_blank">Список рекомендуемого ПО для курса</a>.</p>
     </section>
 
     <section class="slide">
@@ -127,8 +128,7 @@
 
     <section class="slide">
       <h2>Работа с терминалом</h2>
-      <!-- TODO: добавить ссылку на мануал -->
-      <p><a href="https://github.com/netology-code/js-advanced-homeworks/blob/master/terminal.md" target="_blank">Краткое руководство по работе с терминалом</a></p>
+      <p><a href="https://github.com/netology-code/js-advanced-homeworks/blob/master/terminal.md" target="_blank">Краткое руководство по работе с терминалом</a> - необходимо изучить самостоятельно.</p>
     </section>
 
     <section class="slide">
@@ -143,7 +143,7 @@
 
     <section class="slide">
       <h2>Команда для любого пакета</h2>
-      <p>Команда <code>npm install [--global] &lt;package-name></code> позволяет нам устаналивать любой пакет из реестра <a
+      <p>Команда <code>npm install [--global] &lt;package-name&gt;</code> позволяет нам устаналивать любой пакет из реестра <a
           href="https://npmjs.com">https://npmjs.com</a>.</p>
     </section>
 
@@ -158,8 +158,8 @@
       <pre class="">
         <code class="lang-bash">
           $ npm help
-          $ npm help &lt;command>
-          $ npm &lt;command> --help
+          $ npm help &lt;command&gt;
+          $ npm &lt;command&gt; --help
         </code>
       </pre>
       <p>Полный перечень всех команд с описанием представлен на веб-странице: <a href="https://docs.npmjs.com/cli-documentation/">https://docs.npmjs.com/cli-documentation/</a></p>
@@ -191,7 +191,7 @@
       <p>Большинство пакетов, поставляемых через npm, содержат встроенную справку, которую можно вызвать командой:</p>
       <pre class="">
         <code class="lang-bash">
-          $ &lt;package-name> --help
+          $ &lt;package-name&gt; --help
         </code>
       </pre>
 
@@ -212,21 +212,22 @@
           $ npm repo http-server
         </code>
       </pre>
+      <p class="note">Репозиторий проекта очень полезен, например, если нужно понять, как бороться с тем или иным багом.</p>
     </section>
 
     <section class="slide">
       <h2>Минусы</h2>
       <p>Минусы такого подхода:</p>
       <ul>
-        <li>засоряется «глобальная область видимости» (global mode);</li>
-        <li>при работе в команде придётся писать всем инструкции.</li>
+        <li>засоряется «глобальная область видимости» (global mode)</li>
+        <li>при работе в команде придётся писать всем инструкции</li>
       </ul>
       <p>Можно ли настраивать и устанавливать пакеты только для текущего проекта?</p>
     </section>
 
     <section class="slide">
       <h2>Пакет</h2>
-      <p>В терминах npm пакет это любой каталог*, содержащий файл <code>package.json</code>.</p>
+      <p>В терминах npm пакет - это любой каталог*, содержащий файл <code>package.json</code>.</p>
       <p>Для пакета можно настроить зависимости — пакеты, которые нужны для функционирования (зависимости) или для разработки, тестирования (dev-зависимости).</p>
       <p>Кроме того, можно вынести ключевые команды в скрипты.</p>
       <p class="note">* <a href="https://docs.npmjs.com/about-packages-and-modules#about-packages">Более подробно</a></p>
@@ -251,11 +252,11 @@
     <section class="slide">
       <h2>Ключевые поля <code>package.json</code></h2>
       <ul>
-        <li><code>name</code> — название пакета;</li>
-        <li><code>version</code> — версия (в соответствии с <a href="https://semver.org">https://semver.org</a>);</li>
-        <li><code>scripts</code> — скрипты (удобные сокращения для команд);</li>
-        <li>*<code>dependencies</code> — зависимости, необходимые для функционирования пакета;</li>
-        <li>*<code>devDependencies</code> — зависимости, необходимые для разработки и (или) тестирования пакета.</li>
+        <li><code>name</code> — название пакета</li>
+        <li><code>version</code> — версия (в соответствии с <a href="https://semver.org">https://semver.org</a>)</li>
+        <li><code>scripts</code> — скрипты (удобные сокращения для команд)</li>
+        <li>*<code>dependencies</code> — зависимости, необходимые для функционирования пакета</li>
+        <li>*<code>devDependencies</code> — зависимости, необходимые для разработки и (или) тестирования пакета</li>
       </ul>
       <p class="note">* Разделы, которых у нас пока нет.</p>
     </section>
@@ -265,7 +266,7 @@
       <p>Зависимости устанавливаются с помощью команды <code>npm install</code>:</p>
       <pre class="">
         <code class="lang-bash">
-          $ npm install [--save-dev] &lt;package-name>
+          $ npm install [--save-dev] &lt;package-name&gt;
         </code>
       </pre>
     </section>
@@ -324,10 +325,10 @@
 
     <section class="slide">
       <h2>Scripts</h2>
-      <p>В скрипты можно прописывать любые команды, которые могут выполнится в терминале. Таким образом, это удобный способ:</p>
+      <p>В скрипты можно прописывать любые команды, которые могут выполниться в терминале. Таким образом, это удобный способ:</p>
       <ul>
-        <li>дать псевдоним длинной команде;</li>
-        <li>определить набор стандартных команд для вашего проекта.</li>
+        <li>дать псевдоним длинной команде</li>
+        <li>определить набор стандартных команд для вашего проекта</li>
       </ul>
     </section>
 
@@ -353,10 +354,10 @@
     <section class="slide">
       <h2>Список стандартных имён</h2>
       <ul>
-        <li><code>start</code>;</li>
-        <li><code>stop</code>;</li>
-        <li><code>test</code>;</li>
-        <li><code>restart</code>.</li>
+        <li><code>start</code></li>
+        <li><code>stop</code></li>
+        <li><code>test</code></li>
+        <li><code>restart</code></li>
       </ul>
       <p>Полный список приведён на странице <a href="https://docs.npmjs.com/misc/scripts.html#description">https://docs.npmjs.com/misc/scripts.html#description</a></p>
     </section>
@@ -501,6 +502,7 @@
     <section class="slide">
       <h2>Airbnb styleguide</h2>
       <p>Изучите самостоятельно <a href="https://github.com/airbnb/javascript">Styleguide Airbnb</a>.</p>
+      <p class="note">В данном Styleguide описан не только стиль кодирования, но и причины, по которым выбраны те или иные подходы.</p>
     </section>
 
     <section class="slide">
@@ -566,12 +568,13 @@
           $ npm run lint -- --fix
         </code>
       </pre>
-      <p>Флаги команды следует передавать после <code>--</code>.</p>
+      <p>Флаги команд следует передавать после <code>--</code>.</p>
     </section>
 
     <section class="slide">
-      <h2>Исправляйте ошибки руками</h2>
-      <p>Лучше исправить ошибки и warning'и ESLint'а вручную, чем доверяться автоматическому фиксатору.</p>
+      <h2>Fix от ESLint</h2>
+      <p>Мы рекомендуем исправить ошибки и warning'и ESLint'а вручную, сразу во время написания кода.</p>
+      <p class="note">См. информацию про плагин далее.</p>
     </section>
 
     <section class="slide">
@@ -599,17 +602,18 @@
     <section class="slide">
       <h2>Возможные решения</h2>
       <ol>
-        <li>Выбрать самый старый и писать на нём (тогда не получится использовать новые возможности).</li>
-        <li>Выбрать самый новый и не думать о совместимости (тогда придётся переписывать).</li>
-        <li>Одновременно поддерживать несколько версий (трудоёмко).</li>
+        <li>Выбрать самый старый и писать на нём (тогда не получится использовать новые возможности)</li>
+        <li>Выбрать самый новый и не думать о совместимости (тогда придётся переписывать)</li>
+        <li>Одновременно поддерживать несколько версий (трудоёмко)</li>
       </ol>
     </section>
 
     <section class="slide">
       <h2>Babel</h2>
-      <p>Проект <a href="https://babeljs.io">Babel</a> предлагает альтернативное решение: транспайлер — инструмент, преобразующий код из одной версии стандарта в другую, более старую.</p>
-      <p>Тоесть мы можем использовать большинство* новых возможностей языка и получать код, написанный в режиме совместимости с нужной нам версией.</p>
-      <p class="note">* Если они поддерживаются транспайлером.</p>
+      <p>Проект <a href="https://babeljs.io">Babel</a> предлагает альтернативное решение: транспайлер — инструмент, преобразующий код из одной версии стандарта в другую, более старую*.</p>
+      <p>То есть мы можем использовать большинство** новых возможностей языка и получать код, написанный в режиме совместимости с нужной нам версией.</p>
+      <p class="note">* Это достаточно упрощённое описание транспайлера, но оно помогает понять суть.</p>
+      <p class="note">** Если они поддерживаются транспайлером.</p>
     </section>
 
     <section class="slide">
@@ -697,17 +701,63 @@
       <p>Это инфраструктура современного JS. В дальнейшем, с каким бы вы проектом или фреймворком (Angular, Vue, React) не сталкивались, с большой долей вероятности он будет использовать эту инфраструктуру.</p>
     </section>
 
-    <section class="slide chapter">
-      <h2>Итоги</h2>
+    <section class="slide">
+      <h2>Поддержка экспериментальных возможностей</h2>
+      <p>Babel с помощью плагинов поддерживает то, чего ещё нет в стандарте, но что вы можете использовать уже сейчас.</p>
+      <p>Список плагинов, поддерживающих экспериментальные возможности: <a href="https://babeljs.io/docs/en/plugins#experimental">Experimental Plugins</a>.</p>
+    </section>
+
+    <section class="slide">
+      <h2>Optional Chaining</h2>
+      <p>Рассмотрим одну из таких возможностей - Optional Chaining:</p>
+      <pre class="line-numbers fz17">
+        <code class="lang-javascript">
+          const obj = {
+            prop: {
+              value: 999,
+            },
+          };
+
+          const existent = obj?.prop?.value; // 999
+          // obj.data.value: Uncaught TypeError: Cannot read property 'value' of undefined
+          const notExistent = obj?.data?.value; // undefined вместо ошибки
+        </code>
+      </pre>
+    </section>
+
+    <section class="slide">
+      <h2>Optional Chaining</h2>
+      <p>Установим поддержку в Babel:</p>
+      <pre class="fz20">
+        <code class="lang-bash">
+          $ npm install --save-dev @babel/plugin-proposal-optional-chaining
+        </code>
+      </pre>
+      .babelrc:
+      <pre class="fz20">
+        <code class="lang-json">
+          {
+            "plugins": ["@babel/plugin-proposal-optional-chaining"]
+          }
+        </code>
+      </pre>
+      <p>После этого код с предыдущего слайда будет компилироваться и работать.</p>
+      <p class="note">Проверку ESLint он не пройдёт, для этого необходима дополнительная настройка.</p>
+    </section>
+
+    <section class="slide">
+      <h2>Важно</h2>
+      <p>Очень осторожно относитесь к использованию экспериментальных возможностей, ещё не принятых в стандарт, т.к. вполне возможно, что в стандарт они так и не попадут, и Babel прекратит поддерживать плагины, которые осуществляли транспайлинг.</p>
+      <p>Мы показали вам это лишь для того, чтобы вы понимали, как в некоторых проектах используются возможности, поддержки которых нет в браузере и в стандарте.</p>
     </section>
 
     <section class="slide">
       <h2>Итоги</h2>
       <ol>
-        <li>npm — позволяет упростить работу с проектами и зависимостями.</li>
-        <li>live-server — позволяет упростить разработку и отладку в браузере.</li>
-        <li>ESLint — позволяет искать ошибки и соблюдать стиль кодирования.</li>
-        <li>Babel — решает проблему поддержки предыдущих версий стандарта.</li>
+        <li>npm — позволяет упростить работу с проектами и зависимостями</li>
+        <li>live-server — позволяет упростить разработку и отладку в браузере</li>
+        <li>ESLint — позволяет искать ошибки и соблюдать стиль кодирования</li>
+        <li>Babel — решает проблему поддержки предыдущих версий стандарта</li>
       </ol>
     </section>
 
@@ -715,19 +765,19 @@
       <h2>Требования к домашним работам</h2>
       <p>Начиная с сегодняшнего дня во всех домашних заданиях будет требоваться:</p>
       <ul>
-        <li>использования npm при формировании проекта ДЗ;</li>
-        <li>соответсвия ESLint набору правил Airbnb на уровне отсутствия ошибок (error).</li>
+        <li>использования npm при формировании проекта ДЗ</li>
+        <li>соответсвия ESLint набору правил Airbnb на уровне отсутствия ошибок (error - <b>не допускаются</b>, warning - допускаются)</li>
       </ul>
     </section>
 
     <section class="slide">
-      <h2>Полезные ссылки</h2>
+      <h2>Ссылки на документацию</h2>
       <ul>
-        <li><a href="https://docs.npmjs.com">Документация npm</a></li>
-        <li><a href="https://www.npmjs.com/package/live-server">Документация live-server</a></li>
-        <li><a href="https://eslint.org/docs/user-guide/getting-started">Документация ESLint</a></li>
-        <li><a href="https://babeljs.io/docs/en/">Документация Babel</a></li>
-        <li><a href="https://github.com/browserslist/browserslist">Документация Browserslist</a></li>
+        <li><a href="https://docs.npmjs.com">npm</a></li>
+        <li><a href="https://www.npmjs.com/package/live-server">live-server</a></li>
+        <li><a href="https://eslint.org/docs/user-guide/getting-started">ESLint</a></li>
+        <li><a href="https://babeljs.io/docs/en/">Babel</a></li>
+        <li><a href="https://github.com/browserslist/browserslist">Browserslist</a></li>
       </ul>
     </section>
 
