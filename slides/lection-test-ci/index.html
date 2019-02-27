@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru">
   <head>
-    <title>Тестирование и сборка</title>
+    <title>Тестирование и CI</title>
     <meta charset="utf-8">
     <link rel="shortcut icon" href="../assets/i/favicon.ico" type="image/x-icon">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -14,12 +14,12 @@
   </head>
   <body class="shower">
     <header class="caption">
-      <h1>Тестирование и сборка</h1>
+      <h1>Тестирование и CI</h1>
       <p>Александр Шлейко</p>
     </header>
 
     <section class="slide" id="cover">
-      <h2>Тестирование и сборка</h2>
+      <h2>Тестирование и CI</h2>
       <p>
         <img src="../assets/i/shleiko.jpg" alt="" class="avatar">
         Александр Шлейко
@@ -44,7 +44,7 @@
         <li><a href="#jest">Jest</a></li>
         <li><a href="#coverage">Покрытие кода</a></li>
         <li><a href="#mock">Mock'и</a></li>
-        <li><a href="#webpack">Webpack</a></li>
+        <li><a href="#ci">Continuous Integration</a></li>
       </ol>
     </section>
 
@@ -90,20 +90,33 @@
     <section class="slide">
       <h2>Установка</h2>
       <p>Для установки Jest выполним следующую команду:</p>
-      <pre style="font-size: 20px;">
+      <pre class="fz17">
         <code class="lang-bash">
-          $ npm install --save-dev jest babel-jest babel-core@^7.0.0-bridge.0
+          $ npm install --save-dev jest babel-jest @babel/core @babel/cli @babel/preset-env
+          $ npm install @babel/polyfill
         </code>
       </pre>
       <p>Пропишем скрипт <code>test</code>:</p>
-      <pre>
+      <pre class="fz17">
         <code class="lang-json">
           "scripts": {
-            "start": "live-server dist",
             "test": "jest",
             "lint": "eslint .",
-            "build": "babel src -d dist"
           },
+        </code>
+      </pre>
+    </section>
+
+    <section class="slide">
+      <h2>Polyfill</h2>
+      <p>В <code>.babelrc</code>:</p>
+      <pre class="fz20">
+        <code class="lang-json">
+            {
+              "presets": [["@babel/preset-env", {
+                "useBuiltIns": "usage"
+              }]]
+            }
         </code>
       </pre>
     </section>
@@ -228,15 +241,13 @@
       </pre>
     </section>
 
-    <section class="slide">
-      <h2>Системы модулей</h2>
-      <p>Раньше в JS не было такого понятия, как модуль и браузер фактически «объединял» все подключаемые скрипты.</p>
-      <p>Это очень неудобно при разработке больших приложений, поэтому были разработаны системы, обеспечивающие модульность.</p>
+    <section class="slide chapter">
+      <h2>Повторение</h2>
     </section>
 
     <section class="slide">
       <h2>Системы модулей</h2>
-      <p>На текущий момен наиболее распространёнными являются следующие системы модулей:</p>
+      <p>Как вы уже знаете, на текущий момен наиболее распространёнными являются следующие системы модулей:</p>
       <ul>
         <li><b>CommonJS</b> – система модулей, нативно поддерживается на платформе Node.js;</li>
         <li><b>ES Modules</b> – система модулей, нативно поддерживаются в браузерах (текущий статус поддержки).</li>
@@ -302,6 +313,11 @@
       </pre>
     </section>
 
+    <section class="slide chapter">
+      <h2>Jest & import/export</h2>
+    </section>
+
+
     <section class="slide">
       <h2>Jest import/export</h2>
       <p>Jest в связке с Babel у нас настроен таким образом, что поддерживает <code>import</code>/<code>export</code>, но для этого нужно экспортировать нашу функцию:</p>
@@ -346,7 +362,8 @@
 
     <section class="slide">
       <h2>Tests & Git</h2>
-      <p>Авто-тесты должны храниться вместе с нашим приложением, как и другие исходники. Таким образом, любой участник нашей команды, меняя что-то в нашем приложении сможет удостовериться, что ничего не сломал.</p>
+      <p>Авто-тесты должны храниться вместе с нашим приложением, как и другие исходники.</p>
+      <p>Таким образом, любой участник нашей команды, меняя что-то в нашем приложении сможет удостовериться, что ничего не сломал.</p>
     </section>
 
     <section class="slide">
@@ -529,174 +546,205 @@
       </figure>
     </section>
 
-    <section class="slide chapter" id="webpack">
-      <h2>Webpack</h2>
+    <section class="slide chapter" id="ci">
+      <h2>Continuous Integration</h2>
     </section>
 
     <section class="slide">
-      <h2>Webpack</h2>
-      <figure>
-        <img src="../assets/pic/test/webpack.png" alt="">
+      <h2>Continuous Integration</h2>
+      <blockquote>Continuous Integration is a software development practice where members of a team integrate their work frequently, usually each person integrates at least daily - leading to multiple integrations per day. Each integration is verified by an automated build (including test) to detect integration errors as quickly as possible.</blockquote>
+      <p>Martin Fowler</p>
+    </section>
+
+    <section class="slide">
+      <h2>Continuous Integration (CI)</h2>
+      <p>Мы будем рассматривать как практику, при которой для каждого изменения кода (<code>git push</code>) должен автоматически запускаться конвейер тестирования и сборки (automated build).</p>
+      <p>Тестирование должно запускаться автоматически.</p>
+    </section>
+
+    <section class="slide">
+      <h2>CI-сервер</h2>
+      <p><a href="https://www.appveyor.com">AppVeyor</a> - одна из платформ, предоставляющих функциональность Continuous Integration. В базовом варианте - бесплатно.</p>
+      <figure style="width: 400px;">
+        <img src="../assets/pic/test/appveyor.png" alt="">
       </figure>
     </section>
 
     <section class="slide">
-      <h2>Webpack</h2>
-      <p><a href="https://webpack.js.org/">Webpack</a> - Module Bundler для JS-приложений. Позволяет объединять все ресурсы нашего приложения в Bundle (преобразованные, минимизированные, оптимизированные) и готовые для использования в продакшн-среде.</p>
-      <p>На сегодняшний день - самый популярный инструмент сборки в мире JS. Содержит интеграции с большинством ругих популярных инструментов.</p> 
-    </section>
-
-    <section class="slide">
-      <h2>Установка</h2>
-      <p>Для установки Webpack и поддержки Babel выполним следующую команду:</p>
-      <pre class="fz21">
-        <code class="lang-bash">
-          $ npm install --save-dev webpack webpack-cli babel-loader
-        </code>
-      </pre>
-      <p>В скриптах заменим <code>build</code>:</p>
-      <pre>
-        <code class="lang-js">
-          "scripts": {
-              ...
-              "build": "webpack --mode production"
-          },
-        </code>
-      </pre>
-    </section>
-
-    <section class="slide">
-      <h2>Сборка</h2>
-      <p>Выполним сборку:</p>
-      <pre>
-        <code class="lang-bash">
-          $ npm run build
-        </code>
-      </pre>
-      <p>Удостоверимся, что появился каталог <code>dist</code>, в котором находится минимизированный файл <code>main.js</code>.</p>
-    </section>
-
-    <section class="slide">
-      <h2>HTML Plugin</h2>
-      <p>Для сборки HTML-файлов нужен отдельный плагин: HTML Plugin</p>
-      <p>Для установки выполним следующую команду:</p>
-      <pre class="fz21">
-        <code class="lang-bash">
-          $ npm install --save-dev html-webpack-plugin html-loader
-        </code>
-      </pre>
-    </section>
-
-    <section class="slide">
-      <h2>HTML Plugin</h2>
-      <pre class="line-numbers fz21">
-        <code class="lang-js">
-          module: {
-            rules: [
-              {
-                test: /\.html$/,
-                use: [
-                  {
-                    loader: "html-loader"
-                  }
-                ]
-              }
-            ],
-          },
-          plugins: [
-            new HtmlWebPackPlugin({
-              template: "./src/index.html",
-              filename: "./index.html"
-            })
-          ]
-        </code>
-      </pre>
-    </section>
-
-    <section class="slide">
-      <h2>CSS Plugin</h2>
-      <p>Для поддержки CSS нам нужен отдельный плагин: Mini CSS Extract Plugin:</p>
-      <pre class="fz21">
-        <code class="lang-bash">
-            $ npm  install --save-dev mini-css-extract-plugin css-loader
-        </code>
-      </pre>
-    </section>
-
-    <section class="slide">
-      <h2>Mini CSS Extract Plugin</h2>
-      <pre class="line-numbers fz21">
-        <code class="lang-js">
-          module.exports = {
-            module: {
-              rules: [
-                ...
-                {
-                  test: /\.css$/,
-                  use: [
-                    MiniCssExtractPlugin.loader, 'css-loader',
-                  ],
-                },
-              ],
-            },
-            plugins: [
-              new MiniCssExtractPlugin({
-                filename: '[name].css',
-                chunkFilename: '[id].css',
-              }),
-            ],
-        </code></pre>
-    </section>
-
-    <section class="slide">
-      <h2>Подключение CSS</h2>
-      <p>Webpack требует использовать спец.синтаксис для построение графа зависимостей (чтобы подключить css):</p>
-      <pre class="line-numbers">
-        <code class="lang-js">
-          import '../css/styles.css';
-        </code>
-      </pre>
-    </section>
-
-    <section class="slide">
-      <h2>Webpack Dev Server</h2>
-      <p>После всех проделанных манипуляций, Live Server нам уже не поможет в разработке, т.к. мы достаточно глубоко интегрировали в свой проект Webpack.</p>
-      <p>Но решение есть - <a href="https://github.com/webpack/webpack-dev-server">Webpack Dev Server</a>.</p>
-    </section>
-
-    <section class="slide">
-      <h2>Установка</h2>
-      <p>Для установки выполним следующую команду:</p>
-      <pre>
-        <code class="lang-bash">
-          $ npm install --save-dev webpack-dev-server
-        </code>
-      </pre>
-      <p>И в скриптах заменим <code>start</code>:</p>
-      <pre>
-        <code class="lang-js">
-          "scripts": {
-              "start": "webpack-dev-server --mode development",
-              "test": "jest",
-              "lint": "eslint .",
-              "build": "webpack --mode production"
-          },
-        </code>
-      </pre>
-    </section>
-
-    <section class="slide">
-      <h2>Запуск</h2>
-      <p>Запустим Dev Server и удостоверимся, что Live Reload работает при изменении файлов:</p>
-      <pre>
-        <code class="lang-bash">
-            $ npm start
-        </code>
-      </pre>
-      <figure style="width: 457px;">
-        <img src="../assets/pic/test/webpack-dev-start.png" alt="">
+      <h2>Appveyor + GitHub</h2>
+      <p>Бесплатный тарифный план для публичных репозиториев GitHub (авторизация - также через GitHub):</p>
+      <figure style="width: 400px;">
+        <img src="../assets/pic/test/appveyor-signup.png" alt="">
       </figure>
-      <p>Итоговый настроенный проект вы сможете найти в материалах к этой лекции.</p>
+    </section>
+
+    <section class="slide">
+      <h2>Appveyor + GitHub</h2>
+      <figure style="width: 400px;">
+        <img src="../assets/pic/test/appveyor-github.png" alt="">
+      </figure>
+    </section>
+
+    <section class="slide">
+      <h2>Создание проекта</h2>
+      <p>После авторизации станет доступной панель управления, где можно создать новый проект:</p>
+      <figure style="width: 400px;">
+        <img src="../assets/pic/test/appveyor-project.png" alt="">
+      </figure>
+      <p>Это даст возможность приложению получать уведомления о ваших <code>git push</code> в репозиторий, модификации и т.д.</p>
+    </section>
+
+    <section class="slide">
+      <h2>OAuth App</h2>
+      <figure style="width: 400px;">
+        <img src="../assets/pic/test/appveyor-oauth.png" alt="">
+      </figure>
+    </section>
+
+    <section class="slide">
+      <h2>OAuth</h2>
+      <p>Детальнее об OAuth вы можете прочитать на:</p>
+      <ul>
+        <li><a href="https://oauth.net/2/">https://oauth.net/2/</a></li>
+        <li><a href="https://auth0.com/docs/protocols/oauth2">https://auth0.com/docs/protocols/oauth2</a></li>
+      </ul>
+    </section>
+
+    <section class="slide">
+      <h2>Выбор репозитория</h2>
+      <p>После авторизации достаточно будет нажать кнопку <code>ADD</code> напротив необходимого репозитория:</p>
+      <figure style="width: 400px;">
+        <img src="../assets/pic/test/appveyor-repo.png" alt="">
+      </figure>
+    </section>
+
+    <section class="slide">
+      <h2>GitHub Token</h2>
+      <p>Для программного взаимодействия с GitHub существует возможность генерации токенов (вместо указания логина и пароля).</p>
+      <p>Токены позволяют относительно безопасно их использовать на сторонних сервисах с возможностью отозыва (и без компрометации основного пароля аккаунта).</p>
+      <p>Перейдите по адресу <a href="https://github.com/settings/tokens">https://github.com/settings/tokens</a> и нажмите на кнопку <code>Generate New Token</code>.</p>
+    </section>
+
+    <section class="slide">
+      <h2>GitHub Token Scope</h2>
+      <p>Необходимо выдать "права" только на <code>repo</code>.</p>
+      <figure style="width: 700px;">
+        <img src="../assets/pic/test/github-token.png" alt="">
+      </figure>
+    </section>
+
+    <section class="slide">
+      <h2>GitHub Token</h2>
+      <p>Обязательно скопируйте значение токена (GitHub больше его не покажет):</p>
+      <figure style="width: 700px;">
+        <img src="../assets/pic/test/github-token-copy.png" alt="">
+      </figure>
+    </section>
+
+    <section class="slide">
+      <h2>Appveyor & GitHub Token</h2>
+      <p>Хранить токен мы будем в переменных окружения.</p>
+      <p>Для этого необходимо для конкретного проекта зайти на вкладку <code>Settings</code> -> <code>Environment</code> и прописать переменную окружения (<code>Environment Variables</code>) <code>GITHUB_TOKEN</code> с тем значением, что вы получили на предыдущем шаге:</p>
+      <figure style="width: 700px;">
+        <img src="../assets/pic/test/appveyor-env.png" alt="">
+      </figure>
+    </section>
+
+    <section class="slide">
+      <h2>Configuration as Code</h2>
+      <p>Поскольку вручную настраивать каждый проект в системе CI - лишняя трата времени, мы будем хранить всю конфигурацию для AppVeyor в специальном файле с названием <code>.appveyor.yml</code></p>
+      <p>Файл этот должен храниться в самом репозитории на GitHub, тогда AppVeyor будет автоматически подхватывать настройки из него:</p>
+      <figure style="width: 600px;">
+        <img src="../assets/pic/test/appveyor-yaml.png" alt="">
+      </figure>
+    </section>
+
+    <section class="slide">
+      <h2>Yaml</h2>
+      <p>Формат сериализации данных, используемый многими системами для хранения конфигурации.</p>
+      <p>Ссылки:</p>
+      <ul>
+        <li><a href="https://en.wikipedia.org/wiki/YAML">Wikipedia</a></li>
+        <li><a href="https://yaml.org/spec/1.2/spec.html">Спецификация</a></li>
+      </ul>
+      <p>Странички на Wikipedia достаточно для понимания базовых конструкций языка.</p>
+    </section>
+
+    <section class="slide">
+      <h2>CMD, PS, Bash</h2>
+      <p>AppVeyor позволяет использовать все три оболочки, но мы для простоты на Linux будем использовать Bash, на Windows - CMD.</p>
+    </section>
+
+    <section class="slide">
+      <h2>Linux Config</h2>
+      <pre class="fz19">
+        <code class="lang-yaml">
+            image: Ubuntu1804  # образ для сборки
+
+            stack: node 10  # окружение
+            
+            branches:
+              only:
+                - master  # ветка git
+            
+            cache: node_modules  # кеширование
+            
+            install:
+              - npm install  # команда установки зависимостей
+            
+            build: off
+            
+            test_script:
+              - npm run lint && npm test  # скрипт сборки
+        </code>
+      </pre>
+    </section>
+
+    <section class="slide">
+      <h2>Windows Config</h2>
+      <pre class="fz19">
+        <code class="lang-yaml">
+            image: Visual Studio 2015
+
+            stack: node 10
+            
+            branches:
+              only:
+                - master
+            
+            cache: node_modules
+            
+            install:
+              - npm install
+              
+            build: off
+            
+            test_script:
+              - npm run lint && npm test
+        </code>
+      </pre>
+    </section>
+
+    <section class="slide">
+      <h2>appveyor.yaml</h2>
+      <p>Полное описание формата находится по ссылке: <a href="https://www.appveyor.com/docs/appveyor-yml/">https://www.appveyor.com/docs/appveyor-yml/</a>.</p>
+      <p>Для простоты мы не рассматриваем всех возможностей, в том числе сборки сразу на нескольких платформах.</p>
+    </section>
+
+    <section class="slide">
+      <h2>Status Badge</h2>
+      <p>На странице <code>Settings</code> - <code>Badges</code> Appveyor предлагает код для "бейджика" статуса вашего проекта:</p>
+      <figure style="width: 600px;">
+        <img src="../assets/pic/test/appveyor-badge.png" alt="">
+      </figure>
+    </section>
+
+    <section class="slide">
+      <h2>Status Badge</h2>
+      <p>Этот badge необходимо разместить в файле <code>README.md</code> для отображения текущего статуса вашего проекта:</p>
+      <figure style="width: 600px;">
+        <img src="../assets/pic/test/github-badge.png" alt="">
+      </figure>
     </section>
     
     <section class="slide chapter">
@@ -708,7 +756,7 @@
       <p>Сегодня мы с вами рассмотрели достаточно много важных вещей, а именно:</p>
       <ol>
         <li>Jest — позволяет создавать авто-тесты.</li>
-        <li>Webpack — позволяет организовать сборку приложения и настроить dev server.</li>
+        <li>CI — позволяет автоматизировать процесс тестирования и сборки.</li>
       </ol>
     </section>
 
@@ -716,18 +764,20 @@
       <h2>Важно</h2>
       <p>Начиная с сегодняшнего дня во всех домашних заданиях мы будем требовать от вас:</p>
       <ol>
-        <li>Наличия авто-тестов на разрабатываемые функции;</li>
-        <li>100% покрытия тестируемых функций по строкам;</li>
-        <li>Использования Webpack для сборки ваших проектов.</li>
+        <li>Наличия авто-тестов на разрабатываемые функции</li>
+        <li>100% покрытия тестируемых функций по строкам</li>
+        <li>Отсутствия ошибок ESLint</li>
+        <li>Использования CI для тестирования и сборки ваших проектов</li>
       </ol>
+      <p class="note">Не забывайте выставлять Status Badge в README.md вашего проекта.</p>
     </section>
 
     <section class="slide">
       <h2>Полезные ссылки</h2>
       <ul>
         <li><a href="https://jestjs.io/docs/en/getting-started">Документация Jest</a></li>
-        <li><a href="https://webpack.js.org/concepts/">Документация Webpack</a></li>
-        <li><a href="https://webpack.js.org/configuration/dev-server/">Документация Webpack Dev Server</a></li>
+        <li><a href="https://jestjs.io/docs/en/using-matchers">Использование matcher'ов</a></li>
+        <li><a href="https://jestjs.io/docs/en/expect">expect</a></li>
       </ul>
     </section>
 
