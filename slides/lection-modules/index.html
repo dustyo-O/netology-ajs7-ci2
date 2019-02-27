@@ -42,8 +42,8 @@
 		<li><a href="#modules-es">Зачем нужны ES-модули?</a></li>
 		<li><a href="#export">Экспорт: export, export default</a></li>
 		<li><a href="#import">Импорт: import, смешанный импорт, import as, import * as</a></li>
-		<li><a href="#webpack">Основные концепции webpack и его конфигурационный файл
-</a></li>
+		<li><a href="#cjs">CommonJS</a></li>
+		<li><a href="#webpack">Webpack и его конфигурационный файл</a></li>
 	  </ol>
 	</section>
 
@@ -369,7 +369,7 @@
 		<p style="margin-bottom: 0.7em;">Для более полной поддержки браузерами рекомендуется использовать транспайлеры, такие как Babel, а также сборщики, например, Webpack.</p>
 	</section>
 
-	<section id="promises" class="slide chapter">
+	<section id="cjs" class="slide chapter">
 		<h2>CommonJS</h2>
 	</section>
 
@@ -394,6 +394,10 @@
 		</code></pre>
 	</section>
 
+	<section class="slide chapter">
+		<h2>ESM vs CommonJS</h2>
+	</section>
+
 	<section class="slide">
 		<h2>Что использовать?</h2>
 		<p>Придётся использовать обе, т.к. платформа Node.js поддерживает<br> ES Modules в экспериментальном режиме.</p>
@@ -401,17 +405,59 @@
 	</section>
 
 	<section id="webpack" class="slide chapter">
-		<h2>Основные концепции Webpack и его конфигурационный файл</h2>
+		<h2>Webpack</h2>
 	</section>
 
 	<section class="slide">
-		<h2>Webpack. Основные концепции</h2>
-		<p style="font-size: 0.75em;">Webpack — сборщик пакетов (бандлов).</p>
+		<h2>Webpack</h2>
+		<figure>
+			<img src="../assets/pic/test/webpack.png" alt="">
+		</figure>
+	</section>
+
+	<section class="slide">
+		<h2>Webpack</h2>
+		<p><a href="https://webpack.js.org/">Webpack</a> - Module Bundler для JS-приложений. Позволяет объединять все ресурсы нашего приложения в Bundle (преобразованные, минимизированные, оптимизированные) и готовые для использования в продакшн-среде.</p>
+		<p>На сегодняшний день - самый популярный инструмент сборки в мире JS. Содержит интеграции с большинством других популярных инструментов.</p> 
+	</section>
+
+	<section class="slide">
+		<h2>Установка</h2>
+		<p>Для установки Webpack и поддержки Babel выполним следующую команду:</p>
+		<pre class="fz21">
+			<code class="lang-bash">
+				$ npm install --save-dev webpack webpack-cli babel-loader
+			</code>
+		</pre>
+		<p>В скриптах заменим <code>build</code>:</p>
+		<pre>
+			<code class="lang-js">
+				"scripts": {
+						...
+						"build": "webpack --mode production"
+				},
+			</code>
+		</pre>
+	</section>
+
+	<section class="slide">
+		<h2>Сборка</h2>
+		<p>Выполним сборку:</p>
+		<pre>
+			<code class="lang-bash">
+				$ npm run build
+			</code>
+		</pre>
+		<p>Удостоверимся, что появился каталог <code>dist</code>, в котором находится минимизированный файл <code>main.js</code>.</p>
+	</section>
+
+	<section class="slide">
+		<h2>Основные концепции</h2>
 		<ul style="font-size: 0.75em;">
 			<li><b>Бандл</b> (Bundle)<br>
 			Бандлы состоят из некоторого количества модулей и содержат итоговые версии исходных файлов, которые уже прошли компиляцию.</li>
 			<li><b>граф зависимостей</b> (Dependency graph)<br>
-			Когда webpack обрабатывает JavaScript-приложение, он строит внутренний граф зависимостей, который сопоставляет каждый модуль приложения и генерирует один или несколько бандлов.</li>
+			Когда Webpack обрабатывает JavaScript-приложение, он строит внутренний граф зависимостей, который сопоставляет каждый модуль приложения и генерирует один или несколько бандлов.</li>
 			<li><b>точка входа в приложение</b> (Entry point)<br>
 			Точка входа указывает, какой модуль webpack должен использовать, чтобы начать строить свой граф зависимостей. webpack выясняет, от каких модулей и библиотек зависит эта точка входа (напрямую и через зависимости его зависимостей).
 			По умолчанию точкой входа считается файл <code style="font-size: 0.75em;">./src/index.js</code>, но можно указать другой (или несколько других) в конфигурационном файле webpack.</li>
@@ -425,10 +471,23 @@
 	</section>
 
 	<section class="slide">
-		<h2>Webpack. Выходной файл (Output)</h2>
-		<p style="margin-bottom: 0.75em;">Свойство <code style="font-size: 0.8em;">output</code> указывает Webpack, куда выводить создаваемые<br> им бандлы и как их назвать. Название по умолчанию для главного выходного файла <code style="font-size: 0.8em;">./dist/main.js.</code></p>
-		<p style="margin-bottom: 0.8em;"><code style="font-size: 0.8em;">webpack.config.js:</code></p>
-		<pre style="font-size: 0.7em;"><code class="language-js line-numbers">
+		<h2>Entry Point</h2>
+		<p>В рамках курса мы не рекомендуем в `index.js` размещать какую-то логику.</p>
+		<p>Мы используем этот файл, только в качестве входной точки Webpack (для подключения зависимостей).</p>
+	</section>
+
+	<section class="slide">
+		<h2>Webpack</h2>
+		<p>Webpack собирает модули и их зависимости в выходной файл (для простоты будем считать, что это один файл в формате .js).</p>
+		<p>Webpack понимает, что css, картинки и другие файлы тоже являются зависимостями, поэтому также генерирует для них выходные бандлы.</p>
+		<p>Таким образом, ключевая задача Webpack'а - собрать всё наше дерево зависимостей, чтобы получить ряд бандлов, готовых для развёртывания (бандлы могут представлять из себя .js, .html, .css и любые другие файлы).</p>
+	</section>
+
+	<section class="slide">
+		<h2>Выходной файл (Output)</h2>
+		<p>Свойство <code>output</code> указывает Webpack, куда выводить создаваемые<br> бандлы и как их назвать. Название по умолчанию для главного выходного файла <code>./dist/main.js.</code></p>
+		<p><code style="margin-bottom: 0.7em;">webpack.config.js:</code></p>
+		<pre class="fz19"><code class="language-js line-numbers">
 			const path = require('path'); // Node.js модуль для разрешения путей файлов
 
 			module.exports = {
@@ -443,7 +502,14 @@
 	</section>
 
 	<section class="slide">
-		<h2>Webpack. Загрузчики (Loaders)</h2>
+		<h2>Загрузчики (Loaders)</h2>
+		<p>По умолчанию Webpack понимает как работать только с JavaScript-файлами.</p>
+		<p>Loader'ы используются для добавления поддержки bundling'а других типов файлов, например: html, css</p>
+		<p>Список наиболее популярных loader'ов: <a href="https://webpack.js.org/loaders">https://webpack.js.org/loaders</a></p>
+	</section>
+
+	<section class="slide">
+		<h2>Загрузчики (Loaders)</h2>
 		<p style="margin-bottom: 0.7em; font-size: 0.8em;">Два основных свойства для настройки загрузчика:</p>
 		<ul style="margin-bottom: 0.7em; font-size: 0.8em;">
 			<li><b>test</b> показывает, какие типы файлов должны быть обработаны Webpack</li>
@@ -454,39 +520,119 @@
 			const path = require('path');
 
 			module.exports = {
-			  output: {
-			    filename: 'my-first-webpack.bundle.js',
-			  },
 			  module: {
 			    rules: [
-			      { test: /\.txt$/, use: 'raw-loader' },
+			      {
+							test: /\.txt$/, // маска для имени файла
+							use: 'raw-loader' // какой загрузчик использовать
+						},
 			    ],
 			  },
 			};
 		</code></pre>
-		<p style="font-size: 0.8em;">Когда в каком-то JavaScript-файле встретится <code style="font-size: 0.8em;">import</code> файла <code style="font-size: 0.8em;">txt</code>, то будет использоваться загрузчик raw-loader для его обработки перед добавлением в бандл (raw-loader выдаст содержимое .txt-файла как строку).</p>
+		<p style="font-size: 0.8em;">Когда в каком-то JavaScript-файле встретится <code>import (require)</code> файла <code>txt</code>, то будет использоваться загрузчик raw-loader для его обработки перед добавлением в бандл (raw-loader выдаст содержимое .txt-файла как строку).</p>
 	</section>
 
 	<section class="slide">
-		<h2>Webpack. Плагины (Plugins)</h2>
-		<p style="font-size: 0.9em;">Оптимизация бандлов, управление картинками, HTML-файлами и т.д.</p>
+		<h2>Загрузчики (Loaders)</h2>
+		<p>Поскольку большинство загрузчиков поставляются в виде отдельных пакетов, для них необходимо использовать <code>npm install</code> (детальнее читайте в документации на конкретный loader).</p>
+	</section>
+
+	<section class="slide">
+		<h2>Плагины (Plugins)</h2>
+		<p>Loader'ы используются для загрузки модулей. Для других операций (например, оптимизация, управление ресурсами, минимизация, mangling) Webpack предлагает концепцию модулей.</p>
+	</section>
+
+	<section class="slide">
+		<h2>Плагины (Plugins)</h2>
 		<p style="margin-bottom: 0.7em;"><code style="font-size: 0.8em;">webpack.config.js:</code></p>
 		<pre style="font-size: 0.63em;"><code class="language-js line-numbers">
 			const HtmlWebpackPlugin = require('html-webpack-plugin'); // устанавливается через npm
 			const webpack = require('webpack'); // для получения доступа ко встроенным плагинам
-
-			module.exports = {
-			  module: {
-			    rules: [
-			      { test: /\.txt$/, use: 'raw-loader' },
-			    ],
-			  },
-			  plugins: [
-			    new HtmlWebpackPlugin({ template: './src/index.html' }),
-			  ],
-			};
 		</code></pre>
-		<p style="font-size: 0.9em;">Плагин html-webpack-plugin генерирует HTML-файл и автоматически вставляет<br> в него ссылки на сгенерированные бандлы (чтобы не приходилось это делать вручную).</p>
+	</section>
+
+	<section class="slide">
+		<h2>HTML Plugin</h2>
+		<p>Для сборки HTML-файлов нужен отдельный плагин: HTML Plugin</p>
+		<p>Для установки выполним следующую команду:</p>
+		<pre class="fz21">
+			<code class="lang-bash">
+				$ npm install --save-dev html-webpack-plugin html-loader
+			</code>
+		</pre>
+	</section>
+
+	<section class="slide">
+		<h2>HTML Plugin</h2>
+		<pre class="line-numbers fz19">
+			<code class="lang-js">
+				module: {
+					rules: [
+						{
+							test: /\.html$/,
+							use: [
+								{
+									loader: "html-loader"
+									// other options can be configured here
+								}
+							]
+						}
+					],
+				},
+				plugins: [
+					new HtmlWebPackPlugin({
+						template: "./src/index.html",
+						filename: "./index.html"
+					})
+				]
+			</code>
+		</pre>
+	</section>
+
+	<section class="slide">
+		<h2>CSS Plugin</h2>
+		<p>Для поддержки CSS нам нужен отдельный плагин: MiniCSSExtractPlugin:</p>
+		<pre class="fz21">
+			<code class="lang-bash">
+					$ npm install --save-dev mini-css-extract-plugin css-loader
+			</code>
+		</pre>
+	</section>
+
+	<section class="slide">
+		<h2>Mini CSS Extract Plugin</h2>
+		<pre class="line-numbers fz21">
+			<code class="lang-js">
+				module.exports = {
+					module: {
+						rules: [
+							...
+							{
+								test: /\.css$/,
+								use: [
+									MiniCssExtractPlugin.loader, 'css-loader',
+								],
+							},
+						],
+					},
+					plugins: [
+						new MiniCssExtractPlugin({
+							filename: '[name].css',
+							chunkFilename: '[id].css',
+						}),
+					],
+			</code></pre>
+	</section>
+
+	<section class="slide">
+		<h2>Подключение CSS</h2>
+		<p>Нужно не забывать подключать css в entry point (либо использовать специальные плагины/loader'ы):</p>
+		<pre class="line-numbers">
+			<code class="lang-js">
+				import '../css/styles.css';
+			</code>
+		</pre>
 	</section>
 
 	<section class="slide">
@@ -504,18 +650,61 @@
 	<section class="slide">
 		<h2>Webpack. Совместимость с браузерами</h2>
 		<p>Webpack поддерживает все браузеры, совместимые с ES5 (IE8 и ниже<br> не поддерживаются).</p>
-		<p>Для поддержки более старых версий необходимо сначала загрузить полифиллы для Promise для использования в <code>import()</code><br> и <code>require.ensure()</code>.</p>
+	</section>
+
+	<section class="slide">
+		<h2>Webpack Dev Server</h2>
+		<p>После всех проделанных манипуляций, Live Server (который мы настраивали на предыдущей лекции) нам уже не особо поможет в разработке.</p>
+		<p>Но решение есть - <a href="https://github.com/webpack/webpack-dev-server">Webpack Dev Server</a>.</p>
+	</section>
+
+	<section class="slide">
+		<h2>Установка</h2>
+		<p>Для установки выполним следующую команду:</p>
+		<pre>
+			<code class="lang-bash">
+				$ npm install --save-dev webpack-dev-server
+			</code>
+		</pre>
+		<p>И в скриптах заменим <code>start</code>:</p>
+		<pre>
+			<code class="lang-js">
+				"scripts": {
+						"start": "webpack-dev-server --mode development",
+						"lint": "eslint .",
+						"build": "webpack --mode production"
+				},
+			</code>
+		</pre>
+	</section>
+
+	<section class="slide">
+		<h2>Запуск</h2>
+		<p>Запустим Dev Server и удостоверимся, что Live Reload работает при изменении файлов:</p>
+		<pre>
+			<code class="lang-bash">
+					$ npm start
+			</code>
+		</pre>
+		<figure style="width: 457px;">
+			<img src="../assets/pic/modules/webpack-dev-start.png" alt="">
+		</figure>
+		<p>Итоговый настроенный проект вы сможете найти в материалах к этой лекции.</p>
 	</section>
 
 	<section class="slide">
 		<h2>Чему мы научились</h2>
 		<ul>
-			<li>узнали, зачем нужны модули ES и как правильно разбивать код<br> на модули</li>
-			<li>использовать экспорт: export, export default</li>
-			<li>использовать импорт: import, смешанный импорт, import as, import * as</li>
-			<li>использовать модули сейчас</li>
+			<li>использовать системы ESM и CommonJS</li>
+			<li>использовать экспорт: <code>export</code>, <code>export default</code></li>
+			<li>использовать импорт: <code>import</code>, смешанный импорт, <code>import as</code>, <code>import * as</code></li>
 			<li>основным концепциям Webpack и его настройке через конфигурационный файл</li>
 		</ul>
+	</section>
+
+	<section class="slide">
+		<h2>Важно</h2>
+		<p>Начиная с сегодняшнего дня во всех домашних заданиях мы будем требовать от вас: использования Webpack для сборки ваших проектов.</p>
 	</section>
 
 	<section class="slide">
@@ -523,7 +712,10 @@
 		<ol>
 			<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import</a></li>
 			<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export</a></li>
+			<li><a href="https://nodejs.org/api/modules.html">Node.js Modules</a></li>
 			<li><a href="https://webpack.js.org/">https://webpack.js.org/</a></li>
+			<li><a href="https://webpack.js.org/concepts/">Концепции Webpack</a></li>
+			<li><a href="https://webpack.js.org/configuration/dev-server/">Документация Webpack Dev Server</a></li>
 		</ol>
 	</section>
 
