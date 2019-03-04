@@ -621,8 +621,10 @@
       <pre class="fz20">
         <code class="lang-bash">
           $ npm install --save-dev @babel/core @babel/cli @babel/preset-env
+          $ npm install @babel/polyfill
         </code>
       </pre>
+      <p>Обратите внимание: <code>@babel/polyfill</code> - это не dev-зависимость.</p>
     </section>
 
     <section class="slide">
@@ -636,7 +638,11 @@
       <pre class="line-numbers">
         <code class="lang-json">
           {
-            "presets": ["@babel/preset-env"]
+            "presets": [
+              ["@babel/preset-env", {
+                "useBuiltIns": "usage"
+              }]
+            ]  
           }
         </code>
       </pre>
@@ -666,6 +672,13 @@
       </pre>
       <p>В результате выполнения этой команды создастся файл <code>dist/js/index.js</code>, в котором будет только совместимый
         <a href="https://babeljs.io/docs/en/babel-preset-env">с текущей средой выполнения и настройками авторов Babel'а</a> код.</p>
+      <p>Preset - это сформированный набор плагинов, собранный под одним именем.</p>
+    </section>
+    
+    <section class="slide">
+      <h2>Polyfill</h2>
+      <p>Polyfill от Babel - это реализация функциональности, которая отсутствовала в предыдущих версиях ES.</p>
+      <p><code>"useBuiltIns": "usage"</code> говорит о том, что Babel будет самостоятельно подключать полифиллы на основе анализа используемых вами возможностей.</p>
     </section>
 
     <section class="slide">
@@ -698,7 +711,8 @@
 
     <section class="slide">
       <h2>Зачем это всё?</h2>
-      <p>Это инфраструктура современного JS. В дальнейшем, с каким бы вы проектом или фреймворком (Angular, Vue, React) не сталкивались, с большой долей вероятности он будет использовать эту инфраструктуру.</p>
+      <p>Это инфраструктура современного JS.</p>
+      <p>В дальнейшем, с каким бы вы проектом или фреймворком (Angular, Vue, React) не сталкивались, с большой долей вероятности он будет использовать эту инфраструктуру.</p>
     </section>
 
     <section class="slide">
