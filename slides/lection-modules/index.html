@@ -471,16 +471,22 @@
 	</section>
 
 	<section class="slide">
+		<h2>Модуль в Webpack</h2>
+		<p>Под модулем в Webpack понимаются не только файлы с расширением .js, .mjs, .cjs или .json. А всё, что импортируется с использованием синтаксиса <code>import</code>/<code>require</code>.</p>
+		<p>В том числе модулями Webpack будут являться изображения, css-файлы и другие типы файлов, если произведены соответствующие настройки Webpack.</p>
+	</section>
+
+	<section class="slide">
 		<h2>Entry Point</h2>
-		<p>В рамках курса мы не рекомендуем в `index.js` размещать какую-то логику.</p>
-		<p>Мы используем этот файл, только в качестве входной точки Webpack (для подключения зависимостей).</p>
+		<p>В рамках курса мы не рекомендуем в <code>index.js</code> размещать какую-то логику.</p>
+		<p>Мы используем этот файл только в качестве входной точки Webpack (для подключения зависимостей).</p>
 	</section>
 
 	<section class="slide">
 		<h2>Webpack</h2>
-		<p>Webpack собирает модули и их зависимости в выходной файл (для простоты будем считать, что это один файл в формате .js).</p>
-		<p>Webpack понимает, что css, картинки и другие файлы тоже являются зависимостями, поэтому также генерирует для них выходные бандлы.</p>
-		<p>Таким образом, ключевая задача Webpack'а - собрать всё наше дерево зависимостей, чтобы получить ряд бандлов, готовых для развёртывания (бандлы могут представлять из себя .js, .html, .css и любые другие файлы).</p>
+		<p>Webpack собирает модули и их зависимости в выходной файл (для простоты пока будем считать, что это один файл в формате .js).</p>
+		<p>Webpack понимает, что css, картинки и другие файлы тоже являются зависимостями, поэтому также собирает их в бандл. Если настроить сборку соответствующим образом, то он сможет .css и изображения встраивать не в .js, а выносить в отдельные файлы, сжимать и т.д.</p>
+		<p>Таким образом, ключевая задача Webpack'а - собрать всё наше дерево зависимостей, чтобы получить бандл, готовый для развёртывания.</p>
 	</section>
 
 	<section class="slide">
@@ -498,13 +504,13 @@
 			  },
 			};
 		</code></pre>
-		<p>Свойства <code style="font-size: 0.8em;">output.filename</code> и <code style="font-size: 0.8em;">output.path</code> указывают имя бандла,<br> и куда его сохранить.</p>
+		<p>Свойства <code style="font-size: 0.8em;">output.filename</code> и <code style="font-size: 0.8em;">output.path</code> указывают имя выходного файла бандла, и куда его сохранить.</p>
 	</section>
 
 	<section class="slide">
 		<h2>Загрузчики (Loaders)</h2>
-		<p>По умолчанию Webpack понимает как работать только с JavaScript-файлами.</p>
-		<p>Loader'ы используются для добавления поддержки bundling'а других типов файлов, например: html, css</p>
+		<p>По умолчанию Webpack понимает как работать только с JavaScript и JSON.</p>
+		<p>Loader'ы используются для добавления поддержки bundling'а других типов файлов, например: .css, .png, .txt.</p>
 		<p>Список наиболее популярных loader'ов: <a href="https://webpack.js.org/loaders">https://webpack.js.org/loaders</a></p>
 	</section>
 
@@ -512,8 +518,8 @@
 		<h2>Загрузчики (Loaders)</h2>
 		<p style="margin-bottom: 0.7em; font-size: 0.8em;">Два основных свойства для настройки загрузчика:</p>
 		<ul style="margin-bottom: 0.7em; font-size: 0.8em;">
-			<li><b>test</b> показывает, какие типы файлов должны быть обработаны Webpack</li>
-			<li><b>use</b> указывает, какой загрузчик должен использоваться для трансформации файлов указанного типа.</li>
+			<li><b>test</b> - какие типы файлов должны быть обработаны Webpack</li>
+			<li><b>use</b> - какой загрузчик(и) нужно использовать для загрузки файлов указанного типа.</li>
 		</ul>
 		<p style="margin-bottom: 0.7em;"><code style="font-size: 0.8em;">webpack.config.js:</code></p>
 		<pre style="font-size: 0.55em;"><code class="language-js line-numbers">
@@ -535,12 +541,13 @@
 
 	<section class="slide">
 		<h2>Загрузчики (Loaders)</h2>
-		<p>Поскольку большинство загрузчиков поставляются в виде отдельных пакетов, для них необходимо использовать <code>npm install</code> (детальнее читайте в документации на конкретный loader).</p>
+		<p>Поскольку большинство загрузчиков поставляются в виде отдельных пакетов, для большинства из них необходимо использовать <code>npm install</code> (детальнее читайте в документации на конкретный loader).</p>
 	</section>
 
 	<section class="slide">
 		<h2>Плагины (Plugins)</h2>
-		<p>Loader'ы используются для загрузки модулей. Для других операций (например, оптимизация, управление ресурсами, минимизация, mangling) Webpack предлагает концепцию модулей.</p>
+		<p>Loader'ы используются для загрузки модулей.</p>
+		<p>Для других операций (например, оптимизация, управление ресурсами, минимизация, mangling) Webpack предлагает концепцию плагинов.</p>
 	</section>
 
 	<section class="slide">
@@ -548,17 +555,18 @@
 		<p style="margin-bottom: 0.7em;"><code style="font-size: 0.8em;">webpack.config.js:</code></p>
 		<pre style="font-size: 0.63em;"><code class="language-js line-numbers">
 			const HtmlWebpackPlugin = require('html-webpack-plugin'); // устанавливается через npm
-			const webpack = require('webpack'); // для получения доступа ко встроенным плагинам
+			// const webpack = require('webpack'); // для получения доступа ко встроенным плагинам
 		</code></pre>
 	</section>
 
 	<section class="slide">
 		<h2>HTML Plugin</h2>
-		<p>Для сборки HTML-файлов нужен отдельный плагин: HTML Plugin</p>
+		<p>Для сборки HTML-файлов нужен отдельный плагин: HTML Webpack Plugin.</p>
+		<p>Он позволит по шаблону генерировать выходной файл и в него встраивать ссылки на .js (и другие файлы).</p>
 		<p>Для установки выполним следующую команду:</p>
 		<pre class="fz21">
 			<code class="lang-bash">
-				$ npm install --save-dev html-webpack-plugin html-loader
+				$ npm install --save-dev html-webpack-plugin
 			</code>
 		</pre>
 	</section>
@@ -567,19 +575,6 @@
 		<h2>HTML Plugin</h2>
 		<pre class="line-numbers fz19">
 			<code class="lang-js">
-				module: {
-					rules: [
-						{
-							test: /\.html$/,
-							use: [
-								{
-									loader: "html-loader"
-									// other options can be configured here
-								}
-							]
-						}
-					],
-				},
 				plugins: [
 					new HtmlWebPackPlugin({
 						template: "./src/index.html",
@@ -592,12 +587,13 @@
 
 	<section class="slide">
 		<h2>CSS Plugin</h2>
-		<p>Для поддержки CSS нам нужен отдельный плагин: MiniCSSExtractPlugin:</p>
+		<p>Для поддержки CSS нам нужны лоадеры и плагин MiniCSSExtractPlugin:</p>
 		<pre class="fz21">
 			<code class="lang-bash">
 					$ npm install --save-dev mini-css-extract-plugin css-loader
 			</code>
 		</pre>
+		<p>Плагин MiniCSSExtractPlugin содержит в своём составе ещё и loader.</p>
 	</section>
 
 	<section class="slide">
@@ -618,8 +614,7 @@
 					},
 					plugins: [
 						new MiniCssExtractPlugin({
-							filename: '[name].css',
-							chunkFilename: '[id].css',
+							filename: '[name].css'
 						}),
 					],
 			</code></pre>
@@ -627,12 +622,19 @@
 
 	<section class="slide">
 		<h2>Подключение CSS</h2>
-		<p>Нужно не забывать подключать css в entry point (либо использовать специальные плагины/loader'ы):</p>
+		<p>Теперь мы можем подключать css в entry point (для этого мы и использовали плагины и loader'ы):</p>
 		<pre class="line-numbers">
 			<code class="lang-js">
 				import '../css/styles.css';
 			</code>
 		</pre>
+		<p>Подключение в html будет автоматически выполнено за нас.</p>
+	</section>
+
+	<section class="slide">
+		<h2>Картинки</h2>
+		<p>Для обработки ссылок в html-файлах (<code>&lt;img src=&quot;logo.png&quot;&gt;</code>) и css-файлах (<code>background: url(../img/bg.png)</code> необходимо будет установить соответствующие лоадеры.</p>
+		<p>Вы это проделаете самостоятельно в рамках дипломной работы.</p>
 	</section>
 
 	<section class="slide">
@@ -689,7 +691,13 @@
 		<figure style="width: 457px;">
 			<img src="../assets/pic/modules/webpack-dev-start.png" alt="">
 		</figure>
-		<p>Итоговый настроенный проект вы сможете найти в материалах к этой лекции.</p>
+	</section>
+
+	<section class="slide">
+		<h2>Webpack Merge</h2>
+		<p>На практике часто разделяют конфигурации для production mode и development mode.</p>
+		<p>При этом общую часть выносят в отдельный конфигурационный файл.</p>
+		<p>Для сбора итоговой конфигурации используют дополнительный инструмент - <a href="https://github.com/survivejs/webpack-merge">Webpack Merge</a>.</p>
 	</section>
 
 	<section class="slide chapter">
