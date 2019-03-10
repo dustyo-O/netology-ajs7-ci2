@@ -186,6 +186,20 @@
 		</pre>
 	</section>
 
+    <section  class="slide">
+        <h2>Перехват ошибки:</h2>
+        > js/game.src.js:86
+        <pre style="font-size: large">
+			<code class="language-html">
+                try {
+                   this.distanceBox.innerText = Math.ceil(this.distance / 30);
+                } catch (e) {
+                   console.log(e);
+                }
+			</code>
+		</pre>
+    </section>
+
 	<section  class="slide">
 		<h2>Перехват ошибки НЕ СРАБОТАЕТ:</h2>
 		<ul>
@@ -229,35 +243,13 @@
 	</section>
 
 	<section  class="slide">
-		<p>js/game.src.js:102</p>
-		<pre>
-			<code class="language-js">
-				try {
-				  this.gameOverDiv.classList.remove('fade');
-				} catch (e) {
-				  console.info('Not found #game_over!');
-				}
+        <h2>Ошибку лучше исправить</h2>
+        > добавить в index.html:16
+        <pre>
+			<code class="language-html">
+                &lt;div&gt;Distance: &lt;span id="distance_box"&gt;0&lt;/span&gt;m&lt;/div&gt;
 			</code>
 		</pre>
-	</section>
-
-	<section  class="slide">
-		<p>js/game.src.js:191</p>
-		<pre>
-			<code class="language-js">
-				try {
-				  this.gameOverDiv.classList.add('fade');
-				} catch (e) {
-				  console.info('Not found #game_over!');
-				}
-			</code>
-		</pre>
-	</section>
-
-	<section  class="slide">
-		<p>Если произойдёт ошибка при выполнении кода в блоке <code>try</code>, в консоли будет выведено сообщение:</p>
-		<p><code>Not found #game_over!</code></p>
-		<p>Это сообщение будет выведено независимо от того, какая ошибка в <code>try</code> произойдёт на самом деле.</p>
 	</section>
 
 	<section  class="slide">
@@ -311,6 +303,86 @@
 		<p><img width="100%" src="../pic/trycatch_delete_closures/2.png" alt=""/></p>
 	</section>
 
+	<section id="arrow_functions" class="slide chapter">
+		<h2>Стрелочные функции</h2>
+	</section>
+
+	<section  class="slide">
+		<h2>Стрелочные функции</h2>
+		<p>В ES6 появилась возможность задания функций через «стрелку» <code>=&gt;</code></p>
+		<p>Например,</p>
+		<pre>
+			<code class="language-js">
+				let sum = function(a,b){
+				  return a + b;
+				}
+			</code>
+		</pre>
+		<p>можно записать так:</p>
+		<pre>
+			<code class="language-js">
+				let sum = (a,b) => {
+				  return a + b;
+				}
+			</code>
+		</pre>
+	</section>
+
+	<section  class="slide">
+		<h2>Стрелочные функции</h2>
+		<p>Если в теле функции не более одной операции, то не обязательно использовать <code>{}</code>, при этом для возврата значения не требуется писать <code>return</code>.</p>
+		<p>Например,</p>
+		<pre>
+			<code class="language-js">
+				let sum = function(a,b){
+				  return a + b
+				}
+			</code>
+		</pre>
+		<p>можно записать так:</p>
+		<pre>
+			<code class="language-js">
+				let sum = (a,b) => a + b;
+			</code>
+		</pre>
+	</section>
+
+	<section  class="slide">
+		<h2>Стрелочные функции</h2>
+		<p><b>Зачем нужны стрелочные функции?</b></p>
+		<p>Стрелочные функции - НЕ “просто короткая запись” обычных функций.
+			В отличие от стрелочных, обычные функции имеют свой контекст. (свой <i>this</i>).
+			Стрелочные функции не имеют своего контекста (своего <i>this</i>), а берут его из своего окружения.</p>
+	</section>
+
+	<section  class="slide">
+		<h2>Стрелочные функции</h2>
+		<p>Например,</p>
+		<p>если функцию</p>
+		<pre>
+			<code class="language-js">
+				this.car_pos = this.POS_UNDEFINED;
+				  setTimeout(function(){
+					this.car_pos = pos;
+				  }, 500 / this.speed);
+			</code>
+		</pre>
+		<p>заменить на стрелочную:</p>
+		<pre>
+			<code class="language-js">
+				this.car_pos = this.POS_UNDEFINED;
+				setTimeout(()=>
+				  this.car_pos = pos
+				  , 500 / this.speed);
+			</code>
+		</pre>
+		<p>то контекстом <code>setTimeout</code> станет нужный нам объект <i>game</i>.</p>
+	</section>
+
+	<section  class="slide chapter">
+		<p><img width="100%" src="../pic/trycatch_delete_closures/4.jpg" alt=""/></p>
+	</section>
+
 	<section id="delete" class="slide chapter">
 		<h2>Оператор delete</h2>
 	</section>
@@ -326,7 +398,7 @@
 		<p>Если мы объявим переменную:</p>
 		<pre>
 			<code class="language-js">
-				x = 'red_car';
+				let x = 'red_car';
 			</code>
 		</pre>
 		<p>в памяти будет записано значение <i>red_car</i>, на которое ссылается указатель <code>x</code></p>
@@ -343,7 +415,7 @@
 		<p>Можем присвоить еще одному указателю это значение. И этот указатель тоже будет ссылаться на значение <i>red_car</i></p>
 		<pre>
 			<code class="language-js">
-				y = x;
+				let y = x;
 				console.log(y);
 				// -> red_car
 			</code>
@@ -360,11 +432,10 @@
 	<section  class="slide">
 		<h2>delete()</h2>
 		<p>Оператор <code>delete</code> позволяет удалять свойства объектов.</p>
-		<p>Оператор <code>delete</code> служит для удаления элемента массива, имени или свойства объекта.</p>
 		<p>Синтаксис:</p>
 		<pre>
 			<code class="language-js">
-				delete nameOfVariable;
+				delete nameOfGlobalObjectProperty;
 				delete object.property;
 				delete object['property'];
 				delete array['index'];
@@ -431,92 +502,13 @@
 
 	<section  class="slide">
 		<h2>Давайте удалим наш конус</h2>
+        > добавить в js/game.src.js:140
 		<pre>
 			<code class="language-js">
 				delete this.cones[key];
 			</code>
 		</pre>
 		<p><img width="60%" src="../pic/trycatch_delete_closures/3.png" alt=""/></p>
-	</section>
-
-	<section id="arrow_functions" class="slide chapter">
-		<h2>Стрелочные функции</h2>
-	</section>
-
-	<section  class="slide">
-		<h2>Стрелочные функции</h2>
-		<p>В ES6 появилась возможность задания функций через «стрелку» <code>=&gt;</code></p>
-		<p>Например,</p>
-		<pre>
-			<code class="language-js">
-				let sum = function(a,b){
-				  return a + b;
-				}
-			</code>
-		</pre>
-		<p>можно записать так:</p>
-		<pre>
-			<code class="language-js">
-				let sum(a,b)=>{
-				  return a + b;
-				}
-			</code>
-		</pre>
-	</section>
-
-	<section  class="slide">
-		<h2>Стрелочные функции</h2>
-		<p>Если в теле функции не более одной операции, то не обязательно использовать <code>{}</code>, при этом для возврата значения не требуется писать <code>return</code>.</p>
-		<p>Например,</p>
-		<pre>
-			<code class="language-js">
-				let sum = function(a,b){
-				  return a + b
-				}
-			</code>
-		</pre>
-		<p>можно записать так:</p>
-		<pre>
-			<code class="language-js">
-				let sum(a,b) => a + b;
-			</code>
-		</pre>
-	</section>
-
-	<section  class="slide">
-		<h2>Стрелочные функции</h2>
-		<p><b>Зачем нужны стрелочные функции?</b></p>
-		<p>Стрелочные функции - НЕ “просто короткая запись” обычных функций.
-			В отличие от стрелочных, обычные функции имеют свой контекст. (свой <i>this</i>).
-			Стрелочные функции не имеют своего контекста (своего <i>this</i>), а берут его из своего окружения.</p>
-	</section>
-
-	<section  class="slide">
-		<h2>Стрелочные функции</h2>
-		<p>Например,</p>
-		<p>если функцию</p>
-		<pre>
-			<code class="language-js">
-				this.car_pos = this.POS_UNDEFINED;
-				  setTimeout(function(){
-					this.car_pos = pos;
-				  }, 500 / this.speed);
-			</code>
-		</pre>
-		<p>заменить на стрелочную:</p>
-		<pre>
-			<code class="language-js">
-				this.car_pos = this.POS_UNDEFINED;
-				setTimeout(()=>
-				  this.car_pos = pos
-				  , 500 / this.speed);
-			</code>
-		</pre>
-		<p>то контекстом <code>setTimeout</code> станет нужный нам объект <i>game</i>.</p>
-	</section>
-
-	<section  class="slide chapter">
-		<p><img width="100%" src="../pic/trycatch_delete_closures/4.jpg" alt=""/></p>
 	</section>
 
 	<section  class="slide">
@@ -557,29 +549,18 @@
 			<li>регулярное выражение (<code>RegExp</code>)</li>
 			<li>и другие.</li>
 		</ul>
+		<p>Да-да, функция - это тоже объект.</p>
+        <p>Как мы уже сегодня говорили, любой объект существует в оперативной памяти, пока есть какой либо указатель,
+            указывающий на него.</p>
 	</section>
 
 	<section class="slide">
-		<h2>Освежим теорию</h2>
-		<p>Каким образом можно скопировать объект в javascript?</p>
+		<h2>Так что же такое замыкание?</h2>
+		<p>Это сохранение лексичекого окружения функции в оперативной памяти после её выполнения с помощью ссылки
+            из объекта, создаваемого при её выполнении.</p>
 	</section>
 
 	<section class="slide">
-		<h2>Освежим теорию</h2>
-		<p>в JavaScript есть только один способ создать новый объект - создать новый объект.</p>
-		<p>При попытке скопировать объект, например, таким образом:</p>
-		<p><code>func2 = func1;</code></p>
-		<p>, Вы получите новую ссылку на объект.</p>
-	</section>
-
-	<section class="slide">
-		<h2>Освежим теорию</h2>
-		<p>При запуске функции создается объект <em>LexicalEnvironment</em> - дополнительный параметр, который включает в себя аргументы, функции и локальные переменные, которые определяются при вызове функции.</p>
-		<p>Областью видимости таких параметров является тело функции.</p>
-	</section>
-
-	<section class="slide">
-		<p>Теория теперь достаточно свежая</p>
 		<h2>Так что же такое замыкание?</h2>
 		<p>Например:</p>
 		<pre>
@@ -587,11 +568,11 @@
 				powerOfTwo = function() {
 				  var power = 1;
 				  return function() {
-					power *= 2;
-					p = power
-					return p;
+				     power *= 2;
+				     p = power
+				     return p;
 				  }
-				}()
+				}
 			</code>
 		</pre>
 	</section>
@@ -599,11 +580,12 @@
 	<section class="slide">
 		<pre>
 			<code class="language-js">
-				console.log(powerOfTwo());
-				console.log(powerOfTwo());
-				console.log(powerOfTwo());
-				console.log(powerOfTwo());
-				console.log(powerOfTwo());
+                nextPower = powerOfTwo();
+				console.log(nextPower());
+				console.log(nextPower());
+				console.log(nextPower());
+				console.log(nextPower());
+				console.log(nextPower());
 
 				// -> 2
 				// -> 4
@@ -619,15 +601,15 @@
 		<pre>
 			<code class="language-js">
 				removeConeWrapper() {
-				  let last = 0;
-				  this.removeCone = (key) => {
-					if (key !== undefined) {
-					  this.cones[key].remove();
-					  delete this.cones[key];
-					  last = key;
-					}
-					return last;
-				  };
+				    let last = 0;
+				    this.removeCone = (key) => {
+				        if (key !== undefined) {
+				            this.cones[key].remove();
+				            delete this.cones[key];
+				            last = key;
+				        }
+				        return last;
+				    };
 				},
 			</code>
 		</pre>
@@ -638,18 +620,6 @@
 		<li>Замыкания позволяют сохранять данные функции между ее вызовами;</li>
 		<li>Замыкания позволяют создавать функции, генерирующие функции;</li>
 		<li>Замыкания позволяют ограничить область видимости переменных.</li>
-	</section>
-
-	<section class="slide">
-		<h2>Linting</h2>
-		<pre>
-			<code class="lang-markup">
-				.js\user.settings.js
-				11:17  warning  Unexpected unnamed function func-names
-				28:21  warning  Unexpected unnamed function func-names
-			</code>
-		</pre>
-		<p>Видно, что есть ещё места, над которыми нам нужно поработать.</p>
 	</section>
 
 	<section class="slide">

@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 const game = {
   POS_LEFT: 0,
   POS_RIGHT: 1,
