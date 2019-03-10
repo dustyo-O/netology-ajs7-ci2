@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <title>Рабочее окружение</title>
+    <meta charset="utf-8">
+    <link rel="shortcut icon" href="../assets/i/favicon.ico" type="image/x-icon">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../node_modules/shower-ribbon/styles/screen-4x3.css">
+    <link rel="stylesheet" href="../assets/css/prism.css">
+    <link rel="stylesheet" href="../assets/css/prism-fix.css">
+    <link rel="stylesheet" href="../assets/css/netology.css">
+    <link rel="stylesheet" href="../assets/css/fake-browser.css">
+  </head>
+  <body class="shower">
+    <header class="caption">
+      <h1>Рабочее окружение</h1>
+      <p>Денис Ежков</p>
+    </header>
+
+    <section class="slide" id="cover">
+      <h2>Рабочее окружение</h2>
+      <p>
+        <img src="../assets/i/ezhkov.jpg" alt="" class="avatar">
+        Денис Ежков
+      </p>
+    </section>
+
+    <section class="slide author" id="author">
+      <img src="../assets/i/ezhkov.jpg" alt="">
+      <h1>Денис Ежков</h1>
+      <p class="position">Frontend-разработчик в «Ростелеком IT»</p>
+      <ul class="contacts">
+        <li><a href="skype:aka_SKIff"><i class="fa fa-skype" aria-hidden="true"></i>aka_SKIff</a></li>
+        <li><a href="https://facebook.com/ezhkov"><i class="fa fa-facebook" aria-hidden="true"></i>facebook.com/ezhkov</a></li>
+        <li><a href="https://t.me/ezhkov"><i class="fa fa-telegram" aria-hidden="true"></i>@ezhkov</a></li>
+      </ul>
+    </section>
+
+    <section class="slide" id="roadmap">
+      <h2>План занятия</h2>
+      <ol>
+        <li><a href="#workspace">Рабочее окружение</a></li>
+        <li><a href="#npm">npm</a></li>
+        <li><a href="#live">live-server</a></li>
+        <li><a href="#eslint">ESLint</a></li>
+        <li><a href="#babel">Babel</a></li>
+      </ol>
+    </section>
+
+    <section class="slide chapter" id="workspace">
+      <h2>Рабочее окружение</h2>
+    </section>
+
+    <section class="slide">
+      <h2>Рабочее окружение</h2>
+      <p>Под рабочим окружением мы будем понимать не только (и не столько) настройку редактора кода или IDE, сколько использование инструментов, не завязанных на IDE и облегчающих:</p>
+      <ul>
+        <li>разработку</li>
+        <li>тестирование</li>
+        <li>соблюдение правилa</li>
+      </ul>
+    </section>
+
+    <section class="slide">
+      <h2>IDE и редактор кода</h2>
+      <p>Для большинства программистов выбор IDE является сугубо личным делом, поэтому мы будем настраивать рабочее окружение независимо от IDE.</p>
+    </section>
+
+    <section class="slide">
+      <h2>HTTP-сервер</h2>
+      <p><b>Задача</b>: установить локальный HTTP-сервер для разработки, тестирования и отладки приложения.</p>
+      <p>Очевидное решение: воспользоваться Google и найти несколько решений, в том числе сложные Apache или Nginx.</p>
+    </section>
+
+    <section class="slide">
+      <h2>Причины использовать HTTP-сервер</h2>
+      <ol>
+        <li>Повышается скорость разработки из-за использования профессиональных инструментов</li>
+        <li>Разработка в команде требует знания и умения работать с общепринятыми инструментами</li>
+        <li>Некоторые приложения невозможно протестировать оффлайн, без HTTP-сервера</li>
+      </ol>
+    </section>
+
+    <section class="slide chapter" id="npm">
+      <h2>npm</h2>
+    </section>
+
+    <section class="slide">
+      <img src="../assets/pic/workspace/npm.png" alt="" style="width: 40%">
+      <p><a href="https://www.npmjs.com">npm</a> — менеджер пакетов для JS, реестр готовых пакетов и утилита командной строки в одном флаконе.</p>
+      <p>Стандарт де-факто в мире JS для организации рабочего окружения.</p>
+      <p>На сегодняшний день содержит более 800 000 готовых пакетов.</p>
+    </section>
+
+    <section class="slide">
+      <h2>«Магазин» пакетов</h2>
+      <p>Для iPhone есть AppStore, для Android — Google Play, а для JS — npm.</p>
+    </section>
+
+    <section class="slide">
+      <h2>Установка</h2>
+      <p>npm уже входит в состав <a href="https://nodejs.org">Node.js</a>*.</p>
+      <p class="note">*Должен быть установлен на ваш ПК перед началом курса.</p>
+      <p><a href="https://github.com/netology-code/js-advanced-homeworks/blob/master/software.md" target="_blank">Список рекомендуемого ПО для курса</a>.</p>
+    </section>
+
+    <section class="slide">
+      <h2>Проверяем npm</h2>
+      <p>Чтобы проверить, что npm действительно установлен, выполните команду в терминале:</p>
+      <pre class="">
+        <code class="lang-bash">
+          $ npm -v
+        </code>
+      </pre>
+      <p>Версия npm должна быть 6.5.0 или выше.</p>
+    </section>
+    
+    <section class="slide">
+      <h2>Обновляем npm</h2>
+      <p>Если версия npm ниже 6.5.0, то потребуется обновить менеджер пакетов. Для этого в терминале выполните команду:</p>
+      <pre class="">
+        <code class="lang-bash">
+          $ npm install --global npm
+        </code>
+      </pre>
+    </section>
+
+    <section class="slide">
+      <h2>Работа с терминалом</h2>
+      <p><a href="https://github.com/netology-code/js-advanced-homeworks/blob/master/terminal.md" target="_blank">Краткое руководство по работе с терминалом</a> - необходимо изучить самостоятельно.</p>
+    </section>
+
+    <section class="slide">
+      <h2>Устанавливаем HTTP-сервер</h2>
+      <p>Установим пакет http-server с использованием npm:</p>
+      <pre class="">
+        <code class="lang-bash">
+          $ npm install --global http-server
+        </code>
+      </pre>
+    </section>
+
+    <section class="slide">
+      <h2>Команда для любого пакета</h2>
+      <p>Команда <code>npm install [--global] &lt;package-name&gt;</code> позволяет нам устаналивать любой пакет из реестра <a
+          href="https://npmjs.com">https://npmjs.com</a>.</p>
+    </section>
+
+    <section class="slide">
+      <h2>Флаг <code>--global</code></h2>
+      <p>Флаг <code>--global</code> указывает, что пакет устанавливается глобально (global mode), тоесть будет доступен в рамках всей системы (или текущего пользователя ОС).</p>
+    </section>
+
+    <section class="slide">
+      <h2>Справка npm</h2>
+      <p>Если вам нужна помощь при работе с npm, то вы можете набрать команды помощи:</p>
+      <pre class="">
+        <code class="lang-bash">
+          $ npm help
+          $ npm help &lt;command&gt;
+          $ npm &lt;command&gt; --help
+        </code>
+      </pre>
+      <p>Полный перечень всех команд с описанием представлен на веб-странице: <a href="https://docs.npmjs.com/cli-documentation/">https://docs.npmjs.com/cli-documentation/</a></p>
+    </section>
+
+    <section class="slide">
+      <h2>Запускаем HTTP-сервер</h2>
+      <p>Откроем в терминале каталог нашего проекта и запустим HTTP-сервер:</p>
+      <pre class="">
+        <code class="lang-bash">
+          $ cd src
+          $ http-server
+          Starting up http-server, serving ./
+          Available on:
+            http://127.0.0.1:8080
+          Hit CTRL-C to stop the server
+        </code>
+      </pre>
+      <p>Остаётся открыть браузер с адресом <a href="http://localhost:8080">http://localhost:8080</a></p>
+    </section>
+
+    <section class="slide">
+      <h2>Терминал в VSCode</h2>
+      <p>В VSCode уже встроен терминал, можно его открыть сочетанием клавиш <kbd>Ctrl</kbd> + <kbd>`</kbd> (Windows/Linux), <kbd>^</kbd> + <kbd>`</kbd> (Mac).</p>
+    </section>
+
+    <section class="slide">
+      <h2>Справка</h2>
+      <p>Большинство пакетов, поставляемых через npm, содержат встроенную справку, которую можно вызвать командой:</p>
+      <pre class="">
+        <code class="lang-bash">
+          $ &lt;package-name&gt; --help
+        </code>
+      </pre>
+
+      <p>Например, для пакета http-server команда будет выглядеть так:</p>
+      <pre class="">
+        <code class="lang-bash">
+          $ http-server --help
+        </code>
+      </pre>
+    </section>
+
+    <section class="slide">
+      <h2>Репозиторий пакета</h2>
+      <p>Одной командой мы получили готовый и легковесный HTTP-сервер с большим набором опций.</p>
+      <p>Кроме того, мы можем даже сразу открыть страницу GitHub-проекта:</p>
+      <pre class="">
+        <code class="lang-bash">
+          $ npm repo http-server
+        </code>
+      </pre>
+      <p class="note">Репозиторий проекта очень полезен, например, если нужно понять, как бороться с тем или иным багом.</p>
+    </section>
+
+    <section class="slide">
+      <h2>Минусы</h2>
+      <p>Минусы такого подхода:</p>
+      <ul>
+        <li>засоряется «глобальная область видимости» (global mode)</li>
+        <li>при работе в команде придётся писать всем инструкции</li>
+      </ul>
+      <p>Можно ли настраивать и устанавливать пакеты только для текущего проекта?</p>
+    </section>
+
+    <section class="slide">
+      <h2>Пакет</h2>
+      <p>В терминах npm пакет - это любой каталог*, содержащий файл <code>package.json</code>.</p>
+      <p>Для пакета можно настроить зависимости — пакеты, которые нужны для функционирования (зависимости) или для разработки, тестирования (dev-зависимости).</p>
+      <p>Кроме того, можно вынести ключевые команды в скрипты.</p>
+      <p class="note">* <a href="https://docs.npmjs.com/about-packages-and-modules#about-packages">Более подробно</a></p>
+    </section>
+
+    <section class="slide">
+      <h2>Инициализируем пакет</h2>
+      <p>Выполним в нашем проекте (не в каталоге <code>src</code>, а в корне нашего проекта):</p>
+      <pre class="">
+        <code class="lang-bash">
+          $ npm init
+        </code>
+      </pre>
+      <p>Запустится конфигуратор пакета, который задаст вам ряд вопросов, после чего сгенерируется файл <code>package.json</code>.</p>
+    </section>
+
+    <section class="slide">
+      <h2>Warning!</h2>
+      <p>Важно: старайтесь создавать пакеты в каталогах, которые не содержат в пути пробелов, спец.символов, кириллицы.</p>
+    </section>
+
+    <section class="slide">
+      <h2>Ключевые поля <code>package.json</code></h2>
+      <ul>
+        <li><code>name</code> — название пакета</li>
+        <li><code>version</code> — версия (в соответствии с <a href="https://semver.org">https://semver.org</a>)</li>
+        <li><code>scripts</code> — скрипты (удобные сокращения для команд)</li>
+        <li>*<code>dependencies</code> — зависимости, необходимые для функционирования пакета</li>
+        <li>*<code>devDependencies</code> — зависимости, необходимые для разработки и (или) тестирования пакета</li>
+      </ul>
+      <p class="note">* Разделы, которых у нас пока нет.</p>
+    </section>
+
+    <section class="slide">
+      <h2>Установим пакет локально</h2>
+      <p>Зависимости устанавливаются с помощью команды <code>npm install</code>:</p>
+      <pre class="">
+        <code class="lang-bash">
+          $ npm install [--save-dev] &lt;package-name&gt;
+        </code>
+      </pre>
+    </section>
+
+    <section class="slide">
+      <h2>Флаг <code>--save-dev</code></h2>
+      <p>Флаг <code>--save-dev</code> означает, что зависимость нужна только для разработки и тестирования. Поскольку пакет http-server нам нужен как раз для этих целей, то он является dev-зависимостью:</p>
+      <pre class="">
+        <code class="lang-bash">
+          $ npm install --save-dev http-server
+        </code>
+      </pre>
+    </section>
+
+    <section class="slide">
+      <h2>Dev Dependencies</h2>
+      <p>В результате выполнения команды в нашем проекте создался каталог <code>node_modules</code> и в <code>package.json</code> появилась секция <code>devDependencies</code>:</p>
+      <pre class="line-numbers">
+        <code class="lang-json">
+          "devDependencies": {
+            "http-server": "^0.11.1"
+          }
+        </code>
+      </pre>
+    </section>
+
+    <section class="slide">
+      <h2>Посмотрим список пакетов</h2>
+      <p>Посмотреть список локально установленных пакетов мы можем с помощью команды:</p>
+      <pre class="">
+        <code class="lang-bash">
+          $ npm list
+        </code>
+      </pre>
+    </section>
+
+    <section class="slide">
+      <h2>Скрипт для сервера</h2>
+      <p>Теперь возникает вопрос, как же запустить http-server?</p>
+      <p>Сам исполняемый файл хранится в каталоге <code>node_modules/.bin/http-server</code>. Чтобы его запустить, мы можем прописать его в секцию <code>scripts</code> следующим образом:</p>
+      <pre class="line-numbers fz22">
+        <code class="lang-json">
+          "scripts": {
+            "serve": "http-server src",
+            "test": "echo \"Error: no test specified\" && exit 1"
+          }
+        </code>
+      </pre>
+      <p>И в командной строке просто запускать команду:</p>
+      <pre class="">
+        <code class="lang-bash">
+          $ npm run serve
+        </code>
+      </pre>
+    </section>
+
+    <section class="slide">
+      <h2>Scripts</h2>
+      <p>В скрипты можно прописывать любые команды, которые могут выполниться в терминале. Таким образом, это удобный способ:</p>
+      <ul>
+        <li>дать псевдоним длинной команде</li>
+        <li>определить набор стандартных команд для вашего проекта</li>
+      </ul>
+    </section>
+
+    <section class="slide">
+      <h2>Стандартные имена</h2>
+      <p>Ряд имён в скриптах стандартизирован и позволяет опускать ключевое слово <code>run</code>. Например, изменим секцию <code>scripts</code>:</p>
+      <pre class="line-numbers fz22">
+        <code class="lang-json">
+          "scripts": {
+            "start": "http-server src",
+            "test": "echo \"Error: no test specified\" && exit 1"
+          }
+        </code>
+      </pre>
+      <p>Теперь для запуска сервера нам достаточно написать команду:</p>
+      <pre class="">
+        <code class="lang-bash">
+          $ npm start
+        </code>
+      </pre>
+    </section>
+
+    <section class="slide">
+      <h2>Список стандартных имён</h2>
+      <ul>
+        <li><code>start</code></li>
+        <li><code>stop</code></li>
+        <li><code>test</code></li>
+        <li><code>restart</code></li>
+      </ul>
+      <p>Полный список приведён на странице <a href="https://docs.npmjs.com/misc/scripts.html#description">https://docs.npmjs.com/misc/scripts.html#description</a></p>
+    </section>
+
+    <section class="slide">
+      <h2>Поиск пакета</h2>
+      <p>С http-server всё достаточно хорошо, но для разработки нужен более мощный инструмент, который бы содержал в себе функцию автоматической перезагрузки страницы при изменении любого файла.</p>
+      <p>Это называется <b>live reload</b>.</p>
+    </section>
+
+    <section class="slide">
+      <h2>В поисках live reload</h2>
+      <p>Поищем такой инструмент через npm:</p>
+      <pre class="">
+        <code class="lang-bash">
+          $ npm search --long live reload
+        </code>
+      </pre>
+      <p>Какую команду нужно использовать для установки?</p>
+    </section>
+
+    <section class="slide chapter" id="live">
+      <h2>live-server</h2>
+    </section>
+
+    <section class="slide">
+      <h2>Установим live-server</h2>
+      <p>Среди прочих мы увидим live-server. Установим его командой:</p>
+      <pre class="">
+        <code class="lang-bash">
+          $ npm install --save-dev live-server
+        </code>
+      </pre>
+    </section>
+
+    <section class="slide">
+      <h2>Замена в <code>scripts</code></h2>
+      <p>И заменим http-server на live-server в скрипте <code>start</code>.</p>
+      <pre class="line-numbers fz22">
+        <code class="lang-json">
+          "scripts": {
+            "start": "live-server src",
+            "test": "echo \"Error: no test specified\" && exit 1"
+          }
+        </code>
+      </pre>
+      <p>Теперь любое изменение файлов в каталоге <code>src</code> приводит к перезагрузке страницы в браузере, что достаточно удобно.</p>
+    </section>
+
+    <section class="slide">
+      <h2>Удаленяем ненужные пакеты</h2>
+      <p>Удалим глобально установленный http-server:</p>
+      <pre class="">
+        <code class="lang-bash">
+          $ npm uninstall --global http-server
+          $ npm list --global
+        </code>
+      </pre>
+      <p>Удалим локально установленный http-server:</p>
+      <pre class="">
+        <code class="lang-bash">
+          $ npm unistall http-server
+          $ npm list
+        </code>
+      </pre>
+    </section>
+
+    <section class="slide">
+      <h2>Что храним в Git?</h2>
+      <p>Возникает вопрос, какие из созданных npm файлов и каталогов стоит хранить в Git?</p>
+      <p>Храним в Git:</p>
+      <ul>
+        <li><code>package.json</code>;</li>
+        <li><code>package-lock.json</code>.</li>
+      </ul>
+      <br><br>
+      <p>Не храним в Git: <code>node_modules</code></p>
+    </section>
+
+    <section class="slide">
+      <h2>Устанавливаем зависимости</h2>
+      <p>Все зависимости из <code>node_modules</code> легко восстанавливаются командой:</p>
+      <pre class="">
+        <code class="lang-bash">
+          $ npm install
+        </code>
+      </pre>
+    </section>
+
+    <section class="slide">
+      <h2><code>.gitignore</code></h2>
+      <p>Лучше использовать готовый <code>.gitignore</code>, собранный сообществом: <a href="https://github.com/github/gitignore/blob/master/Node.gitignore">https://github.com/github/gitignore/blob/master/Node.gitignore</a></p>
+    </section>
+
+    <section class="slide">
+      <h2>Командная разработка</h2>
+      <p>Стиль кодирования — одна из самых больных тем при разработке проектов. Здесь всё так же, как с IDE — у каждого свой вкус, но если мы хотим получить хороший продукт, нужно установить правила и придерживаться их.</p>
+      <p>Посмотрим, помогут ли инструменты, распространяемые через npm нам чем-то помочь.</p>
+    </section>
+
+    <section class="slide chapter" id="eslint">
+      <h2>ESLint</h2>
+    </section>
+
+    <section class="slide">
+      <h2>ESLint</h2>
+      <p><a href="https://eslint.org">ESLint</a> — представитель инструментов, отслеживающих стиль кодирования и типичные ошибки в мире JS.</p>
+    </section>
+
+    <section class="slide">
+      <h2>Устанавливаем ESLint</h2>
+      <p>Установим его с помощью npm:</p>
+      <pre class="">
+        <code class="lang-bash">
+          $ npm install --save-dev eslint
+        </code>
+      </pre>
+    </section>
+
+    <section class="slide">
+      <h2>Демо</h2>
+      <p>Посмотреть на работу ESLint в live-режиме: <a href="https://eslint.org/demo/">https://eslint.org/demo/</a></p>
+    </section>
+
+    <section class="slide">
+      <h2>npx</h2>
+      <p>npm включает в себя утилиту <a href="https://www.npmjs.com/package/npx">npx</a>, позволяющую запускать команды из <code>node_modules/.bin</code> либо выполняя временную установку.</p>
+    </section>
+
+    <section class="slide">
+      <h2>Формируем набор правил</h2>
+      <p>Поскольку набор правил мы формируем только один раз, воспользуемся ею:</p>
+      <pre class="">
+        <code class="lang-bash">
+          $ npx eslint --init
+        </code>
+      </pre>
+      <p>Будет запущен конфигуратор, предлагающий выбрать стиль (в том числе, среди популярных). Выберем стиль <a
+          href="https://github.com/airbnb/javascript">Airbnb</a> и формат JSON в качестве конфигурационного файла. При этом будет предложено установить дополнительную зависимость <code>eslint-config-airbnb-base</code>.</p>
+    </section>
+
+    <section class="slide">
+      <h2>Airbnb styleguide</h2>
+      <p>Изучите самостоятельно <a href="https://github.com/airbnb/javascript">Styleguide Airbnb</a>.</p>
+      <p class="note">В данном Styleguide описан не только стиль кодирования, но и причины, по которым выбраны те или иные подходы.</p>
+    </section>
+
+    <section class="slide">
+      <h2><code>.eslintrc.json</code></h2>
+      <p>ESLint будет хранить свои настройки в файле <code>.eslintrc.json</code>:</p>
+      <pre class="line-numbers fz20">
+        <code class="lang-json">
+          {
+              "extends": "airbnb-base",
+              "env": {
+                  "es6": true,
+                  "browser": true
+              },
+              "rules": {
+                  "no-restricted-syntax": [
+                      "error",
+                      "LabeledStatement",
+                      "WithStatement"
+                  ]
+              }
+          }
+        </code>
+      </pre>
+      <p>Мы можем изменить, дополнить правила с помощью секции <code>rules</code></p>
+    </section>
+
+    <section class="slide">
+      <h2>lint script</h2>
+      <p>Создадим отдельный скрипт <code>lint</code>, который и будет запускать ESLint в соответствии с установленными настройками:</p>
+      <pre class="line-numbers fz22">
+        <code class="lang-json">
+          "scripts": {
+            "start": "live-server src",
+            "test": "echo \"Error: no test specified\" && exit 1",
+            "lint": "eslint ."
+          },
+        </code>
+      </pre>
+    </section>
+
+    <section class="slide">
+      <h2>Запускаем линтер</h2>
+      <p>Поскольку имя <code>lint</code> не относится к стандартным, нам необходимо будет запускать его следующим образом:</p>
+      <pre class="">
+        <code class="lang-bash">
+          $ npm run lint
+        </code>
+      </pre>
+    </section>
+
+    <section class="slide">
+      <h2>Результат работы линтера</h2>
+      <figure>
+        <img src="../assets/pic/workspace/eslint_result.png" alt="">
+      </figure>
+    </section>
+
+    <section class="slide">
+      <h2>Fix от ESLint</h2>
+      <p>ESLint предлагает нам передать ключ <code>--fix</code> для того, чтобы исправить проблемы. Чтобы в npm-скрипт передать этот флаг, нам нужно воспользоваться специальным синтаксисом:</p>
+      <pre class="">
+        <code class="lang-bash">
+          $ npm run lint -- --fix
+        </code>
+      </pre>
+      <p>Флаги команд следует передавать после <code>--</code>.</p>
+    </section>
+
+    <section class="slide">
+      <h2>Fix от ESLint</h2>
+      <p>Мы рекомендуем исправить ошибки и warning'и ESLint'а вручную, сразу во время написания кода.</p>
+      <p class="note">См. информацию про плагин далее.</p>
+    </section>
+
+    <section class="slide">
+      <h2>Итог</h2>
+      <p>С помощью инструмента ESLint мы получили возможность определять стиль кодирования для проекта и проверять его с помощью npm.</p>
+      <p>Но как сделать так, чтобы ошибки стиля автоматически подсвечивались в редакторе кода?</p>
+    </section>
+
+    <section class="slide">
+      <h2>Ставим плагин для редактора</h2>
+      <p>Придётся устанавливать плагин для редактора. Для VSCode необходимо зайти на вкладку расширений и установить плагин <b>ESLint</b> от <i>Dirk Baeumer</i>. После этого нам прямо в редакторе будут подсвечиваться подсказки от ESLint в соответствии с установленной конфигурацией.</p>
+      <p>Для других редакторов/IDE — аналогично.</p>
+    </section>
+
+    <section class="slide chapter" id="babel">
+      <h2>Babel</h2>
+    </section>
+
+    <section class="slide">
+      <h2>Поддержка стандартов ECMAScript</h2>
+      <p>Представим ситуацию: мы пишем библиотеку, которую хотим использовать в нескольких разных проектах.</p>
+      <p>Как нам в этом случае поступить с поддержкой стандартов различных версий?</p>
+    </section>
+
+    <section class="slide">
+      <h2>Возможные решения</h2>
+      <ol>
+        <li>Выбрать самый старый и писать на нём (тогда не получится использовать новые возможности)</li>
+        <li>Выбрать самый новый и не думать о совместимости (тогда придётся переписывать)</li>
+        <li>Одновременно поддерживать несколько версий (трудоёмко)</li>
+      </ol>
+    </section>
+
+    <section class="slide">
+      <h2>Babel</h2>
+      <p>Проект <a href="https://babeljs.io">Babel</a> предлагает альтернативное решение: транспайлер — инструмент, преобразующий код из одной версии стандарта в другую, более старую*.</p>
+      <p>То есть мы можем использовать большинство** новых возможностей языка и получать код, написанный в режиме совместимости с нужной нам версией.</p>
+      <p class="note">* Это достаточно упрощённое описание транспайлера, но оно помогает понять суть.</p>
+      <p class="note">** Если они поддерживаются транспайлером.</p>
+    </section>
+
+    <section class="slide">
+      <h2>Устанавливаем Babel</h2>
+      <pre class="fz20">
+        <code class="lang-bash">
+          $ npm install --save-dev @babel/core @babel/cli @babel/preset-env
+          $ npm install @babel/polyfill
+        </code>
+      </pre>
+      <p>Обратите внимание: <code>@babel/polyfill</code> - это не dev-зависимость.</p>
+    </section>
+
+    <section class="slide">
+      <h2>Демо</h2>
+      <p>Посмотреть на работу Babel в live-режиме: <a href="https://babeljs.io/en/repl.html">https://babeljs.io/en/repl.html</a></p>
+    </section>
+
+    <section class="slide">
+      <h2>Формирование набора правил</h2>
+      <p>В отличие от ESLint, для Babel конфигурационный файл необходимо создать вручную (<code>.babelrc</code>):</p>
+      <pre class="line-numbers">
+        <code class="lang-json">
+          {
+            "presets": [
+              ["@babel/preset-env", {
+                "useBuiltIns": "usage"
+              }]
+            ]  
+          }
+        </code>
+      </pre>
+    </section>
+
+    <section class="slide">
+      <h2>Добавляем в <code>scripts</code></h2>
+      <p>После чего в <code>scripts</code> прописать:</p>
+      <pre class="line-numbers fz22">
+        <code class="lang-json">
+          "scripts": {
+            "start": "live-server src",
+            "test": "echo \"Error: no test specified\" && exit 1",
+            "lint": "eslint .",
+            "build": "babel src -d dist"
+          },
+        </code>
+      </pre>
+    </section>
+
+    <section class="slide">
+      <h2>Запускаем транспайлинг</h2>
+      <pre class="">
+        <code class="lang-bash">
+          $ npm run build
+        </code>
+      </pre>
+      <p>В результате выполнения этой команды создастся файл <code>dist/js/index.js</code>, в котором будет только совместимый
+        <a href="https://babeljs.io/docs/en/babel-preset-env">с текущей средой выполнения и настройками авторов Babel'а</a> код.</p>
+      <p>Preset - это сформированный набор плагинов, собранный под одним именем.</p>
+    </section>
+    
+    <section class="slide">
+      <h2>Polyfill</h2>
+      <p>Polyfill от Babel - это реализация функциональности, которая отсутствовала в предыдущих версиях ES.</p>
+      <p><code>"useBuiltIns": "usage"</code> говорит о том, что Babel будет самостоятельно подключать полифиллы на основе анализа используемых вами возможностей.</p>
+    </section>
+
+    <section class="slide">
+      <h2>Browserslist</h2>
+      <p>Файл с именем <code>.browserslistrc</code> — позволяет установить, поддержку каких браузеров (окружений) необходимо обеспечивать, исходя из статистики
+        <a href="caniuse.com">caniuse.com</a></p>
+      <pre class="line-numbers">
+        <code class="lang-json">
+          # Browsers that we support
+
+          last 1 version
+          > 1%
+          maintained node versions
+          not dead
+        </code>
+      </pre>
+    </section>
+
+    <section class="slide">
+      <h2>Babel & ESLint</h2>
+      <p>ESLint на данный момент анализирует все файлы в нашем проекте (включая те, что в каталоге <code>dist</code>).</p>
+      <p>Изменим настройки ESLint так, чтобы каталог <code>dist</code> игнорировался полностью. Для этого нам нужен файл <code>.eslintignore</code>:</p>
+      <pre>
+        <code class="lang-json">
+          dist
+        </code>
+      </pre>
+      <p>Таким образом, ESLint будет игнорировать данный каталог, как и плагины для редакторов/IDE.</p>
+    </section>
+
+    <section class="slide">
+      <h2>Зачем это всё?</h2>
+      <p>Это инфраструктура современного JS.</p>
+      <p>В дальнейшем, с каким бы вы проектом или фреймворком (Angular, Vue, React) не сталкивались, с большой долей вероятности он будет использовать эту инфраструктуру.</p>
+    </section>
+
+    <section class="slide">
+      <h2>Поддержка экспериментальных возможностей</h2>
+      <p>Babel с помощью плагинов поддерживает то, чего ещё нет в стандарте, но что вы можете использовать уже сейчас.</p>
+      <p>Список плагинов, поддерживающих экспериментальные возможности: <a href="https://babeljs.io/docs/en/plugins#experimental">Experimental Plugins</a>.</p>
+    </section>
+
+    <section class="slide">
+      <h2>Optional Chaining</h2>
+      <p>Рассмотрим одну из таких возможностей - Optional Chaining:</p>
+      <pre class="line-numbers fz17">
+        <code class="lang-javascript">
+          const obj = {
+            prop: {
+              value: 999,
+            },
+          };
+
+          const existent = obj?.prop?.value; // 999
+          // obj.data.value: Uncaught TypeError: Cannot read property 'value' of undefined
+          const notExistent = obj?.data?.value; // undefined вместо ошибки
+        </code>
+      </pre>
+    </section>
+
+    <section class="slide">
+      <h2>Optional Chaining</h2>
+      <p>Установим поддержку в Babel:</p>
+      <pre class="fz20">
+        <code class="lang-bash">
+          $ npm install --save-dev @babel/plugin-proposal-optional-chaining
+        </code>
+      </pre>
+      .babelrc:
+      <pre class="fz20">
+        <code class="lang-json">
+          {
+            "plugins": ["@babel/plugin-proposal-optional-chaining"]
+          }
+        </code>
+      </pre>
+      <p>После этого код с предыдущего слайда будет компилироваться и работать.</p>
+      <p class="note">Проверку ESLint он не пройдёт, для этого необходима дополнительная настройка.</p>
+    </section>
+
+    <section class="slide">
+      <h2>Важно</h2>
+      <p>Очень осторожно относитесь к использованию экспериментальных возможностей, ещё не принятых в стандарт, т.к. вполне возможно, что в стандарт они так и не попадут, и Babel прекратит поддерживать плагины, которые осуществляли транспайлинг.</p>
+      <p>Мы показали вам это лишь для того, чтобы вы понимали, как в некоторых проектах используются возможности, поддержки которых нет в браузере и в стандарте.</p>
+    </section>
+
+    <section class="slide">
+      <h2>Итоги</h2>
+      <ol>
+        <li>npm — позволяет упростить работу с проектами и зависимостями</li>
+        <li>live-server — позволяет упростить разработку и отладку в браузере</li>
+        <li>ESLint — позволяет искать ошибки и соблюдать стиль кодирования</li>
+        <li>Babel — решает проблему поддержки предыдущих версий стандарта</li>
+      </ol>
+    </section>
+
+    <section class="slide">
+      <h2>Требования к домашним работам</h2>
+      <p>Начиная с сегодняшнего дня во всех домашних заданиях будет требоваться:</p>
+      <ul>
+        <li>использования npm при формировании проекта ДЗ</li>
+        <li>соответсвия ESLint набору правил Airbnb на уровне отсутствия ошибок (error - <b>не допускаются</b>, warning - допускаются)</li>
+      </ul>
+    </section>
+
+    <section class="slide">
+      <h2>Ссылки на документацию</h2>
+      <ul>
+        <li><a href="https://docs.npmjs.com">npm</a></li>
+        <li><a href="https://www.npmjs.com/package/live-server">live-server</a></li>
+        <li><a href="https://eslint.org/docs/user-guide/getting-started">ESLint</a></li>
+        <li><a href="https://babeljs.io/docs/en/">Babel</a></li>
+        <li><a href="https://github.com/browserslist/browserslist">Browserslist</a></li>
+      </ul>
+    </section>
+
+    <section class="slide last">
+      <p class="thanx">Задавайте вопросы и напишите отзыв о лекции!</p>
+        <address>Денис Ежков</address>
+      <ul class="contacts">
+        <li><a href="skype:aka_SKIff"><i class="fa fa-skype" aria-hidden="true"></i>aka_SKIff</a></li>
+        <li><a href="https://facebook.com/ezhkov"><i class="fa fa-facebook" aria-hidden="true"></i>facebook.com/ezhkov</a></li>
+        <li><a href="https://t.me/ezhkov"><i class="fa fa-telegram" aria-hidden="true"></i>@ezhkov</a></li>
+      </ul>
+    </section>
+
+    
+    <div class="progress"></div>
+    <script src="../node_modules/shower-core/shower.min.js"></script>
+    <script src="../assets/js/prism.js?v=2"></script>
+    <script src="https://use.fontawesome.com/8c6816e790.js"></script>
+  </body>
+  </html>
+  

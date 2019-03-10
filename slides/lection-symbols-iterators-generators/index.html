@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+			<title>Символы, итераторы и генераторы</title>
+			<meta charset="utf-8">
+			<link rel="shortcut icon" href="../assets/i/favicon.ico" type="image/x-icon">
+			<meta http-equiv="x-ua-compatible" content="ie=edge">
+			<meta name="viewport" content="width=device-width, initial-scale=1">
+			<link rel="stylesheet" href="../node_modules/shower-ribbon/styles/screen-4x3.css">
+			<link rel="stylesheet" href="../assets/css/prism.css">
+			<link rel="stylesheet" href="../assets/css/prism-fix.css">
+			<link rel="stylesheet" href="../assets/css/netology.css">
+			<link rel="stylesheet" href="../assets/css/fake-browser.css">
+	</head>
+  <body class="shower">
+	<header class="caption">
+	  <h1>Символы, итераторы и генераторы</h1>
+	  <p>Игорь Камышев, «Нетология»</p>
+	</header>
+
+	<section class="slide" id="cover">
+	  <h2>Символы, итераторы и генераторы</h2>
+	  <p>
+		<img src="../assets/i/ikamyshev.png" alt="" class="avatar">
+		Игорь Камышев <span class="position">Breadhead</span>
+	  </p>
+	</section>
+
+	<section class="slide author" id="author">
+	  <img src="../assets/i/ikamyshev.png" alt="">
+	  <h1 style="line-height:1.2em">Игорь Камышев</h1>
+	  <p class="position">Tech Lead в Breadhead</p>
+	  <ul class="contacts">
+		<li><a href="mailto:igor@kamyshev.me"><i class="fa fa-envelope" aria-hidden="true"></i>igor@kamyshev.me</a></li>
+		<li><a href="igorkamyshev"><i class="fa fa-telegram" aria-hidden="true"></i>igorkamyshev</a></li>
+	  </ul>
+	</section>
+
+	<section class="slide" id="roadmap">
+	  <h2>План занятия</h2>
+	  <ul style="font-size: 0.95em">
+		<li><a href="#symbols">Символы</a>
+			<ul>
+				<li>Историческая справка</li>
+				<li>Что такое символ</li>
+				<li>Как их использовать</li>
+			</ul>
+		</li>
+		<li><a href="#iterators">Итераторы</a>
+			<ul>
+				<li>Для чего нужны итераторы</li>
+				<li>Как реализовать свой итератор</li>
+			</ul>
+		</li>
+		<li><a href="#generator">Генератор</a>
+			<ul>
+				<li>Подпрограммы</li>
+				<li>Функция, которую можно прервать</li>
+				<li>Генератор как итератор</li>
+				<li>Тонкие материи генераторов</li>
+			</ul>
+		</li>
+		<li><a href="#resume">Резюме</a></li>
+	  </ul>
+	</section>
+
+	<section id="symbols" class="slide chapter">
+	  <h2>Символы</h2>
+	</section>
+
+	<section class="slide">
+		<h2></h2>
+		<p>Новый примитивный тип данных Symbol служит для создания уникальных идентификаторов.</p>
+	</section>
+
+	<section class="slide">
+		<h2>Историческая справка</h2>
+		<p style="margin-bottom: 0.7em;">Когда JS был молод и незрел, многие авторы библиотек применяли monkey patching стадартных вещей языка. Например, добавляли новые методы для массивов, чтобы с ними было удобнее работать.</p>
+		<pre><code class="language-js line-numbers">
+			Array.prototype.print = function () {
+			  console.log(this)
+			}
+
+			['ds'].print() // ["ds"]
+		</code></pre>
+	</section>
+
+	<section class="slide">
+		<h2></h2>
+		<p>В этом есть определенные опасности:</p>
+		<ul>
+			<li>Если разработчик установит две библиотеки, которые по-разному определяют один и тот же метод массива, одна из них перестанет работать.</li>
+			<li>Если в стандарт языка добавят аналогичную функцию, которая работает иначе, библиотека тоже сломается.</li>
+		</ul>
+		<p>Потому такой путь считается плохим. С этим нужно было как-то бороться, и решение нашлось.</p>
+	</section>
+
+	<section class="slide">
+		<h2>Что такое «символ»</h2>
+		<p style="margin-bottom: 0.7em;">Это примитивный тип данных. Любые два символа отличны друг от друга.</p>
+		<pre><code class="language-js line-numbers">
+			let sym1 = Symbol();
+			let sym2 = Symbol();
+
+			console.log(sym1 === sym2); // false
+		</code></pre>
+		<p>Это свойство символов дает большой простор для написания хорошего кода.</p>
+		<p>Мы рассмотрели создание «локальных» символов.</p>
+		<p><b>Локальный символ</b> — символ, сохраненный в переменную и недоступный никак иначе.</p>
+	</section>
+
+	<section class="slide">
+		<h2></h2>
+		<p style="margin-bottom: 0.7em;">Бывают еще «глобальные» символы. Они хранятся в «специальном» реестре и могут быть получены (или созданы) по имени.</p>
+		<pre><code class="language-js line-numbers">
+			// создание символа в реестре
+			let name = Symbol.for("name");
+
+			// символ уже есть, чтение из реестра
+			console.log(Symbol.for("name") == name ); // true
+		</code></pre>
+		<p><b>Глобальный символ</b> — символ, сохраненный в глобальном реестре и доступный через него.</p>
+	</section>
+
+	<section class="slide">
+		<h2>Как использовать символы</h2>
+		<p style="margin-bottom: 0.7em;">Есть несколько сфер применения символов. Но чаще всего их используют как ключи для полей объекта.</p>
+		<pre><code class="language-js line-numbers">
+			let isAdmin = Symbol("isAdmin");
+
+			let user = {
+				name: "Вася",
+				[isAdmin]: true
+			};
+
+			console.log(user[isAdmin]); // true
+		</code></pre>
+		<p>Это как раз решает проблему, рассмотренную в начале. Так как, даже если авторы языка (или авторы другой библиотеки) добавят ЛЮБОМУ объекту поле <code>isAdmin</code>, это не повляет на наш код.</p>
+	</section>
+
+	<section class="slide">
+		<h2></h2>
+		<p style="margin-bottom: 0.7em;"><b style="color: red;">Важно!</b> Поля, имена которых являются символами, не участвуют<br> в итерации.</p>
+		<pre style="margin-bottom: -0.1em; padding-right: 0.1px; margin-bottom: 0.7em;"><code class="language-js line-numbers">
+			let user = {
+				name: "Вася",
+				age: 30,
+				[Symbol.for("isAdmin")]: true
+			};
+
+			// в цикле for..in также не будет символа
+			console.log(Object.keys(user)); // name, age
+
+			// доступ к свойству через глобальный символ — работает
+			console.log(user[Symbol.for("isAdmin")]);
+		</code></pre>
+		<p>Благодаря использованию символов у разработчиков языка появляется возможность развивать язык, гарантированно не ломая уже существующий код.</p>
+	</section>
+
+	<section class="slide">
+		<h2></h2>
+		<p style="margin-bottom: 0.7em;">Иногда нам все же нужно узнать, какие есть поля в объекте (включая символы). Для этого есть специальный синтаксис.</p>
+		<pre><code class="language-js line-numbers">
+			let obj = {
+				iterator: 1,
+				[Symbol.iterator]: function() {}
+			}
+
+			// один символ в объекте
+			console.log(Object.getOwnPropertySymbols(obj));
+			// Symbol(Symbol.iterator)
+
+			// и одно обычное свойство
+			console.log(Object.getOwnPropertyNames(obj));
+			// iterator
+		</code></pre>
+	</section>
+
+	<section class="slide">
+		<h2>Пример использования</h2>
+		<p>Пусть нам строго необходимо добавить к прототипу массива новый метод <code>head</code>, который возвращал бы первый элемент массива<br> или <code>undefined</code>. Просто в прямую добавлять его опасно, вдруг когда-нибудь появится такой метод в стандарте языка.</p>
+		<p style="margin-bottom: 0.7em;">Создадим символ и используем его:</p>
+		<pre><code class="language-js line-numbers">
+			const headSymbol = Symbol.for("array-head");
+
+			Array.prototype[headSymbol] = function() {
+			  console.log(this[0])
+			}
+		</code></pre>
+	</section>
+
+	<section class="slide">
+		<h2></h2>
+		<p style="margin-bottom: 0.7em;">Теперь мы можем использовать его в любом месте абсолютно безопасно.</p>
+		<pre><code class="language-js line-numbers">
+			const head = Symbol.for("array-head");
+
+			const arr1 = [0, 1, 2, 3, 4];
+			console.log(arr1[head]()); // 0
+
+			const arr2 = [];
+			console.log(arr2[head]()); // undefined
+		</code></pre>
+		<p>Все работает, как мы и планировали!</p>
+	</section>
+
+	<section class="slide">
+		<h2>Итого</h2>
+		<ul style="font-size: 0.88em;">
+			<li>Символы — примитивный тип, предназначенный для уникальных идентификаторов.</li>
+			<li>Все символы уникальны. Даже символы с одинаковым именем не равны друг другу.</li>
+			<li>Существует глобальный реестр символов, доступных через метод Symbol.for("name"). Для глобального символа можно получить имя вызовом Symbol.keyFor(sym).</li>
+			<li>Основная область использования символов — это системные свойства объектов, которые задают разные аспекты их поведения. Системные символы позволяют разработчикам стандарта добавлять новые «особые» свойства объектов, при этом<br> не резервируя соответствующие строковые значения.</li>
+			<li>Системные символы доступны как свойства функции Symbol, например Symbol.iterator.</li>
+			<li>Можно создавать и свои символы, использовать их в объектах. Записывать их<br> как свойства Symbol, разумеется, нельзя. Если нужен глобально доступный символ, то используется Symbol.for(имя).</li>
+		</ul>
+	</section>
+
+	<section id="iterators" class="slide chapter">
+	  <h2>Итераторы</h2>
+	</section>
+
+	<section class="slide">
+		<h2>Итераторы</h2>
+		<p>Итерируемые объекты — это особенные структуры, которые позволяют перебирать содержимое в цикле. Еще их называют «перебираемыми» объектами. Такой концепт существует во многих языках, в том числе<br> в JavaScript.</p>
+		<p>Примеры итерируемых объектов: массив, список DOM-узлов.</p>
+		<p>Так же на основе итерируемых объектов построена работа оператора spread <code>f(...args)</code>.</p>
+		<p>Массив — только частный случай итерируемого объекта. Потому перебираемые объекты не обязаны иметь длины <code>length</code> и других характеристик, присущих массивам.</p>
+	</section>
+
+	<section class="slide">
+		<h2>Создаем итератор</h2>
+		<p>С помощью итераторов мы можем добавить «итерируемость» любому объекту. Итак, пусть у нас есть объект, который мы хотим перебрать.</p>
+		<p>Например, <code>range</code> — диапазон чисел от <code>from</code> до <code>to</code>. Нужно, чтобы <code>for (let num of range)</code> «перебирал» этот объект (перечислял числа от <code>from</code> до <code>to</code>).</p>
+		<p style="margin-bottom: 0.7em;">Исходный объект:</p>
+		<pre><code class="language-js line-numbers">
+			let range = {
+				from: 1,
+				to: 5
+			};
+		</code></pre>
+	</section>
+
+	<section class="slide">
+		<h2></h2>
+		<p>Добавим возможность итерироваться по нему. Для этого нужно просто создать в нём метод с названием <code>Symbol.iterator</code> (системный символ). При вызове такого метода перебираемый объект должен возвращать другой объект-итератор, который и осуществляет перебор.<br> У такого объекта должен быть метод <code>next()</code>, который при каждом вызове возвращает очередное значение и проверяет, окончен<br> ли перебор.</p>
+	</section>
+
+	<section class="slide">
+		<h2></h2>
+		<pre style="font-size: 0.5em;"><code class="language-js line-numbers">
+			let range = {
+			  from: 1,
+			  to: 5
+			}
+
+			// сделаем объект range итерируемым
+			range[Symbol.iterator] = function() {
+
+			  let current = this.from;
+			  let last = this.to;
+
+			  // метод должен вернуть объект с методом next()
+			  return {
+			    next() {
+			      if (current <= last) {
+			        return {
+			          done: false,
+			          value: current++
+			        };
+			      } else {
+			        return {
+			          done: true
+			        };
+			      }
+			    }
+
+			  }
+			};
+
+			for (let num of range) {
+			  console.log(num);
+			}
+			// 1, затем 2, 3, 4, 5
+
+			console.log(Math.max(...range)); // 5
+		</code></pre>
+	</section>
+
+	<section class="slide">
+		<h2></h2>
+		<p>Можно сделать и бесконечный итератор. Например, наш объект станет таким при <code>range.to = Infinity</code>. Другие примеры бесконечных итераторов: последовательность случайных чисел, последовательность простых чисел.</p>
+		<p>Ограничений на next не предусмотрено, он может возвращать значения сколько угодно раз.<br> 
+		<b style="color: red;">Внимание!</b> Цикл <code>for..of</code> по такому итератору тоже будет бесконечным, нужно его прерывать в ручном режиме, например, через <code>break</code>.</p>
+	</section>
+
+	<section class="slide">
+		<h2>Итого</h2>
+		<ul>
+			<li>Итератор — объект, предназначенный для перебора другого объекта.</li>
+			<li>У итератора должен быть метод <code>next()</code>, возвращающий объект<br> <code>{ done: Boolean, value: any }</code>, где <code>value</code> — очередное значение, а <code>done: true</code> указывает на окончание итерации.</li>
+			<li>Метод <code>Symbol.iterator</code> предназначен для получения итератора<br> из объекта. Цикл <code>for..of</code> делает это неявно, но можно и вызвать его напрямую.</li>
+			<li>В JS есть много мест, где вместо массива используются более абстрактные итерируемые объекты, например оператор <code>spread ...</code>.</li>
+			<li>Многие встроенные объекты, такие как массивы и строки, являются итерируемыми.</li>
+		</ul>
+	</section>
+
+	<section id="generator" class="slide chapter">
+	  <h2>Генератор</h2>
+	</section>
+
+	<section class="slide">
+		<h2>Генераторы</h2>
+		<p>В Java Script существуют функции, выполнение которых может быть приостановлено. После этого возвращается промежуточный результат<br> и функция продолжает выполнение, когда это необходимо.<br> Они называются <b>генераторами</b>.</p>
+		<p style="margin-bottom: 0.7em;">Пример функции, создающей генератор:</p>
+		<pre><code class="language-js line-numbers">
+			function* generateNumbers() {
+				yield 111;
+				yield 222;
+				return 333;
+			}
+		</code></pre>
+	</section>
+
+	<section class="slide">
+		<h2></h2>
+		<p style="margin-bottom: 0.7em;">Если запустить <code>generateNumbers</code>, то ее тело не выполнится.<br> Она вернет объект-генератор, которым мы и будем пользоваться<br> в дальнейшем.</p>
+		<pre><code class="language-js line-numbers">
+			function* generateNumbers() {
+				yield 111;
+				yield 222;
+				return 333;
+			}
+
+			let generator = generateNumbers();
+
+			let one = generator.next();
+
+			console.log(one); // { value: 111, done: false }
+		</code></pre>
+		<p>После этого функция останавливается на время и ожидает следующего вызова <code>next()</code>.</p>
+	</section>
+
+	<section class="slide">
+		<h2>Генератор — итератор</h2>
+		<p style="margin-bottom: 0.7em;">Любой генератор является итерируемым, его можно перебирать через <code>for..of</code>:</p>
+		<pre style="font-size: 0.75em"><code class="language-js line-numbers">
+			function* generateNumbers() {
+				yield 111;
+				yield 222;
+				return 333;
+			}
+
+			let generator = generateNumbers();
+
+			for(let value of generator) {
+			console.log(value);
+			}
+			// 111, затем 222
+		</code></pre>
+		<p>Обратите внимание, что 3 не выведется. Так как <code>for..of</code> проходит только по тем значениям, где <code>done: false</code>, а у последнего значения <code>done: true</code>.</p>
+	</section>
+
+	<section class="slide">
+		<h2>Тонкие материи генераторов</h2>
+		<p style="margin-bottom: -0.8em;"><b>Композиция</b></p>
+		<p style="margin-bottom: 0.7em;">Важно вкладывать один генератор в другой. Это называется композицией.</p>
+		<pre style="font-size: 0.53em"><code class="language-js line-numbers">
+			function* generateSequence(start, end) {
+			  for (let i = start; i <= end; i++) yield i;
+			}
+
+			function* generateAlphaNum() {
+
+			  // 0..9
+			  yield* generateSequence(48, 57);
+
+			  // A..Z
+			  yield* generateSequence(65, 90);
+
+			  // a..z
+			  yield* generateSequence(97, 122);
+
+			}
+
+			let str = '';
+
+			for(let code of generateAlphaNum()) {
+			  str += String.fromCharCode(code);
+			}
+
+			console.log(str); // 0..9A..Za..z
+		</code></pre>
+	</section>
+
+	<section class="slide">
+		<h2></h2>
+		<p>Работает это самым прямолинейным образом, просто выполняя генераторы по порядку.<br> <b style="color: red;">Внимание!</b> Конструкция <code>yield*</code> применима только к другому генератору.</p>
+	</section>
+
+	<section class="slide">
+		<h2>Генератор — туда и обратно</h2>
+		<p style="margin-bottom: 0.7em;">Иногда требуется не только получать данные, но и отправлять какие-то данные в генератор. В языке предусмотрена такая возможность.</p>
+		<pre style="font-size: 0.8em"><code class="language-js line-numbers">
+			function* gen() {
+			  // Передать вопрос во внешний код и подождать ответа
+			  let result = yield "2 + 2?";
+
+			  console.log(result);
+			}
+
+			let generator = gen();
+
+			let question = generator.next().value;
+			// "2 + 2?"
+
+			setTimeout(() => generator.next(4), 2000);
+
+			// Через  2 секунды выведется 4
+		</code></pre>
+	</section>
+
+	<section class="slide">
+		<h2></h2>
+		<p style="margin-bottom: 0.7em;">Иногда может потребоваться вместо передачи генератору значения возбудить ошибку. Есть и такая возможность.</p>
+		<pre style="font-size: 0.9em"><code class="language-js line-numbers">
+			function* gen() {
+			  try {
+			    // в этой строке возникнет ошибка
+			    let result = yield "Сколько будет 2 + 2?";
+
+			    console.log("выше будет исключение ^^^");
+			  } catch(e) {
+			    console.log(e); // выведет ошибку
+			  }
+			}
+
+			let generator = gen();
+
+			let question = generator.next().value;
+
+			generator.throw(new Error("не знаю"));
+		</code></pre>
+	</section>
+
+	<section class="slide">
+		<h2>Задача</h2>
+		<p>Боевая задача — дан CSV-файл со списком товаров магазина. Необходимо для каждой строки выполнять ряд действий, запрашивая подтверждение у пользователя.</p>
+		<p style="margin-bottom: 0.7em;">Как мы хотим использовать генератор?</p>
+		<pre><code class="language-js line-numbers">
+			for(let line of readFileByLines()) {
+			  // Разные манипуляции над строкой.
+			}
+		</code></pre>
+	</section>
+
+	<section class="slide">
+		<h2></h2>
+		<p style="margin-bottom: 0.7em;">Теперь нужно реализовать функцию <code>readFileByLines</code>.</p>
+		<pre><code class="language-js line-numbers">
+			function* readFileByLines() {
+			  let currentLine = 0;
+			  
+			  const lineCount = getLineCount();
+			  // Возвращает число строк в файле
+			  
+			  while (currentLine < LineCount) {
+			    yield readLine(currentLine);
+			    // Получает указанную строку из файла
+			    currentLine += 1;
+			  }
+			}
+		</code></pre>
+		<p>Теперь наше решение работает как и ожидается. Отлично!</p>
+	</section>
+
+	<section class="slide">
+		<h2>Итого</h2>
+		<ul>
+			<li>Генераторы создаются при помощи особенных функций — функций-генераторов <code>function*(…) {…}</code>.</li>
+			<li>Внутри генераторов и только внутри них разрешён оператор yield,<br> он отдает одно из значений «наружу».</li>
+			<li>Мы можем передать данные в генераторе при вызове метода <code>next</code>.</li>
+		</ul>
+	</section>
+
+	<section id="resume" class="slide chapter">
+	  <h2>Резюме</h2>
+	</section>
+
+	<section class="slide">
+		<h2></h2>
+		<p><b style="font-size: 1.2em;">Зачем нужны символы? Почему нельзя просто писать<br> как раньше?</b></p>
+		<p class="next" style="margin-bottom: 2.5em;">Они позволяют избегать коллизий имен между разработчиками библиотек/разработчиками языка.</p>
+
+		<p><b style="font-size: 1.2em;">Зачем нужны итераторы, можно же делать всё<br> «циклами и массивами»</b></p>
+		<p class="next">Они позволяют писать более «семантичный код», который проще читать<br> и понимать другим людям или самому разработчику через некоторое время.</p>
+	</section>
+
+	<section class="slide">
+		<h2></h2>
+		<p><b style="font-size: 1.2em;">Когда мне может понадобиться создавать итератор?</b></p>
+		<p class="next" style="margin-bottom: 2.5em;">Когда создаю любой объект, по которому хочется итерироваться.</p>
+
+		<p><b style="font-size: 1.2em;">Чем итераторы отличаются от генераторов?</b></p>
+		<p class="next" style="margin-bottom: 2.5em;">Генератор — это подвид итератора, реализует его интерфейс.</p>
+		
+		<p><b style="font-size: 1.2em;">Когда использовать итераторы, а когда генераторы?</b></p>
+		<p class="next">Итераторы — когда необходимо итерироваться по любому объекту. Генераторы — когда нужно приостанавливать выполнение функции по той или иной причине.</p>
+
+	</section>
+
+	<section class="slide last">
+	  <p class="thanx">Ваши вопросы?</p>
+	  <address>Игорь Камышев</address>
+	  <ul class="contacts">
+		<li><a href="mailto:igor@kamyshev.me"><i class="fa fa-envelope" aria-hidden="true"></i>igor@kamyshev.me</a></li>
+		<li><a href="igorkamyshev"><i class="fa fa-telegram" aria-hidden="true"></i>igorkamyshev</a></li>
+	  </ul>
+	</section>
+
+	<div class="progress"></div>
+	<script src="../node_modules/shower-core/shower.min.js"></script>
+	<script src="../assets/js/prism.js?v=2"></script>
+	<script src="https://use.fontawesome.com/8c6816e790.js"></script>
+  </body>
+</html>

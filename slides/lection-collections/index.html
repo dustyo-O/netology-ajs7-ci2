@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>Контейнеры</title>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../node_modules/shower-ribbon/styles/screen-16x10.css">
+    <link rel="stylesheet" href="../assets/css/prism.css">
+    <link rel="stylesheet" href="../assets/css/prism-fix.css">
+    <link rel="stylesheet" href="../assets/css/netology.css">
+    <link rel="stylesheet" href="../assets/css/fake-browser.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <style>
+        pre {
+            font-size: 70%;
+        }
+
+        .demo {
+            font-size: 50%;
+            float: right;
+        }
+
+        .accent {
+            color: #48bc36;
+        }
+
+        .exmpl-button {
+          display: inline-block;
+          text-align: center;
+          text-decoration: none;
+          color: #fff;
+          background-color: tomato;
+          padding: 15px 20px;
+          min-width: 100px;
+          line-height: 1;
+          font-size: 16px;
+        }
+    </style>
+</head>
+<body class="shower list">
+  <header class="caption">
+      <h1>Контейнеры</h1>
+      <p>Эдгар Нуруллин</p>
+  </header>
+
+  <section class="slide" id="cover">
+      <h2>Контейнеры</h2>
+      <p style="font-size: 20px;">
+          <img src="../assets/i/nurullin.png" alt="Эдгар Нуруллин" class="avatar">
+          Эдгар Нуруллин <span class="position">Фронтенд разработчик OneTwoTrip</span>
+      </p>
+  </section>
+  <section class="slide author" id="author" style="padding-top: 110px;">
+      <img src="../assets/i/nurullin.png" alt="Эдгар Нуруллин">
+      <h1>Эдгар Нуруллин</h1>
+      <p class="position">Фронтенд разработчик OneTwoTrip</p>
+      <ul class="contacts">
+        <li><a href="https://t.me/EdgarNur"><i class="fab fa-telegram"></i>EdgarNur</a></li>
+      </ul>    
+  </section>
+
+  <section class="slide" id="roadmap">
+    <h2>План занятия</h2>
+    <ol>
+      <li><a href="#set">Set</a></li>
+      <li><a href="#map">Map</a></li>
+      <li><a href="#weak">WeakSet, WeakMap</a></li>
+    </ol>
+  </section>  
+
+  <section class="slide chapter" style="background-color: #f5c30f;">
+    <h2 class="shout" style="line-height: 40%">ES6<br><span style="font-size: 46px;">Контейнеры</span></h2>
+  </section>
+  
+  <section class="slide chapter" id="set">
+    <h2>Контейнер Set</h2>
+  </section>
+  
+  <section class="slide">
+    <h2>Пример</h2>
+    <p style="margin-bottom: 50px;">Мы делаем интернет-магазин и нам нужно реализовать фильтр по размерам. Для этого нужно определить все существующие значения поля <code>size</code> из массива объектов <code>products</code>.</p>
+    <pre>
+      <code class="language-javascript line-numbers">
+        const products = [
+          {
+             name: 'balenciaga triple s',
+             sizes: [39, 42, 45],
+          }, 
+          ... 
+        ];
+      </code>
+    </pre>
+  </section>
+  
+  <section class="slide">
+    <h2>Быстрое решение</h2>
+    <p style="margin-bottom: 50px;">Первая мысль: положить все размеры в один массив.</p>
+    <pre>
+      <code class="language-javascript line-numbers">
+        const sizes = products.reduce((result, product) => {
+          result.push(...product.sizes);
+
+          return result;
+        }, []);
+      </code>
+    </pre>
+  </section>
+  
+  <section class="slide">
+    <h2>Анализ решения</h2>
+    <p style="margin-bottom: 50px;">Работает не совсем корректно, ведь в итоговом массиве будут дубли.</p>
+    <pre>
+      <code class="language-javascript line-numbers">
+        console.log(sizes); // [39, 42, 45, 39, 42, 43]
+      </code>
+    </pre>
+    <p style="margin-top: 50px;">Пробежимся по массиву <code>sizes</code> ещё раз для устранения дублей.</p>    
+  </section>
+  
+  <section class="slide">
+    <h2>Убираем дубли</h2>
+    <p style="margin-bottom: 50px;">Воспользуемся свойством объекта — уникальностью ключей.</p>
+    <pre>
+      <code class="language-javascript line-numbers">
+        const uniqueSizes = sizes.reduce((result, size) => {
+          result[size] = true;
+
+          return result;    
+        }, {});
+
+        console.log(Object.keys(uniqueSizes)); // ['39', '42', '43', '45'] уже строки!
+      </code>
+    </pre>
+  </section>
+  
+  <section class="slide">
+    <h2>Итоговое решение</h2>
+    <pre>
+      <code class="language-javascript line-numbers">
+        const sizes = products.reduce((result, product) => {
+          result.push(...product.sizes);
+
+          return result;
+        }, []);
+
+        const uniqueSizes = sizes.reduce((result, size) => {
+          result[size] = true;
+
+          return result;    
+        }, {});
+
+        console.log(Object.keys(uniqueSizes)); // ['39', '42', '43', '45'] уже строки!
+      </code>
+    </pre>
+  </section>  
+  
+  <section class="slide">
+    <h2>Недостатки получившегося решения</h2>
+    <ul>
+      <li>сложный для понимания алгоритм;</li>
+      <li>поменялся тип значения размера (стал строкой).</li>
+    </ul>
+    <p>Как исправить? Использовать нативный класс <code>Set</code>.</p>
+  </section>  
+ 
+  <section class="slide">
+    <h2>Упростим существующий код</h2>
+    <p style="margin-bottom: 50px;">Упростим существующий код, применив <code>Set</code>.</p>
+    <pre>
+      <code class="language-javascript line-numbers">
+        const sizes = products.reduce((result, product) => {
+            product.sizes.forEach(size => result.add(size));
+
+            return result;
+        }, new Set());
+
+        console.log([...sizes]); // // [39, 42, 43, 45] числа!
+      </code>
+    </pre>
+    <p style="margin-top: 50px;">Размеры не поменяли тип (остались числами)!</p>    
+  </section>
+  
+  <section class="slide">
+    <h2>Что за новый тип коллекций — <code>Set?</code></h2>
+    <p style="margin-bottom: 50px;">Это класс, позволяющий хранить только уникальные значения какого-либо типа.</p>
+    <pre>
+      <code class="language-javascript line-numbers">
+        const set = new Set([1, 2, 2]);
+        console.log(set); // Set(2) {1, 2}
+      </code>
+    </pre>
+    <p style="margin-top: 10px; margin-bottom: 10px;">но</p>
+    <pre>
+      <code class="language-javascript line-numbers">
+        const set = new Set([1, 2, '2']);
+        console.log(set); // Set(2) {1, 2, '2'}
+      </code>
+    </pre>
+    <p style="margin-top: 50px;">Важно, что значения одного типа.</p>   
+  </section>   
+  
+  <section class="slide">
+    <h2>Нюанс работы с объектами</h2>
+    <pre>
+      <code class="language-javascript line-numbers">
+        const set = new Set([{foo: 'bar'}, {foo: 'bar'}]);
+        console.log(set.size); // 2
+      </code>
+    </pre>
+    <p style="margin-top: 10px; margin-bottom: 10px;">Потому что объекты в JS сравниваются по ссылкам!</p>
+    <pre>
+      <code class="language-javascript line-numbers">
+        {} === {} // false
+        {} == {} // false
+      </code>
+    </pre> 
+  </section>    
+  
+  <section class="slide">
+    <h2>Алгоритм сравнения</h2>
+    <p style="margin-bottom: 50px;">Элементы сравниваются подобно оператору <code>===</code>, но есть исключение на <code>NaN</code>.</p>
+    <pre>
+      <code class="language-javascript line-numbers">
+        NaN === NaN // false
+
+        const set = new Set([NaN]);
+
+        set.size // 1
+        set.has(NaN) // true
+      </code>
+    </pre>  
+  </section>
+  
+  <section class="slide">
+    <h2>Интерфейс класса Set</h2>
+    <pre>
+      <code class="language-javascript line-numbers">
+        const set = new Set();
+        set.add('foo')
+        set.has('foo') // true
+        set.size // 1
+
+        set.delete('foo') // true, вернется false если изначально не было поля 'foo'
+        set.has('foo') // false
+
+        set.clear();
+        set.size // 0
+      </code>
+    </pre>  
+  </section>
+  
+  <section class="slide">
+    <h2>Итерация по массиву</h2>
+    <pre>
+      <code class="language-javascript line-numbers">
+        const set = new Set([39, 42, 41]);
+
+        // 1 способ - как итератор
+        for (const size of set) {
+          console.log(size); 
+        }
+
+        // 2 способ - через метод forEach 
+        set.forEach(size => console.log(size))
+      </code>
+    </pre>  
+  </section>
+  
+  <section class="slide">
+    <h2>Выводы</h2>
+    <p style="margin-top: 120px;">Зачем нужен контейнер <code>Set</code>, если у нас уже есть массивы?</p>
+    <p><strong>👀 Пригодится, если необходимо выделить только уникальные значения.</strong></p>
+  </section>       
+  
+  <section class="slide chapter" id="map">
+    <h2>Контейнер Map</h2>
+  </section>  
+
+  <section class="slide">
+    <h2 style="margin-bottom: 5px;">Пример</h2>
+    <p style="margin-bottom: 10px; font-size: 0.8em;">Продолжаем делать интернет-магазин. Нам нужно сохранять дополнительную информацию о пользователе.</p>
+    <pre style="font-size: 0.6em;">
+      <code class="language-javascript line-numbers">
+        const privateData = {};
+        const Client {
+          constructor(name, phone, address) {
+            this.name = name;
+            this.phone = phone;
+            
+            privateData.push({
+              name,
+              phone,
+              address,
+            });
+          }
+          getAddress() {
+            // ...
+          }
+        }
+      </code>
+    </pre>
+  </section>
+  
+  <section class="slide">
+    <h2>Реализация getAddress</h2>
+    <pre>
+      <code class="language-javascript line-numbers">
+        getAddress() {
+          const isSuitable = data => (
+            data.phone === this.phone &&
+            data.name === this.name
+          );
+
+          const suspected = privateData.filter(isSuitable);
+
+          return suspected[suspected.length - 1].address;
+        }
+      </code>
+    </pre>
+  </section>  
+  
+  <section class="slide">
+    <h2>Недостатки получившегося решения</h2>
+    <ul>
+      <li>сложный для понимания алгоритм;</li>
+      <li>завязка на необходимое число полей (phone, name) для идентификации, при расширении кода можно потерять.</li>
+    </ul>
+    <p>Как исправить? Использовать нативный класс <code>Map</code>.</p>
+  </section>
+  
+  <section class="slide">
+    <h2>Упростим существующий код</h2>
+    <p style="margin-bottom: 10px;">Упростим существующий код, применив <code>Map</code>.</p>
+    <pre>
+      <code class="language-javascript line-numbers">
+        const privateData = new Map();
+
+        class Client {
+          constructor(name, phone, address) {
+            this.name = name;
+            this.phone = phone;
+
+            privateData.set(this, { name, phone, address });
+          }
+
+          getAddress() {
+            return privateData.get(this).address;
+          }
+        }
+      </code>
+    </pre>   
+  </section>   
+  
+  <section class="slide">
+    <h2>Что за новый тип коллекций — <code>Map?</code></h2>
+    <p>Это класс, позволяющий хранить хранить пары ключ–значение.</p>
+    <p>Его особенности:</p>
+    <ul style="margin-bottom: 50px;">
+      <li>любое значение может быть ключом (даже объект);</li>
+      <li>сохраняет порядок вставки.</li>
+    </ul>
+    <pre>
+      <code class="language-javascript line-numbers">
+        const map = new Map([['foo', 1], ['bar', 2]]);
+        console.log(map); // Map(2) {"foo" => 1, "bar" => 2}
+      </code>
+    </pre>      
+  </section>   
+  
+  <section class="slide">
+    <h2>Объект как ключ</h2>
+    <pre>
+      <code class="language-javascript line-numbers">
+        const map = new Map();
+        const buyerContacts = {
+          phone: 123456789, 
+          email: 'test@test.ru',
+        };
+        map.set(buyerContacts, 'Ivan');
+
+        map.get(buyerContacts); // Ivan
+      </code>
+    </pre>   
+  </section>
+  
+  <section class="slide">
+    <h2>Нюанс при работе с объектами в качестве ключей</h2>
+    <pre>
+      <code class="language-javascript line-numbers">
+        const map = new Map([
+          [{ foo: 1 }, 'bar'], 
+          [{ foo: 1 }, 'bar'],
+        ]);
+
+        console.log(map.size); // 2
+      </code>
+    </pre>
+    <p style="margin-top: 10px; margin-bottom: 10px;">Опять-таки, потому что объекты в JS сравниваются по ссылкам!</p>
+    <pre>
+      <code class="language-javascript line-numbers">
+        {} === {} // false
+        {} == {} // false
+      </code>
+    </pre> 
+  </section>    
+  
+  <section class="slide">
+    <h2>Алгоритм сравнения</h2>
+    <p style="margin-bottom: 50px;">Элементы сравниваются при поиске подобно оператору <code>===</code>, но есть исключение на <code>NaN</code>.</p>
+    <pre>
+      <code class="language-javascript line-numbers">
+        NaN === NaN; // false
+
+        const map = new Map([NaN, 'test']);
+
+        map.size; // 1
+        map.get(NaN); // test
+      </code>
+    </pre>  
+  </section>
+  
+  <section class="slide">
+    <h2>Сохранение порядка вставки</h2>
+    <p style="margin-bottom: 50px;">Итерируется в том же порядке что и добавлялись ключи.</p>
+    <pre>
+      <code class="language-javascript line-numbers">
+        const map = new Map();
+        map.set('foo', 1);
+        map.set('bar', 2);
+
+        map.forEach((item) => {
+          console.log(item);
+        });
+        // 1
+        // 2
+      </code>
+    </pre>  
+  </section>
+  
+  <section class="slide">
+    <h2>Интерфейс класса <code>Map</code></h2>
+    <pre>
+      <code class="language-javascript line-numbers">
+        const map = new Map();
+        map.set('foo', 1);
+        map.set('bar', 2);
+        map.has('foo'); // true
+        map.size; // 2
+
+        [...map.keys()]; // ['foo', 'bar']
+
+        map.delete('foo'); // true
+        // вернется false если изначально не было поля 'foo'
+
+        map.has('foo'); // false
+
+        map.clear();
+        map.size; // 0
+      </code>
+    </pre>  
+  </section>
+  
+  <section class="slide">
+    <h2>Выводы</h2>
+    <p style="margin-top: 120px;">Зачем нужен контейнер <code>Map</code>, если у нас уже есть объекты?</p>
+    <p><strong>💡 Пригодится, если не хватает строковых ключей и необходимо знать порядок вставки ключей.</strong></p>
+  </section>
+  
+  <section class="slide chapter" id="set">
+    <h2>Weak-контейнеры</h2>
+  </section>  
+  
+  <section class="slide">
+    <h2>Пример</h2>
+    <p style="margin-bottom: 10px;">Вернёмся к предыдущему примеру со скрытой информацией пользователя:</p>
+    <pre>
+      <code class="language-javascript line-numbers">
+        const privateData = new Map();
+        class Client {
+          constructor(name, phone, address) {
+            this.name = name;
+            this.phone = phone;
+            privateData.set(this, { name, phone, address });
+          }
+          getAddress() {
+            return privateData.get(this).address;
+          }
+        }
+      </code>
+    </pre>
+  </section> 
+  
+  <section class="slide">
+    <h2>Пример</h2>
+    <p>Можно заметить, что если instance <code>Client</code> будет удален, то информация по нему в <code>privateData</code> останется в памяти, так как есть ссылка из <code>privateData</code>.</p>
+    <p>Решение: использовать <code>WeakMap</code>.</p>
+  </section>
+  
+  <section class="slide">
+    <h2><code>WeakMap</code>-контейнер</h2>
+    <p>Тот же <code>Map</code>-контейнер, содержащий пары ключ–значение, но с особенностями:</p>
+    <ul>
+      <li>ключом могут быть только объекты;</li>
+      <li>не припятствует сборщику мусора.</li>
+    </ul>
+  </section> 
+  
+  <section class="slide">
+    <h2>Взаимодействие сборщика мусора и WeakMap - контейнера</h2>
+    <p style="margin-bottom: 10px;">Из примера ранее —</p>
+    <pre>
+      <code class="language-javascript line-numbers">
+        const privateData = new Map();
+        class Client {
+          constructor(name, phone, address) {
+            this.name = name;
+            this.phone = phone;
+            privateData.set(this, { name, phone, address });
+          }
+          getAddress() {
+            return privateData.get(this).address;
+          }
+        }
+      </code>
+    </pre>  
+  </section>
+  
+  <section class="slide">
+    <h2>Взаимодействие сборщика мусора и WeakMap - контейнера</h2>
+    <p>Получаем, что при удалении экземпляра <code>Client</code>, удалится информация из <code>privateData</code>.</p>    
+  </section>   
+  
+  <section class="slide">
+    <h2>Особенность ключей в <code>WeakMap</code></h2>
+    <p>Ключи <code>WeakMap</code> не перечисляемы, в силу отстутствия борьбы со сборщиком мусора (ссылки являются “слабыми”).</p>
+    <p>Если нужен список ключей, придется реализовывать отдельно.</p>
+  </section>
+  
+  <section class="slide">
+    <h2>Кратко о <code>WeakSet</code></h2>
+    <p>Тот же <code>Set</code>-контейнер, содержащий уникальные значения, но с особенностями:</p>
+    <ul>
+      <li>в качестве значений могут быть только объекты;</li>
+      <li>не припятствует сборщику мусора.</li>
+    </ul>
+    <p>В общем, так же, как и <code>Map</code>.</p>
+  </section>
+  
+  <section class="slide">
+    <h2>Выводы</h2>
+    <p style="margin-top: 120px;">Зачем нужны <code>Weak</code>-контейнеры?</p>
+    <p><strong>👍 По сравнению с другими контейнерами (<code>Set</code> и <code>Map</code>), реализуют “слабые” связи, и, не препятствуя сборщику мусора, экономят память, при этом еще и упрощая код.</strong></p>
+  </section>
+  
+  
+  <section class="slide">
+    <h2>Итоги</h2>
+    <p>Сегодня мы с вами рассмотрели достаточно много важных вещей:</p>
+    <ol>
+      <li><strong>Set</strong><br>
+        Когда необходимо выделить только уникальные значения.
+      </li>
+      <li><strong>Map</strong><br>
+        Когда не хватает строковых ключей и необходимо знать порядок вставки ключей.
+      </li>
+      <li><strong>WeakSet, WeakMap</strong><br>
+        Когда нужно не препятствовать сборщику мусора и сэкономить память.
+      </li>
+    </ol>
+  </section>  
+  
+  <section class="slide last">
+    <p class="thanx">Задавайте вопросы и напишите отзыв о лекции!</p>
+    <address>Эдгар Нуруллин</address>
+    <ul class="contacts">
+      <li><a href="https://t.me/EdgarNur"><i class="fab fa-telegram"></i>EdgarNur</a></li>
+    </ul>
+  </section>  
+
+<div class="progress"></div>
+<script src="../node_modules/shower-core/shower.min.js"></script>
+<script src="../assets/js/prism.js?v=2"></script>
+<script src="https://use.fontawesome.com/30b5a52164.js"></script>
+</body>
+</html>

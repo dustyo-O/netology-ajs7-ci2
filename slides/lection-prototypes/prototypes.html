@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>Прототипы и конструкторы</title>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="node_modules/shower-ribbon/styles/screen-16x10.css">
+    <link rel="stylesheet" href="../assets/css/prism.css">
+    <link rel="stylesheet" href="../assets/css/prism-fix.css">
+    <link rel="stylesheet" href="../assets/css/netology.css">
+    <link rel="stylesheet" href="../assets/css/fake-browser.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <style>
+        pre {
+            font-size: 70%;
+        }
+
+        .demo {
+            font-size: 50%;
+            float: right;
+        }
+
+        .accent {
+            color: #48bc36;
+        }
+
+        .exmpl-button {
+          display: inline-block;
+          text-align: center;
+          text-decoration: none;
+          color: #fff;
+          background-color: tomato;
+          padding: 15px 20px;
+          min-width: 100px;
+          line-height: 1;
+          font-size: 16px;
+        }
+      
+        .dialog .question {
+          display: block;
+          width: 80%;
+          margin-right: auto;
+          padding: 20px;
+          border-radius: 0 20px 20px 20px;
+          background-color: #fff;
+          border: 2px solid #00acf2;
+        }
+        .dialog .answer {
+          display: block;
+          width: 80%;
+          margin-left: auto;
+          padding: 20px;
+          border-radius: 20px 20px 0 20px;
+          background-color: #00acf2;
+          color: #fff;
+        }    
+  </style>  
+  
+</head>
+<body class="shower list">
+  <header class="caption">
+      <h1>Прототипы и конструкторы</h1>
+      <p>Эдгар Нуруллин</p>
+  </header>
+
+  <section class="slide" id="cover">
+      <h2>Прототипы и конструкторы</h2>
+      <p style="font-size: 20px;">
+          <img src="../assets/i/nurullin.png" alt="Эдгар Нуруллин" class="avatar">
+          Эдгар Нуруллин <span class="position">Фронтенд разработчик OneTwoTrip</span>
+      </p>
+  </section>
+  <section class="slide author" id="author" style="padding-top: 110px;">
+      <img src="../assets/i/nurullin.png" alt="Эдгар Нуруллин">
+      <h1>Эдгар Нуруллин</h1>
+      <p class="position">Фронтенд разработчик OneTwoTrip</p>
+      <ul class="contacts">
+        <li><a href="https://t.me/EdgarNur"><i class="fab fa-telegram"></i>EdgarNur</a></li>
+      </ul>    
+  </section>
+
+  <section class="slide" id="roadmap">
+    <h2>План занятия</h2>
+    <ol>
+      <li><a href="#constructors">Конструкторы</a></li>
+      <li><a href="#prototypes">Использование прототипов</a></li>
+      <li><a href="#context">Привязка контекста</a></li>
+      <li><a href="#documentation">Документирование кода</a></li>
+    </ol>
+  </section>  
+
+  <section class="slide chapter" id="constructors">
+    <h2>Конструкторы</h2>
+  </section>
+  
+  <section class="slide">
+    <h2>Создание объектов через литералы</h2>
+    <p style="margin-bottom: 40px;">Предположим, нужно создать объект товара на странице. Можно использовать литералы:</p>
+    <pre>
+      <code class="language-javascript line-numbers">
+        const product = {
+          price: 340,
+          name: 'No name t-shirt',
+          category: 't-shirt',
+        };
+
+        if (product.category === 't-shirt') {
+          product.sizeTable = SIZE_TABLES.T_SHIRTS;
+        }
+      </code>
+    </pre>
+  </section>
+  
+  <section class="slide">
+    <h2>Создание объектов через литералы</h2>
+    <p style="margin-bottom: 40px;">Через некоторое время нужно будет написать корзину. Понадобится создавать объекты товаров:</p>
+    <pre>
+      <code class="language-javascript line-numbers">
+        cart.products.map(rawProduct => {
+          const product = {
+            price: rawProduct.price,
+            name: rawProduct.originalName,
+            category: rawProduct.categoryName,
+          };
+
+          if (rawProduct.categoryName === 't-shirt') {
+            product.sizeTable = SIZE_TABLES.T_SHIRTS;
+          }
+        });
+      </code>
+    </pre>
+  </section>  
+  
+  <section class="slide">
+    <h2>Нарушение принципа DRY</h2>
+    <p>Мы видим, что логика создания объекта дублируется, нарушается принцип DRY — Don't repeat youself («Не повторяйся»).</p>
+    <p>В дальнейшем изменение структуры или названий полей будет осложняться.</p>
+    <p><strong>Решение:</strong> выделяем логику создания объекта продукта в функцию.</p>    
+  </section>
+  
+  <section class="slide">
+    <h2>Конструктор</h2>
+    <p style="margin-bottom: 10px;">Конструктор — это функция, инкапсулирующая в себе логику создания объектов определенного типа.</p>
+    <pre>
+      <code class="language-javascript line-numbers">
+        function createProduct(price, name, category) {
+          const product = {
+            price,
+            name,
+            category,
+          };
+          if (category === 't-shirt') {
+            product.sizeTable = SIZE_TABLES.T_SHIRTS;
+          }
+          return product;
+        }
+
+        const product = createProduct(340, 'No name t-shirt', 't-shirt');
+      </code>
+    </pre>
+  </section>   
+  
+  <section class="slide">
+    <h2>Оператор <code>new</code></h2>
+    <p>Оператор <code>new</code> выполняет роль синтаксического сахара при создании объектов.</p>
+    <p style="margin-bottom: 10px;">Вызов конструктора...</p>
+    <pre>
+      <code class="language-javascript line-numbers">
+        const product = createProduct(340, 'No name t-shirt', 't-shirt');
+      </code>
+    </pre>
+    <p style="margin-top: 10px; margin-bottom: 10px;">...визуально упрощается:</p>
+    <pre>
+      <code class="language-javascript line-numbers">
+        const product = new Product(340, 'No name t-shirt', 't-shirt');
+      </code>
+    </pre>
+  </section>   
+  
+  <section class="slide">
+    <h2>Оператор <code>new</code></h2>
+    <p style="margin-bottom: 50px;">Упрощается и конструктор:</p>
+    <pre>
+      <code class="language-javascript line-numbers">
+        function Product(price, name, category) {
+          this.price = price;
+          this.name = name;
+          this.category = category;
+
+          if (category === 't-shirt') {
+            this.sizeTable = SIZE_TABLES.T_SHIRTS;
+          }
+        }
+      </code>
+    </pre>
+  </section>   
+  
+  <section class="slide">
+    <h2>Особенности работы конструкторов с <code>new</code></h2>
+    <p>Особенности работы функций, вызванных через оператор <code>new</code>:</p>
+    <ul>
+      <li>создаётся новый пустой объект;</li>
+      <li>ключевое слово <code>this</code> получает ссылку на этот объект;</li>
+      <li>функция выполняется;</li>
+      <li>возвращается <code>this</code>.</li>
+    </ul>
+    <p><strong><code>this</code> возвращается без явного указания!</strong></p>
+  </section>    
+  
+  <section class="slide">
+    <h2>Выводы</h2>
+    <div class="dialog" style="margin-top: 80px;">
+    <p class="question">Зачем нужны конструкторы, если я могу использовать объектные литералы?</p>
+    <p class="answer">Чтобы инкапсулировать логику создания объекта определенного класса.</p>
+    </div>  
+  </section>
+  
+  <section class="slide">
+    <h2>Выводы</h2>
+    <div class="dialog" style="margin-top: 80px;">
+    <p class="question">Зачем нужны конструкторы, если я потом в любое время могу добавить/удалить свойство?</p>
+    <p class="answer">Такой код будет проще читать другому разработчику, вся логика будет собрана в одном месте.</p>
+    </div>  
+  </section>   
+  
+  <section class="slide chapter" id="prototypes">
+    <h2>Использование прототипов</h2>
+  </section>  
+  
+  <section class="slide">
+    <h2>Добавление методов</h2>
+    <p style="margin-bottom: 50px;">Через некоторое время при написании корзины понадобилось добавить объектам <code>Product</code> метод.</p>
+    <pre>
+      <code class="language-javascript line-numbers">
+        function Product(price, name, category) {
+          this.price = price;
+          // ...
+          this.getShortTitle = () => {
+            return `${this.name} - ${this.price}`
+          };
+        }
+      </code>
+    </pre>
+  </section>    
+  
+  <section class="slide">
+    <h2>Излишние расходы памяти</h2>
+    <p style="margin-bottom: 50px;">Недостаток рассмотренного подхода состоит в том, что если будет множество экземпляров <code>Product</code>, это приведет к дублированию в памяти метода <code>getShortTitle</code>.</p>
+    <pre>
+      <code class="language-javascript line-numbers">
+        const product1 = new Product(...);
+        const product2 = new Product(...);
+
+        product1.getShortTitle === product2.getShortTitle; // false!
+      </code>
+    </pre>
+    <p style="margin-top: 50px;"><strong>Решение:</strong> использовать прототипы.</p>    
+  </section>      
+  
+  <section class="slide">
+    <h2>Вспомним о прототипах</h2>
+    <p style="margin-bottom: 10px;">Все экземпляры <code>Product</code> нужно создать с единым прототипом.</p>
+    <pre>
+      <code class="language-javascript line-numbers">
+        function Product(price, name, category) {
+          this.price = price;
+          // ...
+        }
+        Product.prototype = {
+          getShortTitle: () => {
+            return `${this.name} - ${this.price}`
+          }
+        };
+
+        const product1 = new Product(...);
+        const product2 = new Product(...);
+
+        product1.getShortTitle === product2.getShortTitle; // true!
+      </code>
+    </pre>
+  </section>  
+  
+  <section class="slide">
+    <h2>prototype</h2>
+    <p>Синтаксис <code>Product.prototype</code> позволяет назначать прототип объекта, создаваемого через <code>new Product(...)</code></p>
+  </section>   
+  
+  <section class="slide">
+    <h2>Monkey practice по prototype</h2>
+    <p>Нельзя переопределять в прототипе стандартные методы своими реализациями, например, <code>toString</code>.</p>
+    <p>Это может привести к неочевидным ошибкам и сложности дальнейшего поддержания кода другими разработчиками.</p>
+    <p><strong>Исключение:</strong> полифиллы.</p>    
+  </section>     
+  
+  <section class="slide">
+    <h2>Полифиллы</h2>
+    <p style="margin-bottom: 40px;">В случае, если браузер устаревший и не поддерживает необходимые методы (например, в IE8 не поддерживается getter <code>firstElementChild</code> для DOM элементов), вы можете написать свою реализацию, <strong>обязательно проверив отсутствие нативной реализации</strong>.</p>    
+    <pre>
+      <code class="language-javascript line-numbers">
+        if (document.documentElement.firstElementChild === undefined) {
+          Object.defineProperty(Element.prototype, 'firstElementChild', {
+            get: function() {
+              // код полифилла
+            }
+          });
+        }
+      </code>
+    </pre>
+  </section>   
+  
+  <section class="slide">
+    <h2>Проверка принадлежности к классу</h2>
+    <p>Для проверки принадлежности экземпляра к определенному классу существет оператор <code>instanceof</code>.</p>
+    <p><strong>Важно:</strong> <code>instanceof</code> проверяет всю цепочку прототипов.</p>
+    <p style="margin-bottom: 50px;">Пример использования:</p>    
+    <pre>
+      <code class="language-javascript line-numbers">
+        const product = new Product(...);
+
+        product instanceof Product; // true
+      </code>
+    </pre>
+  </section>    
+  
+  <section class="slide">
+    <h2>Проверка наличия свойства у объекта</h2>
+    <p>Для проверки наличия свойства у объекта, а не у его прототипа, предусмотрен метод протипа объекта <code>hasOwnProperty</code>.</p>
+    <p style="margin-bottom: 50px;">Пример использования:</p>    
+    <pre>
+      <code class="language-javascript line-numbers">
+        product.hasOwnProperty(price); // true
+        product.hasOwnProperty(getShortTitle); // false
+      </code>
+    </pre>
+  </section>   
+  
+  <section class="slide">
+    <h2>Выводы</h2>
+    <div class="dialog" style="margin-top: 80px;">
+      <p class="question">Зачем мне прототипы, если я могу прямо в конструкторе добавлять в объект функции (методы)?</p>
+      <p class="answer">Для экономии памяти, при использовании прототипа у всех представителей класса будет один и тот же экземпляр метода.</p>
+    </div>  
+  </section> 
+  
+  <section class="slide">
+    <h2>Выводы</h2>
+    <div class="dialog" style="margin-top: 80px;">
+      <p class="question">Что будет, если я заменю функцию в прототипе одного из «встроенных» объектов (объектов стандартной библиотеки)?</p>
+      <p class="answer">Возможно появится не предусмотренное поведение кода, в местах, где вы этого не ожидаете.</p>    
+    </div>  
+  </section>     
+  
+  <section class="slide">
+    <h2>Выводы</h2>
+    <div class="dialog" style="margin-top: 100px;">
+      <p class="question">Когда это стоит делать?</p>
+      <p class="answer">Только для реализации полифиллов.</p>    
+    </div>  
+  </section>     
+  
+  <section class="slide">
+    <h2>Выводы</h2>
+    <div class="dialog" style="margin-top: 100px;">   
+      <p class="question">Когда нужно писать свои методы в прототипе?</p>
+      <p class="answer">Если метод будет один и тот же для всех экзепляров класса.</p> 
+    </div>  
+  </section>       
+  
+  <section class="slide chapter" id="context">
+    <h2>Привязка контекста</h2>
+  </section>
+  
+  <section class="slide">
+    <h2>Контекст выполнения функции</h2>
+    <p style="margin-bottom: 0px;"><strong>Context</strong> — значение <code>this</code>, указывающего на объект, которому «принадлежит» текущий исполняемый код.</p>
+    <img src="../assets/pic/prototypes/this.png" style="
+    display: block;
+    width: 250px;
+    border: 1px solid #378e1a;
+    padding: 10px;
+    margin-left: auto;
+    transform: rotate(-5deg);">
+  </section>  
+  
+  <section class="slide">
+    <h2>«Одалживание метода»</h2>
+    <p>Частой типичной ошибкой при работе с методами объектов является потеря контекста.</p>
+    <p style="margin-bottom: 50px;">В таком случае <code>this</code> внутри функции перестает указывать на объект, к которому он привязан.</p>    
+    <pre>
+      <code class="language-javascript line-numbers">
+        const getShortTitle = product.getShortTitle;
+
+        getShortTitle(); // Uncaught TypeError: Cannot read property 'name' of undefined
+      </code>
+    </pre>
+  </section>  
+  
+  <section class="slide">
+    <h2>Потеря контекста выполнения</h2>
+    <p style="margin-bottom: 40px;">В зависимости от способа вызова <code>getShortTitle</code>, <code>this</code> будет указывать на различные объекты.</p>    
+    <pre>
+      <code class="language-javascript line-numbers">
+        product.getShortTitle(); // this -> product
+
+        const getShortTitle = product.getShortTitle;
+        getShortTitle(); // this -> глобальный объект (window, если
+                         // не установлено "use strict"
+      </code>
+    </pre>
+    <p style="margin-top: 40px;">Решение: явная привязка контекста исполнения при помощи <code>bind</code>, <code>call</code> и <code>apply</code>.</p>     
+  </section>   
+  
+  <section class="slide">
+    <h2>Методы call</h2>
+    <p>Метод прототипа <code>function</code>, вызывающий указанную функцию с привязкой контекста (<code>this</code>).</p>
+    <p style="margin-bottom: 10px;">Сигнатура:</p>      
+    <pre>
+      <code class="language-javascript">
+        func.call(context, arg1, arg2, ...)
+      </code>
+    </pre>
+    <p style="margin-top: 10px; margin-bottom: 10px;">Пример использования:</p>
+    <pre>
+      <code class="language-javascript line-numbers">
+        const getShortTitle = product.getShortTitle;
+
+        getShortTitle(); // this -> window
+        getShortTitle.call(product); // this -> product
+      </code>
+    </pre>    
+  </section>    
+  
+  <section class="slide">
+    <h2>Метод apply</h2>
+    <p>Выполняет идентичную с <code>call</code> фунцию, различается сигнатурой.</p>
+    <p style="margin-bottom: 10px;">Сигнатура <code>apply</code>:</p>      
+    <pre>
+      <code class="language-javascript">
+        func.apply(context, [arg1, arg2]);
+      </code>
+    </pre>
+    <p style="margin-top: 10px; margin-bottom: 10px;">Сигнатура <code>call</code>:</p>
+    <pre>
+      <code class="language-javascript">
+        func.call(context, arg1, arg2, ...)
+      </code>
+    </pre>    
+  </section>    
+  
+  <section class="slide">
+    <h2>Метод bind</h2>
+    <p>Метод прототипа <code>function</code>code>, создающий функцию с привязанным контекстом (<code>this</code>code>).</p>
+    <p style="margin-bottom: 10px;">Сигнатура <code>apply</code>:</p>      
+    <pre>
+      <code class="language-javascript">
+        func.bind(context, arg1, arg2, ...)
+      </code>
+    </pre>
+    <p style="margin-top: 10px; margin-bottom: 10px;">Важно: <code>bind</code> вызывает новую функцию!</p>
+    <pre>
+      <code class="language-javascript line-numbers">
+        const getShortTitle = product.getShortTitle;
+
+        const getShortTitle2 = getShortTitle.bind(product); // this -> product
+
+        getShortTitle === getShortTitle2; // false!
+      </code>
+    </pre>    
+  </section>    
+  
+  <section class="slide">
+    <h2>Простая реализация bind</h2>
+    <p style="margin-bottom: 50px;">Для понимания работы можно рассмотреть простую реализацию <code>bind</code> через <code>apply</code>.</p>    
+    <pre>
+      <code class="language-javascript line-numbers">
+        function bind(func, context) {
+          return function() {
+            return func.apply(context, arguments);
+          };
+        }
+      </code>
+    </pre>
+  </section>
+  
+  <section class="slide">
+    <h2>Выводы</h2>
+    <div class="dialog" style="margin-top: 80px;">
+      <p class="question">Что такое <code>bind</code>, <code>apply</code>, <code>call</code> и зачем их использовать?</p>
+      <p class="answer">Методы прототипа <code>Function</code> для привязки контекста исполнения к функции.</p>          
+    </div> 
+  </section>     
+  
+  <section class="slide chapter" id="documentation">
+    <h2>Документирование кода</h2>
+  </section>  
+ 
+  <section class="slide">
+    <h2>Документирование кода</h2>
+    <p>Когда вы работаете в команде, ключевое значение приобретает <strong>knowledge sharing</strong> — распространение знаний между участниками команды.</p>
+    <p>То же самое происходит, когда вы хотите использовать сторонний фреймворк или библиотеку — наличие информации об использовании играет ключевую роль.</p>    
+  </section>
+  
+  <section class="slide">
+    <h2>Пиши код так, чтобы не нужна была документация</h2>
+    <p>Это верно, но в большинстве случаев не отменяет необходимости наличия документации. Давайте рассмотрим, какие инструменты есть в мире JS и научимся ими пользоваться.</p>    
+  </section>     
+  
+  <section class="slide">
+    <h2>Doc comments</h2>
+    <p style="margin-bottom: 30px;">Большинство систем документирования работают схожим образом и предлагают нам блочные комментарии, часть символов в которых интерпретируется специальным образом:</p>    
+    <pre>
+      <code class="language-javascript line-numbers">
+        /**
+         * Конструктор пользователя
+         * 
+         * @param name имя пользователя
+         * @param type тип пользователя
+         */ 
+        function User(name, type) {
+          this.name = name;
+          this.type = type;
+        }
+      </code>
+    </pre>
+  </section>   
+  
+  <section class="slide">
+    <h2>Doc comments</h2>
+    <p>Затем эти комментарии обрабатываются инструментом для извлечения документации.</p>    
+  </section>
+  
+  <section class="slide">
+    <h2>Инструменты</h2>
+    <ul>
+      <li>JSDoc;</li>
+      <li>ESDoc;</li>
+      <li>DocumentJS;</li>
+      <li>и другие.</li>
+    </ul>
+    <p>Если внимательно приглядеться, то большинство «тегов» повторяются во всех системах: <code>@param</code>, <code>@return</code>, <code>@throws</code> и т.д.</p>    
+  </section>
+  
+  <section class="slide">
+    <h2>JSDoc</h2>
+    <p style="margin-bottom: 50px;">Установим и настроим JSDoc:</p>    
+    <pre>
+      <code class="language-javascript">
+        $ npm install --save-dev jsdoc
+      </code>
+    </pre>
+  </section>   
+  
+  <section class="slide">
+    <h2>JSDoc</h2>
+    <p style="margin-bottom: 10px;">Создадим конфигурационный файл (<code>jsdoc.conf.json</code>):</p>    
+    <pre>
+      <code class="language-javascript line-numbers">
+        {
+          "source": {
+            "include": ["src/js"]
+          },
+          "opts": {
+            "encoding": "utf8",
+            "destination": "./docs/",
+            "recurse": true
+          }
+        }
+      </code>
+    </pre>
+    <p style="margin-top: 10px; font-size: 0.9em;"><STRONG>Не забудьте добавить каталог <code>docs</code> в <code>.gitignore</code> и <code>.eslintignore</code></STRONG>.</p>    
+  </section>  
+  
+  <section class="slide">
+    <h2>JSDoc - генерация</h2>
+    <p style="margin-bottom: 40px;">Добавим в <code>package.json</code> скрипт:</p>
+    
+    <div style="display: flex;">
+      <div style="width: 50%">
+        <pre>
+          <code class="language-javascript line-numbers">
+            "scripts": {
+              ...
+              "doc": "jsdoc -c jsdoc.conf.json"
+            },
+          </code>
+        </pre>      
+      </div>
+      <div style="margin-left: 50px;">
+        <img src="../assets/pic/prototypes/methods.png" style="position: relative; top: -66px; border: 1px solid #bebebe; padding: 20px;">
+      </div>
+    </div>  
+  </section>   
+  
+  
+  <section class="slide">
+    <h2>Итоги</h2>
+    <p>Сегодня мы с вами рассмотрели достаточно много важных вещей:</p>
+    <ol>
+      <li><strong>Конструкторы</strong><br>
+        <span style="font-size: 0.8em;">Для инкапсуляции логики создания объекта определённого класса.</span>
+      </li>
+      <li><strong>Прототипы</strong><br>
+        <span style="font-size: 0.8em;">Для того, чтобы у всех представителей класса был один и тот же экземпляр метода.</span>
+      </li>
+      <li><strong>Привязку контекста</strong><br>
+        <span style="font-size: 0.8em;">Чтобы <code>this</code> внутри функции не переставал указывать на объект, к которому он привязан.</span>
+      </li>
+      <li><strong>Документирование кода</strong><br>
+        <span style="font-size: 0.8em;">Чтобы облегчить работу с кодом.</span>
+      </li>      
+    </ol>
+  </section>  
+  
+  <section class="slide last">
+    <p class="thanx">Спасибо за внимание! Время задавать вопросы!</p>
+    <address>Эдгар Нуруллин</address>
+    <ul class="contacts">
+      <li><a href="https://t.me/EdgarNur"><i class="fab fa-telegram"></i>EdgarNur</a></li>
+    </ul>
+  </section>  
+
+<div class="progress"></div>
+<script src="../node_modules/shower-core/shower.min.js"></script>
+<script src="../assets/js/prism.js?v=2"></script>
+<script src="https://use.fontawesome.com/30b5a52164.js"></script>
+</body>
+</html>

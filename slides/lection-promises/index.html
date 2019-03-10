@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>Promises, async/await</title>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="../assets/i/favicon.ico">
+    <link rel="stylesheet" href="../node_modules/shower-ribbon/styles/screen-16x10.css">
+    <link rel="stylesheet" href="../assets/css/prism.css">
+    <link rel="stylesheet" href="../assets/css/prism-fix.css">
+    <link rel="stylesheet" href="../assets/css/netology.css">
+    <link rel="stylesheet" href="../assets/css/fake-browser.css">
+
+    <style>
+        .small-pre {
+            font-size: 80%;
+        }
+
+        .grayBorderRight {
+            border-left: 7px solid #ccc;
+            padding-left: 20px;
+            color: #ccc;
+        }
+
+        .alert-blue {
+            background-color: #d9edf7;
+            color: #397099;
+            border-color: #bce8f1;
+            border-radius: 5px;
+            padding: 25px;
+            text-align: left;
+        }
+
+        .fz-22 {
+            font-size: 22px;
+        }
+
+        .fz-17 {
+            font-size: 17px;
+        }
+
+        .fz-18 {
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body class="shower list">
+<header class="caption">
+    <h1>Promise, async/await</h1>
+    <p>Игорь Лобанов</p>
+</header>
+
+<section class="slide" id="cover">
+    <h2>Promise, async/await</h2>
+    <p>
+        <img src="../assets/i/lobanov.png" alt="lobanov" class="avatar">
+        Игорь Лобанов
+    </p>
+</section>
+
+<section class="slide author" id="author">
+    <img src="../assets/i/lobanov.png" alt="">
+    <h1>Игорь Лобанов</h1>
+    <p>старший разработчик в OneTwoTrip</p>
+    <ul class="contacts">
+        <li><a href="mailto:bniwredyc@gmail.com"><i class="fa fa-envelope-o" aria-hidden="true"></i>bniwredyc@gmail.com</a>
+        </li>
+        <li><a href="skype:bniwredyc@gmail.com"><i class="fa fa-skype" aria-hidden="true"></i>bniwredyc@gmail.com</a></li>
+    </ul>
+</section>
+
+<section class="slide" id="roadmap">
+    <h2>План занятия</h2>
+    <ol>
+        <li><a href="#asynchronous">Асинхронный код</a></li>
+        <li><a href="#promises">Promises</a></li>
+        <li><a href="#async/await">async/await</a></li>
+        <li><a href="#test">Тестирование асинхронного кода</a></li>
+    </ol>
+</section>
+
+<section class="slide">
+    <h2>Синхронный код</h2>
+    <p>
+        JS исполняет приложения в одном потоке* (упрощённый взгляд), т.е. может выполнять одну операцию в единицу времени.
+    </p>
+    <p>
+        Это нас ограничивает с точки зрения создания современных приложений, особенно связанных с обработкой различных
+        событий.
+    </p>
+</section>
+
+<section class="slide">
+    <h2>Синхронный код</h2>
+    <pre>
+      <code class="language-js  line-numbers">
+          const response = getResponse(...);
+          const data = processResponse(...);
+      </code>
+    </pre>
+    <p>
+        Если оба вызова представляют собой быстрые операции, то никаких проблем не возникает.
+    </p>
+</section>
+
+<section class="slide">
+    <h2>Длительные операции</h2>
+    <p>Оба вызова могут представлять собой достаточно длительные операции.</p>
+    <p>
+        Если в это время не обрабатывать другие события, то получится “очередь”, т.к. JS будет ждать завершения каждого
+        вызова.
+    </p>
+</section>
+
+<section class="slide">
+    <h2>Многопоточность</h2>
+    <p>Многие языки программирования предлагают инструменты для создания и управления несколькими потоками
+        выполнения.</p>
+    <p>
+        Традиционно, этот раздел считается одним из самых сложных и подверженных ошибкам.
+    </p>
+</section>
+
+<section class="slide">
+    <h2>Задача</h2>
+    <p>
+        Перед нами стоит следующая задача: загрузить аналитические данные с сервера и произвести обработку данных на
+        стороне пользователя, выдав ему аналитический отчёт.
+    </p>
+    <p>Почему на стороне пользователя, а не на сервере?</p>
+    <p class="grayBorderRight">
+        Не всегда у нас есть возможность получить доступ к серверу. Возможно, мы используем API Вконтакте для получения
+        этих данных. А разработчики Вконтакте врядли вам дадут написать на их серверах свою аналитическую функцию <span>&#128513;</span>
+    </p>
+
+</section>
+
+<section class="slide" id="asynchronous">
+    <h2>Асинхронный код</h2>
+    <p>
+        Поэтому в JS присутствует механизм выполнения асинхронного кода, который позволяет “упростить” обработку
+        подобных длительных операций, не прибегая к использованию примитивов многопоточности.
+    </p>
+</section>
+
+<section class="slide">
+    <h2>Callbacks</h2>
+    <p>
+        Callbacks - подход, при котором вместо ожидания какого-либо события (например, завершения операции) либо
+        обработки какого-то элемента, мы передаём функцию (callback), которую нужно выполнить после наступления этого
+        события, либо для обработки этого элемента.
+    </p>
+</section>
+
+<section class="slide">
+    <h2>Callbacks</h2>
+    <pre>
+      <code class="language-js  line-numbers">
+        function getResponse(args, callback) {
+          // где-то внутри функции getResponse
+          const response = ...;
+
+          callback(response);
+        }
+
+        getResponse(..., (response) => { // наш callback
+          ...
+        });
+      </code>
+    </pre>
+</section>
+
+<section class="slide">
+    <h2>Callbacks</h2>
+    <div class="alert-blue">
+        <p>
+            Важно: понятие callback используется не только в контексте асинхронности. Callback - является функцией,
+            передаваемой в качестве аргумента другой функции, для вызова внутри этой функции. Для Built-in объектов это
+            выполнение каких-либо операций (например, для Array - поиск, сравнение и т.д.).
+        </p>
+    </div>
+</section>
+
+<section class="slide">
+    <h2>Callbacks</h2>
+    <p>
+        Определение на MDN звучит следующим образом: “A callback function is a function passed into another function as
+        an argument, which is then invoked inside the outer function to complete some kind of routine or action.”
+    </p>
+</section>
+
+<section class="slide">
+    <h2>Callback Hell</h2>
+    <pre class="small-pre">
+      <code class="language-js  line-numbers">
+       function getResponse(args, callback) {
+          // где-то внутри функции getResponse
+          const response = ...;
+
+          callback(response);
+        }
+
+        function processResponse(args, callback) {
+          // где-то внутри функции processResponse
+          const data = ...;
+
+          callback(data);
+        }
+      </code>
+    </pre>
+</section>
+
+<section class="slide">
+    <h2>Callback Hell</h2>
+    <pre>
+      <code class="language-js  line-numbers">
+          // наш первый callback
+        getResponse(..., (response) => {
+          // наш второй callback
+          processResponse(..., (data) => {
+
+          });
+        });
+      </code>
+    </pre>
+</section>
+
+<section class="slide">
+    <h2>Callback Hell</h2>
+    <p>Нетрудно себе представить, что будет если вызовов у нас будет не 2, а хотя бы 10.</p>
+    <p>Структура кода превращается в большое количество вложенных вызовов.</p>
+    <p>Для этого даже придумали отдельный термин - <a href="http://callbackhell.com/">Callback Hell.</a></p>
+</section>
+
+<section class="slide">
+    <h2>Ключевое</h2>
+    <p>
+        Среда, в которой будет исполняться ваш JS-код (будь это браузер или Node.js) сама берёт на себя заботу по вызову
+        вашего callback’а в нужный момент времени.
+    </p>
+</section>
+
+<section class="slide chapter" id="promises">
+    <h2>Promises</h2>
+</section>
+
+
+<section class="slide">
+    <h2>Promises</h2>
+    <p>
+        Использование Promise (обещания) - механизм, позволяющий упростить написание асинхронного кода и решить ряд
+        проблем callback’ов.
+    </p>
+</section>
+
+<section class="slide">
+    <h2>Promises</h2>
+    <pre>
+      <code class="language-js  line-numbers">
+         function getResponse(args) {
+          // Do something
+          return new Promise((resolve, reject) => {
+            ...
+          });
+        }
+      </code>
+    </pre>
+    <p>
+        Теперь функции не принимают callback для вызова, а возвращают объект класса <code>Promise</code>, который и
+        будет играть
+        ключевую роль.
+    </p>
+</section>
+
+<section class="slide">
+    <h2>Идея Promise</h2>
+    <p>Ключевая идея Promise - это объект, который может находиться всего в трёх состояниях:</p>
+    <ul>
+        <li><code>pending</code></li>
+        <li><code>fulfilled</code></li>
+        <li><code>rejected</code></li>
+    </ul>
+    <p>
+        И единственное, что может произойти с <code>Promise</code> - это переход из состояния <code>pending</code> в
+        состояние <code>fulfilled</code> или
+        <code>rejected</code>.
+    </p>
+    <p>Произойти этот переход может только один раз.</p>
+</section>
+
+<section class="slide">
+    <h2>Идея Promise</h2>
+    <p>
+        Поскольку функция, выполняющая асинхронную операцию не может вернуть значение этой операции, она возвращает
+        Promise, который и “заворачивает” результат выполнения этой операции.
+    </p>
+</section>
+
+<section class="slide">
+    <h2>Создание Promise</h2>
+    <pre>
+      <code class="language-js  line-numbers">
+           function getResponse(args) {
+          // Do something
+          return new Promise((resolve, reject) => {
+            setTimeout(() => {
+              resolve('value');
+            }, 500);
+          });
+        }
+
+        const responsePromise = getResponse(args);
+      </code>
+    </pre>
+</section>
+
+<section class="slide">
+    <h2>Создание Promise</h2>
+    <p>
+        <code>resolve</code>, <code>reject </code>- функции, вызываемые по завершении операции и переводящие <code>Promise</code>
+        в состояние <code>fulfilled</code> или
+        <code>rejected</code>, соответственно.
+    </p>
+</section>
+
+<section class="slide">
+    <h2>then</h2>
+    <p>
+        Метод, принимающий callback, который должен вызваться в случае перехода <code>Promise</code> в состояние <code>fulfilled</code>:
+    </p>
+    <pre>
+      <code class="language-js  line-numbers">
+        const responsePromise = getResponse(args);
+        responsePromise.then((response) => {
+          ...
+        });
+      </code>
+    </pre>
+</section>
+
+<section class="slide">
+    <h2>Обработка ошибок</h2>
+    <p>
+        При переходе <code>Promise</code> в состояние <code>rejected</code> вызывается callback, указанный вторым
+        параметром в методе <code>then</code>:
+    </p>
+    <pre>
+      <code class="language-js  line-numbers">
+        const responsePromise = getResponse(args);
+        responsePromise.then((response) => {
+          ...
+        }, (error) => { // callback for rejected
+          ...
+        });
+      </code>
+    </pre>
+</section>
+
+<section class="slide">
+    <h2>catch</h2>
+    <p>
+        Метод, принимающий callback, который должен вызваться в случае перехода <code>Promise</code> в состояние <code>rejected</code>
+        или
+        выбрасывания исключения (если оно произошло в коде <code>then</code>):
+    </p>
+    <pre>
+      <code class="language-js  line-numbers">
+        const responsePromise = getResponse(args);
+        responsePromise.catch((error) => {
+          ...
+        });
+      </code>
+    </pre>
+</section>
+
+<section class="slide">
+    <h2>then + catch</h2>
+    <pre>
+      <code class="language-js  line-numbers">
+        const responsePromise = getResponse(args);
+        responsePromise.then((response) => {
+          ...
+        }).catch((error) => {
+        // callback for `rejected` и обработчик ошибок в `then`
+
+        });
+      </code>
+    </pre>
+</section>
+
+<section class="slide">
+    <h2>finally</h2>
+    <p>
+        Метод, принимающий callback, который должен вызваться в случае перехода <code>Promise</code> в состояние <code>fulfilled</code>
+        или
+        <code>rejected</code> (вне зависимости от того, в какое состояние перешёл <code>Promise</code>).
+    </p>
+</section>
+
+<section class="slide">
+    <h2>finally</h2>
+    <pre>
+      <code class="language-js  line-numbers">
+        const responsePromise = getResponse(args);
+        responsePromise.then((response) => {
+          ...
+        }).catch((error) => {
+          ...
+        }).finally(() => {
+          // final actions
+        });
+      </code>
+    </pre>
+    <p>
+        Используется для исключения дублирования кода в <code>then</code> и <code>catch</code>
+    </p>
+</section>
+
+<section class="slide">
+    <h2>Promisification</h2>
+    <p>Использование Promise потребовало переписывания старого кода.</p>
+    <p>Переписывание старого кода (без <code>Promise</code>) с использованием <code>Promise</code> обозначают
+        термином <b>Promisification</b></p>
+</section>
+
+<section class="slide">
+    <h2>Цепочки Promise</h2>
+    <p class="fz-22"><code>Promise</code> можно объединять в цепочки, если <code>then</code> возвращает тоже <code>Promise</code>:
+    </p>
+    <pre>
+      <code class="language-js  line-numbers">
+       function getResponse(args) {
+          // Do something
+          return new Promise((resolve, reject) => { ... });
+        }
+
+        function processResponse(response) {
+          // Do something
+          return new Promise((resolve, reject) => { ... });
+        }
+      </code>
+    </pre>
+</section>
+
+<section class="slide">
+    <h2>Цепочки Promise</h2>
+    <pre>
+      <code class="language-js  line-numbers">
+        getResponse(args).then((response) => {
+          return processResponse(response);
+        }).then((data) => {
+          // do something
+        }).catch((error) => {
+          // handle error
+        }).finally(() => {
+          // final handlings
+        })
+      </code>
+    </pre>
+</section>
+
+<section class="slide">
+    <h2>Итоги по Promise</h2>
+    <p style="margin-bottom: 20px">Зачем нужны <code>Promise</code>, почему не делать всё на callback’ах?</p>
+    <ol>
+        <li>Использование <code>Promise</code> упрощает работу с асинхронным кодом, помогая избежать Callback Hell
+        </li>
+        <li>Современное API написано с использованием <code>Promise</code>, поэтому важно уметь использовать этот
+            инструмент
+        </li>
+        <li><code>Promise</code> не отменяют callback’и - их всё равно придётся использовать</li>
+        <li>Переход из состояния <code>pending</code> в
+            состояние <code>fulfilled</code> или <code>rejected</code> может произойти <b>только один раз</b></li>
+        <li>Promise нельзя отменить</li>
+    </ol>
+</section>
+
+<section class="slide">
+    <h2>В каком порядке вызывается <code>then</code>, <code>catch</code>?</h2>
+    <p class="grayBorderRight">В том, в котором записаны</p>
+</section>
+
+<section class="slide">
+    <h2>В каком порядке вызывается <code>then</code>, <code>catch</code>?</h2>
+    <pre class="fz-17">
+      <code class="language-js  line-numbers">
+        const promise = getResponse();
+        promise.then((data) => {
+          // выброс ошибки, сработает следующий по блоку `catch`
+          throw new Error();
+        }).catch((error) => {
+          console.log('first error happened:');
+        })
+        .then((data) => {
+          console.log(data); // <- сработает `then`
+        }).catch((error) => {
+          console.log('second error happened:'); // <- не сработает
+        }); // undefined
+      </code>
+    </pre>
+    <p>Почему так?</p>
+</section>
+
+<section class="slide">
+    <h2>then и catch</h2>
+    <p>Методы <code>then</code> и <code>catch</code> тоже возвращают <code>Promise</code>, благодаря чему возможно
+        построение цепочки <code>Promise</code>.</p>
+</section>
+
+<section class="slide">
+    <h2>then и catch</h2>
+    <p>Особенности <code>then</code>:</p>
+    <ul class="fz-22">
+        <li><code>then</code> возвращает <code>Promise</code></li>
+        <li>если из <code>then</code> возвращается значение, то оно автоматически заворачивается в <code>Promise</code>,
+            который переходит в состояние <code>fulfilled</code></li>
+        <li>соответственно, если из <code>then</code> ничего не возвращается, то в <code>Promise</code> кладётся
+            значение <code>undefined</code></li>
+        <li>если в <code>then</code> выбрасывается ошибка, то ошибка автоматически заворачивается в <code>Promise</code>,
+            который переходит в состояние <code>rejected</code></li>
+        <li>если из <code>then</code> возвращается <code>Promise</code>, то последующие вызовы <code>then</code> и
+            <code>catch</code> будут обрабатывать его состояние
+        </li>
+    </ul>
+</section>
+
+<section class="slide">
+    <h2>then и catch</h2>
+    <p>Особенности <code>catch</code>:</p>
+    <ul class="fz-22">
+        <li><code>catch</code> возвращает <code>Promise</code></li>
+        <li>если из <code>catch</code> возвращается значение, то оно автоматически заворачивается в
+            <code>Promise</code>, который переходит в состояние <code>fulfilled</code></li>
+        <li>соответственно, если из <code>catch</code> ничего не возвращается, то в <code>Promise</code> кладётся
+            значение <code>undefined</code></li>
+        <li>если в <code>catch</code> выбрасывается ошибка, то ошибка автоматически заворачивается в
+            <code>Promise</code>, который переходит в состояние <code>rejected</code></li>
+        <li>если из <code>catch</code> возвращается <code>Promise</code>, то последующие вызовы <code>then</code> и
+            <code>catch</code> будут обрабатывать его состояние
+        </li>
+    </ul>
+</section>
+
+<section class="slide">
+    <h2>Статические методы Promise</h2>
+    <p>Класс <code>Promise</code> содержит ещё ряд статических методов, предоставляющих удобную функциональность:</p>
+    <ul>
+        <li><code>Promise.all(iterable)</code> - возвращает <code>Promise</code>, который переходит в состояние <code>fulfilled</code>,
+            только если все
+            <code>Promise</code> из <code>iterable</code> перешли в состояние <code>fulfilled</code> (либо в <code>iterable</code>
+            не было <code>Promise</code> )
+        </li>
+        <li>
+            <code>Promise.race(iterable)</code> - возвращает <code>Promise</code>, который переходит в состояние <code>fulfilled</code>
+            или <code>rejected</code> как только любой из <code>Promise</code>, содержащихся в <code>iterable</code>
+            переходит в <code>fulfilled</code> или <code>rejected</code>
+        </li>
+    </ul>
+</section>
+
+<section class="slide chapter" id="async/await">
+    <h2>async/await</h2>
+</section>
+
+<section class="slide">
+    <h2>async/await</h2>
+    <p>С <code>Promise</code> всё достаточно хорошо, но есть ли механизмы ещё более упростить этот код?</p>
+    <p>Ключевые слова <code>async</code>/ <code>await</code> позволяют сделать работу с <code>Promise</code> более
+        удобной.</p>
+    <p>Рассмотрим сразу на примере.</p>
+</section>
+
+<section class="slide">
+    <h2>async/await</h2>
+    <pre>
+      <code class="language-js  line-numbers">
+          const response = await getResponse(args);
+          const data = await processResponse(response);
+      </code>
+    </pre>
+    <p style="margin-bottom: 20px">И это вместо:</p>
+    <pre>
+      <code class="language-js  line-numbers">
+            const promise = getResponse();
+            promise.then((response) => {
+              return processResponse(response);
+            .then((data) => {
+              // Do something
+            });
+      </code>
+    </pre>
+</section>
+
+<section class="slide">
+    <h2>Обработка ошибок и finally</h2>
+    <p>Здесь тоже всё хорошо, используем конструкцию <code>try...catch...finally</code></p>
+    <pre>
+      <code class="language-js  line-numbers">
+            try {
+              const response = await getResponse(args);
+              const data = await processResponse(response);
+            } catch {
+              ...
+            } finally {
+              ...
+            }
+      </code>
+    </pre>
+</section>
+
+<section class="slide">
+    <h2>async</h2>
+    <p>
+        На использование <code>await</code> есть одно ключевое ограничение: <code>await</code> можно использовать только
+        внутри <code>async</code> функций:
+    </p>
+    <pre class="fz-22">
+      <code class="language-js  line-numbers">
+            (async () => {
+              try {
+                const response = await getResponse(args);
+                const data = await processResponse(response);
+              } catch {
+                ...
+              } finally {
+                ...
+              }
+            })();
+      </code>
+    </pre>
+</section>
+
+<section class="slide">
+    <h2>async</h2>
+    <p>
+        Ключевое слово <code>async</code> определяет, что функция выполняется асинхронно - т.е. всегда возвращает <code>Promise</code>,
+        но может
+        выглядеть как стандартная функция.
+    </p>
+    <p>
+        <i> Что значит как стандартная функция? </i>Это значит, что если вы просто возвращаете из такой функции
+        значение, то оно
+        заворачивается в <code>Promise</code>.
+    </p>
+    <p>
+        Кроме того, вы можете использовать <code>await</code> внутри <code>async</code> функции, которое дожидается
+        перехода <code>Promise</code> (<code>await</code>
+        ставится перед <code>Promise</code>) в состояние <code>fulfilled</code> или <code>rejected</code>.
+    </p>
+</section>
+
+<section class="slide">
+    <h2>Для чего это?</h2>
+    <p>Для упрощения структуры кода, сравним:</p>
+    <pre class="fz-22">
+      <code class="language-js  line-numbers">
+            (async () => {
+              try {
+                const response = await getResponse(args);
+                const data = await processResponse(response);
+              } catch {
+                ...
+              } finally {
+                ...
+              }
+            })();
+      </code>
+    </pre>
+</section>
+
+<section class="slide">
+    <h2>Для чего это?</h2>
+    <p>Для упрощения структуры кода, сравним:</p>
+    <pre class="fz-22">
+      <code class="language-js  line-numbers">
+            getResponse(args).then((response) => {
+              return processResponse(response);
+            }).then((data) => {
+              // do something
+            }).catch((error) => {
+              // handle error
+            }).finally(() => {
+              // final handling
+            })
+      </code>
+    </pre>
+</section>
+
+<section class="slide">
+    <h2>Для чего это?</h2>
+    <p>Первый вариант намного более лаконичный за счёт того, что позволяет избежать нагромождения <code>then</code>,
+        <code>catch</code>.</p>
+</section>
+
+<section class="slide">
+    <h2>async/await</h2>
+    <p>Почему бы тогда совсем не отказаться от <code>Promise</code>?</p>
+    <p class="grayBorderRight">
+        Потому что в основе работы <code>async</code>/ <code>await</code> лежат <code>Promise</code>. <code>async</code>/
+        <code>await</code> позволяет нам лишь удобнее с ними работать.
+    </p>
+</section>
+
+<section class="slide">
+    <h2>async/await & Promise</h2>
+    <p>"Конкурентные" запросы:</p>
+    <pre class="fz-22">
+      <code class="language-js  line-numbers">
+          const [resp1, resp2] = await Promise.all(
+            getResponse(&lt;from server1&gt;), getResponse(&lt;from server2&gt;)
+          );
+      </code>
+    </pre>
+    <p>Последовательные запросы:</p>
+    <pre class="fz-22">
+      <code class="language-js  line-numbers">
+          await getResponse(&lt;from server1&gt;);
+          await getResponse(&lt;from server2&gt;);
+      </code>
+    </pre>
+</section>
+
+<section class="slide">
+    <h2>Babel</h2>
+    <pre class="fz-22">
+      <code class="language-js  line-numbers">
+           $ npm install @babel/polyfill
+      </code>
+    </pre>
+    <p>В <code>.babelrc</code>:</p>
+    <pre class="fz-18">
+      <code class="language-js  line-numbers">
+          {
+          "presets": [
+            [
+              "@babel/preset-env",
+              {
+                "useBuiltIns": "usage"
+              }
+            ]
+          ]
+        }
+      </code>
+    </pre>
+</section>
+
+<section class="slide chapter" id="test">
+    <h2>Тестирование асинхронного кода</h2>
+</section>
+
+<section class="slide">
+    <h2>Тестирование асинхронного кода</h2>
+    <p>
+        Jest предлагает для всех рассмотренных нами вариантов (callback’и, <code>Promise</code>, <code>async</code>/
+        <code>await</code>) удобные методы для
+        тестирования. Рассмотрим их.
+    </p>
+</section>
+
+<section class="slide">
+    <h2>Callbacks</h2>
+    <pre>
+      <code class="language-js  line-numbers">
+          // специальный аргумент
+        test('should call our callback', (done) => {
+          getData((data) => {
+            expect(data).toEqual(...);
+            done(); // <- указание на завершение теста
+          });
+        });
+      </code>
+    </pre>
+</section>
+
+<section class="slide">
+    <h2>Тестирование асинхронного кода</h2>
+    <p>
+        <code>done</code> - функция, вызова которой Jest будет ожидать в течение времени, определённого <code>jest.setTimeout</code>
+        (по умолчанию
+        - 5 секунд).
+    </p>
+    <p>
+        Если вызова не будет, получим FAIL:
+    </p>
+    <figure>
+        <img src="../assets/pic/promise/failTest.png" alt="failTest" height='280'>
+    </figure>
+</section>
+
+<section class="slide">
+    <h2>Promise и async/await</h2>
+    <p>
+        При работе с <code>Promise</code> и <code>async</code>/ <code>await</code> достаточно использовать асинхронные
+        тестовые функции (и работать как обычно):
+    </p>
+    <pre class="fz-22">
+      <code class="language-js  line-numbers">
+        // async
+        test('should work with promise and async/await', async () => {
+          const data = await getData();
+          expect(data).toEqual(...);
+        });
+      </code>
+    </pre>
+</section>
+
+<section class="slide">
+    <h2>Error handling</h2>
+    <pre class="fz-22">
+      <code class="language-js  line-numbers">
+        // async
+        test('should handle errors', async () => {
+          // сообщаем Jest, что у нас один assert,
+          // который нужно проверить
+          expect.assertions(1);
+          try {
+            const data = await getData();
+          } catch (e) {
+            // получаем аналог .catch()
+            expect(e).toEqual(...);
+          }
+        });
+      </code>
+    </pre>
+</section>
+
+<section class="slide">
+    <h2>Подведем итоги</h2>
+    <p>Сегодня мы с вами рассмотрели достаточно много важных вещей:</p>
+    <ol>
+        <li>Асинхронный код</li>
+        <li>Promises</li>
+        <li>async/await</li>
+        <li>Тестирование асинхронного кода</li>
+    </ol>
+</section>
+
+<section class="slide last">
+    <p class="thanx">Задавайте вопросы и напишите отзыв о лекции!</p>
+    <address>Игорь Лобанов</address>
+    <ul class="contacts">
+        <li><a href="mailto:bniwredyc@gmail.com"><i class="fa fa-envelope-o" aria-hidden="true"></i>bniwredyc@gmail.com</a>
+        </li>
+        <li><a href="skype:bniwredyc@gmail.com"><i class="fa fa-skype" aria-hidden="true"></i>bniwredyc@gmail.com</a></li>
+    </ul>
+</section>
+
+<div class="progress"></div>
+<script src="../node_modules/shower-core/shower.min.js"></script>
+<script src="../assets/js/prism.js?v=2"></script>
+<script src="https://use.fontawesome.com/30b5a52164.js"></script>
+</body>
+</html>
