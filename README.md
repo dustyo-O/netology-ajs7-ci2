@@ -1,1 +1,18 @@
 # js-advanced-materials
+
+Текущий порядок лекций:
+
+1. [Стандарты](pdf/lection-standards.pdf)
+1. [Рабочее окружение](pdf/lection-workspace.pdf)
+1. [Модули](pdf/lection-mdoules.pdf)
+1. [Unit-тестирование](pdf/lection-test-ci.pdf)
+1. [Синтаксические конструкции](pdf/lection-trycatch-delete-closures.pdf)
+1. [Свойства объектов, обёртки для примитивов](pdf/lection-object-props.pdf)
+1. [Прототипы, конструкторы](pdf/lection-prototypes.pdf)
+1. [Классы, наследование](pdf/lection-classes-inheritance.pdf)
+1. [Контейнеры](pdf/lection-collections.pdf)
+1. [Math, Regexp, ArrayBuffer](pdf/lection-stdlib.pdf)
+1. [Promises, async/await](pdf/lection-promises.pdf)
+1. [Символы, итераторы, генераторы](pdf/lection-symbols-iterators-generators.pdf)
+
+[Шаблон (стартер) проекта для леций после 4-ой](https://github.com/coursar/neto-template)
