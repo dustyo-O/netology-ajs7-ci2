@@ -59,9 +59,9 @@
 
 <section  class="slide">
 	<h2>Зачем перехватывать ошибки?</h2>
-	<p>Как бы хорошо не был написан код, он не застрахован от ошибок. Обычное поведение программы - в случае ошибки сообщить
-		о ней и окончить выполнение дальнейшего кода.
-		Однако, бывают ситуации, когда требуется иное поведение.</p>
+	<p>Как бы хорошо не был написан код, он не застрахован от ошибок.</p>
+	<p>Обычное поведение программы - в случае ошибки сообщить о ней и окончить выполнение дальнейшего кода.</p>
+	<p>Однако, бывают ситуации, когда требуется иное поведение.</p>
 </section>
 
 <section  class="slide">
@@ -69,7 +69,8 @@
 	<p>Если Вы скажете, что ошибки надо решать, а не прятать, я полностью с Вами соглашусь. </p>
 	<p>Однако, всегда ли наличие ошибки зависит от Вас?</p>
 	<p>Может ли быть ситуация, при которой может произойти ошибка, несмотря на то, что написанный Вами код полностью
-		корректен?</p>
+		корректен?
+	</p>
 </section>
 
 <section  class="slide">
@@ -77,10 +78,12 @@
 	<ul>
 		<li>нельзя гарантировать, что необходимые данные получены с сервера;</li>
 		<li>нельзя гарантировать, что сторонний сервис всегда доступен и корректно работает;</li>
-		<li>нельзя гарантировать, что автор библиотеки (или тот, кто использует Вашу библиотеку) так же добросовестно пишет
-			код, как и Вы;</li>
+		<li>нельзя гарантировать, что автор библиотеки (или тот, кто использует Вашу библиотеку) так же добросовестно
+			пишет код, как и Вы;
+		</li>
 		<li>нельзя гарантировать, что пользователь не сможет ввести некорректные данные (хоть и надо к этому
-			стремиться)</li>
+			стремиться)
+		</li>
 	</ul>
 </section>
 
@@ -89,21 +92,24 @@
 	<p><strong>Например, при возникновении ошибки необходимо сообщить об этом пользователю как-то культурно</strong></p>
 	<p>В случае, если пользователь встретится с ошибкой скрипта, лучше, наверное, ему сообщить об этом ошибкой "Что-то пошло
 		не так..." зафиксировать ошибку и дать возможность продолжить работу, а не оставить его один на один с непонятным
-		поведением страницы?</p>
+		поведением страницы?
+	</p>
 </section>
 
 <section  class="slide">
 	<h2>Зачем перехватывать ошибки?</h2>
 	<p><strong>Например, при возникновении ошибки необходимо получить бОльшую информацию</strong></p>
 	<p>При выполнении скрипта возникает ошибка. Не всегда очевидно, какие значения данных к этому приводят. В этом случае в
-		блоке catch достаточно будет дописать вывод необходимых нам данных, приводящих к ошибке.</p>
+		блоке <code>catch</code> достаточно будет дописать вывод необходимых нам данных, приводящих к ошибке.
+	</p>
 </section>
 
 <section  class="slide">
 	<h2>Зачем перехватывать ошибки?</h2>
 	<p><strong>Например, случившаяся ошибка не должна прерывать выполнение дальнейшего кода</strong></p>
 	<p>Подключение виджета для отображение погоды на сайте может прекратить выполнение дальнейшего кода.
-		Лучше заранее такое предусмотреть.</p>
+		Лучше заранее такое предусмотреть.
+	</p>
 </section>
 
 
@@ -115,7 +121,8 @@
 	<h2>Перехват ошибки</h2>
 	<p>Конструкция <code>try..catch</code> служит для того, чтобы браузер "попытался" интерпретировать код.
 		Однако, если выполнить код не удастся, то можно "поймать" ошибку и/или промежуточные данные, обработать её и затем
-		безопасно выполнять код дальше.</p>
+		безопасно выполнять код дальше.
+	</p>
 </section>
 
 <section  class="slide">
@@ -135,14 +142,16 @@
 
 <section  class="slide">
 	<h2>catch</h2>
-	<p>В блоке <code>catch</code> описывается программный код, который браузер должен выполнить, если в результате выполнения кода в
-		блоке <code>try</code> произошла ошибка.</p>
+	<p>В блоке <code>catch</code> описывается программный код, который браузер должен выполнить, если в результате
+		выполнения кода в блоке <code>try</code> произошла ошибка.
+	</p>
 </section>
 
 <section  class="slide">
 	<h2>finally</h2>
-	<p>В блоке <code>finally</code> описывается программный код, выполнение которого произойдет независимо от того, произойдёт ли ошибка
-		в результате выполнения кода в блоке <code>try</code> или нет.</p>
+	<p>В блоке <code>finally</code> описывается программный код, выполнение которого произойдет независимо от того,
+		произойдёт ли ошибка в результате выполнения кода в блоке <code>try</code> или нет.
+	</p>
 </section>
 
 <section  class="slide">
@@ -161,43 +170,43 @@
 <section  class="slide">
 	<h2>try..finally</h2>
 	<pre>
-			<code class="language-js">
-				try {
-				  // .. код, который может выполниться неверно
-				} finally {
-				  // .. код, который выполнится в любом случае
-				}
-			</code>
-		</pre>
+		<code class="language-js">
+			try {
+			  // .. код, который может выполниться неверно
+			} finally {
+			  // .. код, который выполнится в любом случае
+			}
+		</code>
+	</pre>
 </section>
 
 <section  class="slide">
 	<h2>try..catch..finally</h2>
 	<pre>
-			<code class="language-js">
-				try {
-				  // .. код, который может выполниться неверно
-				} catch(e) {
-				  // .. код, который в этом случае выполнится
-				} finally {
-				  // .. код, который выполнится в любом случае
-				}
-			</code>
-		</pre>
+		<code class="language-js">
+			try {
+			  // .. код, который может выполниться неверно
+			} catch(e) {
+			  // .. код, который в этом случае выполнится
+			} finally {
+			  // .. код, который выполнится в любом случае
+			}
+		</code>
+	</pre>
 </section>
 
 <section  class="slide">
 	<h2>Перехват ошибки:</h2>
 	> js/game.src.js:86
 	<pre style="font-size: large">
-			<code class="language-html">
-                try {
-                   this.distanceBox.innerText = Math.ceil(this.distance / 30);
-                } catch (e) {
-                   console.log(e);
-                }
-			</code>
-		</pre>
+		<code class="language-html">
+            try {
+               this.distanceBox.innerText = Math.ceil(this.distance / 30);
+            } catch (e) {
+               console.log(e);
+            }
+		</code>
+	</pre>
 </section>
 
 <section  class="slide">
@@ -206,16 +215,16 @@
 		<li>если имеется <strong>синтакcическая</strong> ошибка;</li>
 	</ul>
 	<pre>
-			<code class="language-js">
-				try{
-				  console.log(Ошибка не произошла!);
-				} catch(e) {
-				  console.log('Ошибка произошла!');
-				}
-				// -> Uncaught SyntaxError: missing )
-				// after argument list
-			</code>
-		</pre>
+		<code class="language-js">
+			try{
+			  console.log(Ошибка не произошла!);
+			} catch(e) {
+			  console.log('Ошибка произошла!');
+			}
+			// -> Uncaught SyntaxError: missing )
+			// after argument list
+		</code>
+	</pre>
 	<p>В этом случае <code>try...catch</code> не будет выполняться, интерпретатор сообщит о синтаксической ошибке</p>
 </section>
 
@@ -227,37 +236,39 @@
 		</li>
 	</ul>
 	<pre>
-			<code class="language-js">
-				try {
-				  setTimeout(()={
-					console.log(null.unknown_property);
-				  },200)
-				} catch(e) {
-				  console.log('Ошибка произошла!');
-				}
+		<code class="language-js">
+			try {
+			  setTimeout(()=>{
+				console.log(null.unknown_property);
+			  },200)
+			} catch(e) {
+			  console.log('Ошибка произошла!');
+			}
 
-				// -> Uncaught ReferenceError: Invalid
-				// left-hand side in assignment
-			</code>
-		</pre>
+			// -> Uncaught TypeError: Cannot read property
+			// 'unknown_property' of null at setTimeout
+		</code>
+	</pre>
 </section>
 
 <section  class="slide">
 	<h2>Ошибку лучше исправить</h2>
 	> добавить в index.html:16
 	<pre>
-			<code class="language-html">
-                &lt;div&gt;Distance: &lt;span id="distance_box"&gt;0&lt;/span&gt;m&lt;/div&gt;
-			</code>
-		</pre>
+		<code class="language-html">
+            &lt;div&gt;Distance: &lt;span id="distance_box"&gt;0&lt;/span&gt;m&lt;/div&gt;
+		</code>
+	</pre>
 </section>
 
 <section  class="slide">
 	<h2>Зачем генерировать свои ошибки?</h2>
-	<p>Иногда возникают исключительные ситуации, которые, с точки зрения интерпретатора, ошибкой не считаются, но ошибка проявится позже - например, недополучены какие-то параметры с сервера.
+	<p>Иногда возникают исключительные ситуации, которые, с точки зрения интерпретатора, ошибкой не считаются,
+		но ошибка проявится позже - например, недополучены какие-то параметры с сервера.
 		Или может произойти ошибка со стороны бизнес-логики - например, недопустимое значение исходных данных.
 	</p>
-	<p>С точки зрения интерпретатора, такие случаи ошибками не считаются, однако, с точки зрения разработччика - они являются ошибками.
+	<p>С точки зрения интерпретатора, такие случаи ошибками не считаются, однако, с точки зрения разработчика - они
+		являются ошибками.
 		В таких случаях требуется генерировать свои ошибки.
 	</p>
 </section>
@@ -266,35 +277,37 @@
 	<h2>throw</h2>
 	<p>Оператор <code>throw</code> создаёт ошибку. <br> Например,</p>
 	<pre>
-			<code class="language-js">
-				throw('Я ошибка!');
-				// -> Uncaught Я ошибка!
-			</code>
-		</pre>
+		<code class="language-js">
+			throw('Я ошибка!');
+			// -> Uncaught Я ошибка!
+		</code>
+	</pre>
 </section>
 
 <section  class="slide">
 	<h2>throw</h2>
 	<p>или</p>
 	<pre>
-			<code class="language-js">
-				const a = 1;
-				const b = 1;
-				const c = 1;
-				const d = b ** 2 - 4 * a * c;
-				if(d < 0) throw ('При дискриминанте меньше нуля\
-				уравнение не имеет вещественных корней!')
-				console.log(x1 = (-b - Math.sqrt(d))/2/a);
-				// -> Uncaught При дискриминанте меньше нуля
-				// уравнение не имеет вещественных корней!
-			</code>
-		</pre>
+		<code class="language-js">
+			const a = 1;
+			const b = 1;
+			const c = 1;
+			const d = b ** 2 - 4 * a * c;
+			if(d < 0) throw ('При дискриминанте меньше нуля\
+			уравнение не имеет вещественных корней!')
+			console.log(x1 = (-b - Math.sqrt(d))/2/a);
+			// -> Uncaught При дискриминанте меньше нуля
+			// уравнение не имеет вещественных корней!
+		</code>
+	</pre>
 </section>
 
 <section  class="slide">
 	<h2>throw и try..catch</h2>
 	<p>Удобно, не правда ли?</p>
-	<p>Если <code>try...catch</code> служит для перехвата ошибки и позволяет дальнейшее выполнение кода, <code>throw</code> прекращает выполнение кода и создает ошибку.</p>
+	<p>Если <code>try...catch</code> служит для перехвата ошибки и позволяет дальнейшее выполнение кода,
+		<code>throw</code> прекращает выполнение кода и создает ошибку.
+	</p>
 	<p>Используя эти операторы разработчик может контролировать поведение скрипта в отношении ошибок.</p>
 </section>
 
@@ -312,39 +325,41 @@
 	<p>В ES6 появилась возможность задания функций через «стрелку» <code>=&gt;</code></p>
 	<p>Например,</p>
 	<pre>
-			<code class="language-js">
-				let sum = function(a,b){
-				  return a + b;
-				}
-			</code>
-		</pre>
+		<code class="language-js">
+			let sum = function(a,b){
+			  return a + b;
+			}
+		</code>
+	</pre>
 	<p>можно записать так:</p>
 	<pre>
-			<code class="language-js">
-				let sum = (a,b) => {
-				  return a + b;
-				}
-			</code>
-		</pre>
+		<code class="language-js">
+			let sum = (a,b) => {
+			  return a + b;
+			}
+		</code>
+	</pre>
 </section>
 
 <section  class="slide">
 	<h2>Стрелочные функции</h2>
-	<p>Если в теле функции не более одной операции, то не обязательно использовать <code>{}</code>, при этом для возврата значения не требуется писать <code>return</code>.</p>
+	<p>Если в теле функции не более одной операции, то не обязательно использовать <code>{}</code>, при этом для
+		возврата значения не требуется писать <code>return</code>.
+	</p>
 	<p>Например,</p>
 	<pre>
-			<code class="language-js">
-				let sum = function(a,b){
-				  return a + b
-				}
-			</code>
-		</pre>
+		<code class="language-js">
+			let sum = function(a,b){
+			  return a + b
+			}
+		</code>
+	</pre>
 	<p>можно записать так:</p>
 	<pre>
-			<code class="language-js">
-				let sum = (a,b) => a + b;
-			</code>
-		</pre>
+		<code class="language-js">
+			let sum = (a,b) => a + b;
+		</code>
+	</pre>
 </section>
 
 <section  class="slide">
@@ -360,22 +375,22 @@
 	<p>Например,</p>
 	<p>если функцию</p>
 	<pre>
-			<code class="language-js">
-				this.car_pos = this.POS_UNDEFINED;
-				  setTimeout(function(){
-					this.car_pos = pos;
-				  }, 500 / this.speed);
-			</code>
-		</pre>
+		<code class="language-js">
+			this.car_pos = this.POS_UNDEFINED;
+			  setTimeout(function(){
+				this.car_pos = pos;
+			  }, 500 / this.speed);
+		</code>
+	</pre>
 	<p>заменить на стрелочную:</p>
 	<pre>
-			<code class="language-js">
-				this.car_pos = this.POS_UNDEFINED;
-				setTimeout(()=>
-				  this.car_pos = pos
-				  , 500 / this.speed);
-			</code>
-		</pre>
+		<code class="language-js">
+			this.car_pos = this.POS_UNDEFINED;
+			setTimeout(()=>
+			  this.car_pos = pos
+			  , 500 / this.speed);
+		</code>
+	</pre>
 	<p>то контекстом <code>setTimeout</code> станет нужный нам объект <i>game</i>.</p>
 </section>
 
@@ -389,44 +404,52 @@
 
 <section class="slide">
 	<h2>Как происходит удаление объектов в javascript</h2>
-	<p>Память не бесконечна, поэтому ее требуется периодически очищать от “мусора” - неиспользуемых значений переменных, объектов и их свойств. За этим следит “сборщик мусора” - алгоритм, очищающий память.</p>
-	<p>Как понять, можно ли удалить какое-то значение? Это просто. Значение считается неиспользуемым, если на него не ведет никакая ссылка.</p>
+	<p>Память не бесконечна, поэтому ее требуется периодически очищать от “мусора” - неиспользуемых значений переменных,
+		объектов и их свойств. За этим следит “сборщик мусора” - алгоритм, очищающий память.
+	</p>
+	<p>Как понять, можно ли удалить какое-то значение? Это просто. Значение считается неиспользуемым, если на него не
+		ведет никакая ссылка.
+	</p>
 </section>
 
 <section  class="slide">
 	<h2>Как происходит удаление объектов в javascript</h2>
 	<p>Если мы объявим переменную:</p>
 	<pre>
-			<code class="language-js">
-				let x = 'red_car';
-			</code>
-		</pre>
+		<code class="language-js">
+			let x = 'red_car';
+		</code>
+	</pre>
 	<p>в памяти будет записано значение <i>red_car</i>, на которое ссылается указатель <code>x</code></p>
 	<pre>
-			<code class="language-js">
-				console.log(x);
-				// -> red_car
-			</code>
-		</pre>
+		<code class="language-js">
+			console.log(x);
+			// -> red_car
+		</code>
+	</pre>
 </section>
 
 <section  class="slide">
 	<h2>Как происходит удаление объектов в javascript</h2>
-	<p>Можем присвоить еще одному указателю это значение. И этот указатель тоже будет ссылаться на значение <i>red_car</i></p>
+	<p>Можем присвоить еще одному указателю это значение. И этот указатель тоже будет ссылаться на значение
+		<i>red_car</i>
+	</p>
 	<pre>
-			<code class="language-js">
-				let y = x;
-				console.log(y);
-				// -> red_car
-			</code>
-		</pre>
+		<code class="language-js">
+			let y = x;
+			console.log(y);
+			// -> red_car
+		</code>
+	</pre>
 </section>
 
 <section  class="slide">
 	<h2>Зачем использовать <code>delete</code>?</h2>
 	<p>Сборщик мусора удаляет те значения, на которые не ссылается ни одна ссылка-указатель DOM-дерева.</p>
 	<p>Если на значение ведёт ссылка-указатель <code>x</code>, значение не будет удалено.</p>
-	<p>Оператор <code>delete</code> удаляет ссылку на значение и позволяет сборщику мусора высвободить память компьютера (если нет других ссылок на значение)</p>
+	<p>Оператор <code>delete</code> удаляет ссылку на значение и позволяет сборщику мусора высвободить память компьютера
+		(если нет других ссылок на значение)
+	</p>
 </section>
 
 <section  class="slide">
@@ -434,55 +457,61 @@
 	<p>Оператор <code>delete</code> позволяет удалять свойства объектов.</p>
 	<p>Синтаксис:</p>
 	<pre>
-			<code class="language-js">
-				delete nameOfGlobalObjectProperty;
-				delete object.property;
-				delete object['property'];
-				delete array['index'];
-			</code>
-		</pre>
+		<code class="language-js">
+			delete nameOfGlobalObjectProperty;
+			delete object.property;
+			delete object['property'];
+			delete array['index'];
+		</code>
+	</pre>
 </section>
 
 <section  class="slide">
 	<h2>Delete имеет свои особенности</h2>
-	<p><b>1. delete возвращает ```false``` только если свойство существует, но не может быть удалено, и ```true``` - в любых других случаях.</b></p>
+	<p><b>1. delete возвращает <code>false</code> только если свойство существует, но не может быть удалено, и
+		<code>true</code> - в любых других случаях.</b>
+	</p>
 	<pre>
-			<code class="language-js">
-				let anybodyObject = {"first": 1};
-				console.log(delete anybodyObject.second);
-				// -> true
-				console.log(anybodyObject);
-				// -> {first: 1}
-			</code>
-		</pre>
+		<code class="language-js">
+			let anybodyObject = {"first": 1};
+			console.log(delete anybodyObject.second);
+			// -> true
+			console.log(anybodyObject);
+			// -> {first: 1}
+		</code>
+	</pre>
 </section>
 
 <section  class="slide">
 	<h2>Delete имеет свои особенности</h2>
-	<p><b>2. С помощью`delete` можно удалить только свойство объекта, а значит, нельзя удалить переменные (объявленные через `var` и `let`).</b></p>
+	<p><b>2. С помощью <code>delete</code> можно удалить только свойство объекта, а значит, нельзя удалить переменные
+		(объявленные через <code>var</code> и <code>let</code>).</b>
+	</p>
 	<pre>
-			<code class="language-js">
-				var x = "you can't delete me";
-				console.log(delete x);
-				// -> false
-				console.log(x);
-				// -> you can't delete me
-			</code>
-		</pre>
+		<code class="language-js">
+			var x = "you can't delete me";
+			console.log(delete x);
+			// -> false
+			console.log(x);
+			// -> you can't delete me
+		</code>
+	</pre>
 </section>
 
 <section  class="slide">
 	<h2>Delete имеет свои особенности</h2>
-	<p><b>3. при удалении элемента массива, в массиве сохраняется “пустое место” (<i>empty</i>) от этого элемента, то есть длина массива при этом не изменится</b></p>
+	<p><b>3. при удалении элемента массива, в массиве сохраняется “пустое место” (<i>empty</i>) от этого элемента, то
+		есть длина массива при этом не изменится</b>
+	</p>
 	<pre>
-			<code class="language-js">
-				let array = ["first","second","third"];
-				console.log(delete array[2]);
-				// -> true
-				console.log(array);
-				// -> ["first", "second", empty]
-			</code>
-		</pre>
+		<code class="language-js">
+			let array = ["first","second","third"];
+			console.log(delete array[2]);
+			// -> true
+			console.log(array);
+			// -> ["first", "second", empty]
+		</code>
+	</pre>
 </section>
 
 <section  class="slide">
@@ -490,24 +519,34 @@
 	<p><b>4. delete не изменяет прототип объекта</b></p>
 	<p><b>5. существуют свойства, которые нельзя удалить. Например:</b></p>
 	<pre>
-			<code class="language-js">
-				f = [1,2,'third'];
-				console.log(delete f.length);
-				// -> false;
-				console.log(f.length);
-				// -> 3;
-			</code>
-		</pre>
+		<code class="language-js">
+			f = [1,2,'third'];
+			console.log(delete f.length);
+			// -> false;
+			console.log(f.length);
+			// -> 3;
+		</code>
+	</pre>
+</section>
+
+<section  class="slide">
+	<h2>Важно помнить, что delete достаточно медленный оператор</h2>
+	<p>Delete - очень медленный инструмент.</p>
+	<p>Его использование не лишено смысла, если действительно требуется удалить свойство:</p>
+	<ul>
+		<li>вы работаете с большим количеством больших объектов;</li>
+		<li>существование свойства ставит под угрозу корректность выполнения дальнейшего кода.</li>
+	</ul>
 </section>
 
 <section  class="slide">
 	<h2>Давайте удалим наш конус</h2>
 	> добавить в js/game.src.js:140
 	<pre>
-			<code class="language-js">
-				delete this.cones[key];
-			</code>
-		</pre>
+		<code class="language-js">
+			delete this.cones[key];
+		</code>
+	</pre>
 	<p><img width="60%" src="../assets/pic/trycatch_delete_closures/3.png" alt=""/></p>
 </section>
 
@@ -556,7 +595,7 @@
 
 <section class="slide">
 	<h2>Так что же такое замыкание?</h2>
-	<p>Это сохранение лексичекого окружения функции в оперативной памяти после её выполнения с помощью ссылки
+	<p>Это сохранение лексичеcкого окружения функции в оперативной памяти после её выполнения с помощью ссылки
 		из объекта, создаваемого при её выполнении.</p>
 </section>
 
@@ -564,55 +603,106 @@
 	<h2>Так что же такое замыкание?</h2>
 	<p>Например:</p>
 	<pre>
-			<code class="language-js">
-				powerOfTwo = function() {
-				  var power = 1;
-				  return function() {
-				     power *= 2;
-				     p = power
-				     return p;
-				  }
-				}
-			</code>
-		</pre>
+		<code class="language-js">
+			powerOfTwo = function() {
+			  let power = 1;
+			  return function() {
+			     power *= 2;
+			     return power;
+			  }
+			}
+		</code>
+	</pre>
 </section>
 
 <section class="slide">
-		<pre>
-			<code class="language-js">
-                nextPower = powerOfTwo();
-				console.log(nextPower());
-				console.log(nextPower());
-				console.log(nextPower());
-				console.log(nextPower());
-				console.log(nextPower());
+	<p>Для большей наглядности создадим два объекта:</p>
+	<pre>
+		<code class="language-js">
+			powerOfTwo1 = powerOfTwo();
+			powerOfTwo2 = powerOfTwo();
+		</code>
+	</pre>
+	<p>И несколько раз их вызовем:</p>
+	<pre>
+		<code class="language-js">
+			console.log(powerOfTwo1());
+			console.log(powerOfTwo1());
+			console.log(powerOfTwo2());
+			console.log(powerOfTwo1());
+			console.log(powerOfTwo2());
 
-				// -> 2
-				// -> 4
-				// -> 8
-				// -> 16
-				// -> 32
-			</code>
-		</pre>
+			// -> 2
+			// -> 4
+			// -> 2
+			// -> 8
+			// -> 4
+		</code>
+	</pre>
+</section>
+
+<section class="slide">
+	<h2>Нет никакой магии!</h2>
+	<p><code>powerOfTwo</code> - функция, которая возвращает функцию:</p>
+	<pre>
+		<code class="language-js">
+			return function() {
+			     power *= 2;
+			     return power;
+			}
+		</code>
+	</pre>
+	<p>При выполнении команды</p>
+	<pre>
+		<code class="language-js">
+			powerOfTwo1 = powerOfTwo();
+		</code>
+	</pre>
+	<p>произошло выполнение <code>powerOfTwo()</code> с сохранением её результата в <code>powerOfTwo1</code>.</p>
+	<p>В <code>powerOfTwo1</code> записана функция.</p>
+</section>
+
+<section class="slide">
+	<p>При выполнении <code>powerOfTwo()</code> в переменную <code>power</code> было записано значение 1.</p>
+	<p>Логично, что <code>power</code> должна быть удалена после выполнения <code>powerOfTwo()</code>.</p>
+</section>
+
+<section class="slide">
+	<p>Но в результате <code>powerOfTwo()</code>:</p>
+	<pre>
+		<code class="language-js">
+		    power *= 2;
+		    return power;
+		</code>
+	</pre>
+	<p>используется <code>power</code>.</p>
+	<p>А значит, раз есть ссылка на <code>power</code> из <code>powerOfTwo1</code>, <code>power</code>
+		удалена не будет, пока существует <code>powerOfTwo1</code>.
+	</p>
+</section>
+
+<section class="slide">
+	<h2><i>Замыкание</i></h2>
+	<p>Таким образом, функция <code>powerOfTwo1</code> <i>замыкает</i> на себя переменную <code>power</code>
+		из лексического окружения отработавшей функции  <code>powerOfTwo</code>
+	</p>
 </section>
 
 <section class="slide">
 	<h2>Наше замыкание</h2>
 	<pre>
-			<code class="language-js">
-				removeConeWrapper() {
-				    let last = 0;
-				    this.removeCone = (key) => {
-				        if (key !== undefined) {
-				            this.cones[key].remove();
-				            delete this.cones[key];
-				            last = key;
-				        }
-				        return last;
-				    };
-				},
-			</code>
-		</pre>
+		<code class="language-js">
+			removeConeWrapper() {
+			    let last = 0;
+			    this.removeCone = (key) => {
+			        this.cones[key].remove();
+			        delete this.cones[key];
+			        last = key;
+			    };
+			    this.getLastConeNumber => last;
+			},
+		</code>
+	</pre>
 </section>
 
 <section class="slide">
