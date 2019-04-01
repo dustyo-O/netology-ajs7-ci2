@@ -93,7 +93,7 @@
       <pre class="fz17">
         <code class="lang-bash">
           $ npm install --save-dev jest babel-jest @babel/core @babel/cli @babel/preset-env
-          $ npm install @babel/polyfill
+          $ npm install @babel/polyfill core-js@3
         </code>
       </pre>
       <p>Пропишем скрипт <code>test</code>:</p>
@@ -114,7 +114,8 @@
         <code class="lang-json">
             {
               "presets": [["@babel/preset-env", {
-                "useBuiltIns": "usage"
+                "useBuiltIns": "usage",
+                "corejs": 3
               }]]
             }
         </code>

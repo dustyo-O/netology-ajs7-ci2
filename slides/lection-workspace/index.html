@@ -621,10 +621,10 @@
       <pre class="fz20">
         <code class="lang-bash">
           $ npm install --save-dev @babel/core @babel/cli @babel/preset-env
-          $ npm install @babel/polyfill
+          $ npm install @babel/polyfill core-js@3
         </code>
       </pre>
-      <p>Обратите внимание: <code>@babel/polyfill</code> - это не dev-зависимость.</p>
+      <p>Обратите внимание: <code>@babel/polyfill</code> и <code>core-js@3</code> - это не dev-зависимость.</p>
     </section>
 
     <section class="slide">
@@ -639,9 +639,12 @@
         <code class="lang-json">
           {
             "presets": [
-              ["@babel/preset-env", {
-                "useBuiltIns": "usage"
-              }]
+              [
+                "@babel/preset-env", {
+                  "useBuiltIns": "usage",
+                  "corejs": 3
+                }
+              ]
             ]  
           }
         </code>
