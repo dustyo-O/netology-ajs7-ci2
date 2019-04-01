@@ -15,4 +15,4 @@
 1. [Promises, async/await](pdf/lection-promises.pdf)
 1. [Символы, итераторы, генераторы](pdf/lection-symbols-iterators-generators.pdf)
 
-[Шаблон (стартер) проекта для леций после 4-ой](https://github.com/coursar/neto-template)
+[Шаблоны проектов для проведения лекций](https://github.com/netology-code/ajs-templates)
