@@ -768,6 +768,49 @@
       <p>Мы показали вам это лишь для того, чтобы вы понимали, как в некоторых проектах используются возможности, поддержки которых нет в браузере и в стандарте.</p>
     </section>
 
+    <section class="slide chapter" id="vulns">
+      <h2>Уязвимости</h2>
+    </section>
+
+    <section class="slide">
+      <h2>Уязвимости</h2>
+      <p>Тема наличия уязвимостей в используемых инструментах и библиотеках является достаточно важной.</p>
+      <p>Так, если вы используете подверженные уязвимостям версии, тот же GitHub будет вам выдавать предупреждение:</p>
+      <img src="../assets/pic/workspace/github-alert.png" alt="" style="width: 98%">
+      <p>Проверить наличие уязвимых пакетов вы можете с помощью команды: <code>npm audit</code>, после чего принимать решение об обновлении с помощью <code>npm audit fix</code>.</p>
+      <p>Смотрите детали в <a href="https://docs.npmjs.com/cli/audit">документации</a>.</p>
+    </section>
+
+    <section class="slide">
+      <h2>Уязвимости</h2>
+      <pre class="fz17">
+        <code class="lang-bash">
+          $ npm audit
+
+          === npm audit security report ===                        
+                                                                                
+          # Run  npm install forever@1.0.0  to resolve 1 vulnerability
+          SEMVER WARNING: Recommended action is a potentially breaking change
+          ┌───────────────┬──────────────────────────────────────────────────────────────┐
+          │ Low           │ Regular Expression Denial of Service                         │
+          ├───────────────┼──────────────────────────────────────────────────────────────┤
+          │ Package       │ braces                                                       │
+          ├───────────────┼──────────────────────────────────────────────────────────────┤
+          │ Dependency of │ forever                                                      │
+          ├───────────────┼──────────────────────────────────────────────────────────────┤
+          │ Path          │ forever > forever-monitor > chokidar > anymatch > micromatch │
+          │               │ > braces                                                     │
+          ├───────────────┼──────────────────────────────────────────────────────────────┤
+          │ More info     │ https://npmjs.com/advisories/786                             │
+          └───────────────┴──────────────────────────────────────────────────────────────┘
+        </code>
+      </pre>
+    </section>
+
+    <section class="slide chapter">
+      <h2>Итоги</h2>
+    </section>
+
     <section class="slide">
       <h2>Итоги</h2>
       <ol>
