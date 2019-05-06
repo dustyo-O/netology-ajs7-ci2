@@ -495,8 +495,21 @@
           $ npx eslint --init
         </code>
       </pre>
-      <p>Будет запущен конфигуратор, предлагающий выбрать стиль (в том числе, среди популярных). Выберем стиль <a
-          href="https://github.com/airbnb/javascript">Airbnb</a> и формат JSON в качестве конфигурационного файла. При этом будет предложено установить дополнительную зависимость <code>eslint-config-airbnb-base</code>.</p>
+    </section>
+
+    <section class="slide">
+      <h2>Конфигуратор</h2>
+      <p>Будет запущен конфигуратор, в котором необходимо выбрать:</p>
+      <ul style="font-size: 20px;">
+        <li>How would you like to use ESLint? <span class="terminal-green">To check syntax, find problems, and enforce code style</span></li>
+        <li>What type of modules does your project use? <span class="terminal-green">JavaScript modules (import/export)</span></li>
+        <li>Which framework does your project use? <span class="terminal-green">None of this</span></li>
+        <li>Where does your code run? <span class="terminal-green">Browser</span></li>
+        <li>How would you like to define a style for your project? <span class="terminal-green">Use a popular style guide</span></li>
+        <li>Which style guide do you want to follow? <span class="terminal-green">Airbnb</span></li>
+        <li>What format do you want your config file to be in? <span class="terminal-green">JSON</span></li>
+        <li>Would you like to install them now with npm? <span class="terminal-green">Y</span></li>
+      </ul>
     </section>
 
     <section class="slide">
@@ -511,22 +524,41 @@
       <pre class="line-numbers fz20">
         <code class="lang-json">
           {
-              "extends": "airbnb-base",
               "env": {
-                  "es6": true,
-                  "browser": true
+                  "browser": true,
+                  "es6": true
+              },
+              "extends": "airbnb-base",
+              "globals": {
+                  "Atomics": "readonly",
+                  "SharedArrayBuffer": "readonly"
+              },
+              "parserOptions": {
+                  "ecmaVersion": 2018,
+                  "sourceType": "module"
               },
               "rules": {
-                  "no-restricted-syntax": [
-                      "error",
-                      "LabeledStatement",
-                      "WithStatement"
-                  ]
               }
           }
         </code>
       </pre>
-      <p>Мы можем изменить, дополнить правила с помощью секции <code>rules</code></p>
+    </section>
+
+    <section class="slide">
+      <h2><code>.eslintrc.json</code></h2>
+      <p>Мы можем изменить, дополнить правила с помощью секции <code>rules</code>.</p>
+      <p>Для лекций нам потребуется:</p>
+      <pre class="line-numbers fz20">
+        <code class="lang-json">
+          "rules": {
+              "no-restricted-syntax": [
+                  "error",
+                  "LabeledStatement",
+                  "WithStatement"
+              ]
+          }
+        </code>
+      </pre>
     </section>
 
     <section class="slide">
