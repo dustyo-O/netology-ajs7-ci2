@@ -439,6 +439,25 @@
 </section>
 
 <section class="slide">
+	<h2>В чём разница?</h2>
+	<p>Разница между стрелочными и классическими функциями в том, что стрелочные функции не имеют своего <code>this</code> и <code>arguments</code> (получают из окружающего контекста):</p>
+	<pre class="line-numbers fz20">
+		<code class="lang-js">
+			const group = {
+				groupNumber: 1,
+				students: ['Иванов', 'Петров', 'Сидоров'],
+				showList() {
+					this.students.forEach(student =>
+						console.log('Группа: ' + this.groupNumber + ', ' + student)
+					);
+				}
+			}
+		</code>
+	</pre>
+</section>
+
+
+<section class="slide">
 	<h2>ES6: параметры по умолчанию</h2>
 	<pre class="line-numbers">
 		<code class="lang-js">
@@ -487,24 +506,6 @@
 			);
 
 			console.log(multiply(2, 1, 2, 3)); // [2, 4, 6]
-		</code>
-	</pre>
-</section>
-
-<section class="slide">
-	<h2>В чём разница?</h2>
-	<p>Разница между стрелочными и классическими функциями в том, что стрелочные функции не имеют своего <code>this</code> и <code>arguments</code> (получают из окружающего контекста):</p>
-	<pre class="line-numbers fz20">
-		<code class="lang-js">
-			const group = {
-				groupNumber: 1,
-				students: ['Иванов', 'Петров', 'Сидоров'],
-				showList() {
-					this.students.forEach(student =>
-						console.log('Группа: ' + this.groupNumber + ', ' + student)
-					);
-				}
-			}
 		</code>
 	</pre>
 </section>
