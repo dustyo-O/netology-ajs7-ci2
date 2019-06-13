@@ -725,7 +725,7 @@
     <h2>Babel</h2>
     <pre class="fz-22">
       <code class="language-js  line-numbers">
-           $ npm install @babel/polyfill
+           $ npm install core-js@3
       </code>
     </pre>
     <p>В <code>.babelrc</code>:</p>
@@ -736,7 +736,8 @@
             [
               "@babel/preset-env",
               {
-                "useBuiltIns": "usage"
+                "useBuiltIns": "usage",
+                "corejs": 3
               }
             ]
           ]
