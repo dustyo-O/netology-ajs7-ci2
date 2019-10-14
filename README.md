@@ -4,7 +4,7 @@
 
 1. [Стандарты](pdf/lection-standards.pdf)
 1. [Рабочее окружение](pdf/lection-workspace.pdf)
-1. [Модули](pdf/lection-mdoules.pdf)
+1. [Модули](pdf/lection-modules.pdf)
 1. [Unit-тестирование](pdf/lection-test-ci.pdf)
 1. [Синтаксические конструкции](pdf/lection-trycatch-delete-closures.pdf)
 1. [Свойства объектов, обёртки для примитивов](pdf/lection-object-props.pdf)
