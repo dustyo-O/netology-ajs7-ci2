@@ -40,12 +40,91 @@
     <section class="slide" id="roadmap">
       <h2>План занятия</h2>
       <ol>
+        <li><a href="#standards">Редакции и стандарты</a></li>
         <li><a href="#workspace">Рабочее окружение</a></li>
         <li><a href="#npm">npm</a></li>
         <li><a href="#live">live-server</a></li>
         <li><a href="#eslint">ESLint</a></li>
         <li><a href="#babel">Babel</a></li>
       </ol>
+    </section>
+
+    <section class="slide chapter" id="changes">
+      <h2>Редакции и стандарты</h2>
+    </section>
+
+    <section class="slide">
+      <h2>Зачем это знать?</h2>
+      <ol>
+        <li>Точно знать какие именно возможности JavaScript можно использовать в конкретном проекте</li>
+        <li>Использовать новейшую версию языка, предоставляющую больше возможностей и содержащую меньше недостатков в дизайне языка</li>
+      </ol>
+    </section>
+
+    <section class="slide">
+      <h2>Как использовать?</h2>
+      <p>Чтобы все самые крутые фишки новых стандартов были доступны, можно использовать, например, транспайлер. Самый популярный транспайлер на сегодняшний день — <a
+          href="https://babeljs.io">Babel</a>.</p>
+      <figure>
+        <img src="../assets/pic/workspace/babel.png" alt="">
+      </figure>
+    </section>
+
+    <section class="slide">
+      <h2>Редакции, стандарты, версии...?</h2>
+      <ol>
+        <li>Ecma International — организация, которая создает стандарты для технологий</li>
+        <li><b>ECMA-262</b> — это <b>стандарт</b>, изданный Ecma International (в нём прописана спецификация скриптового языка общего назначения)</li>
+        <li><b>ECMA-262</b> можно считать учётным номером <b>ECMAScript</b></li>
+        <li><b>ES1-ES9</b> — это <b>редакции (версии)</b> стандарта ECMA-262</li>
+      </ol>
+      <p>ECMAScript — стандарт, а JavaScript — самая популярная реализация этого стандарта.</p>
+    </section>
+
+    <section class="slide">
+      <h2>Версии ECMAScript</h2>
+      <ul>
+        <li><b>ES1</b>: 1997</li>
+        <li><b>ES2</b>: Июнь 1998</li>
+        <li><b>ES3</b>: Декабрь 1999</li>
+        <li><b>ES4</b>: так и не была принята</li>
+        <li><b>ES5</b>: Декабрь 2009</li>
+        <li>ES6 === ES2015</li>
+        <li>ES7 === ES2016</li>
+        <li>ES8 === ES2017</li>
+        <li>ES9 === ES2018</li>
+        <li>ES10 === ES2019</li>
+      </ul>
+    </section>
+
+    <section class="slide">
+      <h2>Где узнать про поддержку?</h2>
+      <ul>
+        <li><a href="https://caniuse.com">https://caniuse.com</a></li>
+        <li><a href="https://developer.mozilla.org">https://developer.mozilla.org</a></li>
+      </ul>
+      <img src="../assets/pic/workspace/caniuse.png" width="580px">
+      <p>Поддержка стрелочных функций в браузерах, сайт caniuse.com</p>
+    </section>
+
+    <section class="slide">
+      <h2>Где узнать про стандартизацию?</h2>
+      <p><a href="https://github.com/tc39/ecma262">https://github.com/tc39/ecma262</a></p>
+    </section>
+
+    <section class="slide">
+      <h2>Поддержка возможностей ES6+</h2>
+      <p>Поддержка браузерами определенных возможностей: <a href="https://kangax.github.io/compat-table/es6/">https://kangax.github.io/compat-table/es6/</a></p>
+      <figure><img src="../assets/pic/workspace/kangax.png" alt="">
+      </figure>
+    </section>
+
+    <section class="slide">
+      <h2>Поддержка</h2>
+      <p>Ключевое для нас: мы хотели бы быть в курсе всех современных возможностей и использовать их.</p>
+      <p>К сожалению, не все браузеры поддерживают все самые новые возможности (хотя ситуация в этом отношении исправляется).</p>
+      <p>Поэтому мы будем использовать набор инструментов, позволяющих использовать всё самое новое в мире JS, обеспечивая совместимость со старыми браузерами*.</p>
+      <p class="note">Нужно понимать, что абсолютно со всеми старыми обеспечить совместимость не получится.</p>
     </section>
 
     <section class="slide chapter" id="workspace">
@@ -504,11 +583,12 @@
         <li>How would you like to use ESLint? <span class="terminal-green">To check syntax, find problems, and enforce code style</span></li>
         <li>What type of modules does your project use? <span class="terminal-green">JavaScript modules (import/export)</span></li>
         <li>Which framework does your project use? <span class="terminal-green">None of this</span></li>
+        <li>Does your project use TypeScript? <span class="terminal-green">No</span></li>
         <li>Where does your code run? <span class="terminal-green">Browser</span></li>
         <li>How would you like to define a style for your project? <span class="terminal-green">Use a popular style guide</span></li>
         <li>Which style guide do you want to follow? <span class="terminal-green">Airbnb</span></li>
         <li>What format do you want your config file to be in? <span class="terminal-green">JSON</span></li>
-        <li>Would you like to install them now with npm? <span class="terminal-green">Y</span></li>
+        <li>Would you like to install them now with npm? <span class="terminal-green">Yes</span></li>
       </ul>
     </section>
 
@@ -798,6 +878,13 @@
       <h2>Важно</h2>
       <p>Очень осторожно относитесь к использованию экспериментальных возможностей, ещё не принятых в стандарт, т.к. вполне возможно, что в стандарт они так и не попадут, и Babel прекратит поддерживать плагины, которые осуществляли транспайлинг.</p>
       <p>Мы показали вам это лишь для того, чтобы вы понимали, как в некоторых проектах используются возможности, поддержки которых нет в браузере и в стандарте.</p>
+    </section>
+
+    <section class="slide">
+      <h2>Модули</h2>
+      <p>Q: Но что это за инструкции <code>require</code> в полученном коде?</p>
+      <p>A: Babel сам не занимается сборкой проектов. <code>require</code> - это инструкция для организации поддержки модулей в JS.</p>
+      <p>О модулях и сборщиках (бандлерах) мы поговорим уже на следующей лекции.</p>
     </section>
 
     <section class="slide chapter" id="vulns">
