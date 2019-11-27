@@ -1,6 +1,7 @@
-image: Ubuntu1804  # образ для сборки
+image: Ubuntu
 
-stack: node 10  # окружение
+environment:
+  nodejs_version: "10"
 
 branches:
   only:
