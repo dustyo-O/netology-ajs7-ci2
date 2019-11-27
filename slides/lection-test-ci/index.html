@@ -43,6 +43,7 @@
         <li><a href="#unit">Unit-тестирование</a></li>
         <li><a href="#jest">Jest</a></li>
         <li><a href="#coverage">Покрытие кода</a></li>
+        <li><a href="#data-driven">Data Driven Тесты</a></li>
         <li><a href="#mock">Mock'и</a></li>
         <li><a href="#ci">Continuous Integration</a></li>
       </ol>
@@ -387,6 +388,12 @@
       <p>А кроме того, постоянно совершенствуетесь в навыке написания тестов.</p>
     </section>
 
+    <section class="slide">
+      <h2>Логика в тестах</h2>
+      <p>Считается плохим тоном (а в некоторых компаниях вообще не допускается) использовать <code>if</code>'ы, циклы и другие подобные конструкции в тестах.</p>
+      <p>Тесты должны представлять из себя линейную последовательность действий.</p>
+    </section>
+
     <section class="slide chapter" id="coverage">
       <h2>Покрытие кода</h2>
     </section>
@@ -469,6 +476,83 @@
         <li>Либо мы не можем сказать, что они работают корректно.</li>
       </ol>
       <p>Используйте подход TDD, который позволит уменьшить и количество разрабатываемого кода и количество разрабатываемых тестов.</p>
+    </section>
+
+    <section class="slide chapter" id="data-driven">
+      <h2>Data Driven тесты</h2>
+    </section>
+
+    <section class="slide">
+      <h2>Data Driven тесты</h2>
+      <p>Иногда возникает необходимость прогнать один и тот же тест с разным набором данных.</p>
+      <p>Т.е. логика самого теста не отличается, но отличаются только входные данные и ожидаемый результат.</p>
+    </section>
+
+    <section class="slide">
+      <h2>Data Driven тесты</h2>
+      <p>Например, мы делаем функцию расчёта кэшбека на основании суммы покупки:</p>
+      <pre class="line-numbers fz21">
+        <code class="lang-js">
+            const cashback = {
+              regular: {
+                bound: 1000,
+                percent: 1,
+              },
+              silver: {
+                bound: 10000,
+                percent: 2,
+              },
+              gold: {
+                bound: 100000,
+                percent: 5,
+              },
+            };
+        </code>
+      </pre>
+    </section>
+            
+    <section class="slide">
+      <h2>Data Driven тесты</h2>
+      <pre class="line-numbers fz21">
+        <code class="lang-js">
+          export default function calculateCashback(amount) {
+            if (amount >= cashback.gold.bound) {
+              return Math.ceil(amount * cashback.gold.percent / 100);
+            }
+          
+            if (amount >= cashback.silver.bound) {
+              return Math.ceil(amount * cashback.silver.percent / 100);
+            }
+          
+            if (amount >= cashback.regular.bound) {
+              return Math.ceil(amount * cashback.regular.percent / 100);
+            }
+          
+            return 0;
+          }
+        </code>
+      </pre>
+    </section>
+
+    <section class="slide">
+      <h2><code>each</code></h2>
+      <p>Jest нам предлагает конструкцию <a href="https://jestjs.io/docs/en/api#1-testeachtablename-fn-timeout"><code>each</code></a>, которая позволяет прогнать тест на наборе данных.</p>
+      <pre class="line-numbers fz21">
+        <code class="lang-js">
+          test.each([
+            ['gold', 100000, 5000],
+            ['silver', 10000, 200],
+            ['regular', 1000, 10],
+            ['no', 500, 0],
+          ])(
+          ('should calculate cashback for %s level with %i amount'),
+          (level, amount, expected) => {
+            const result = calculateCahsback(amount);
+          
+            expect(result).toBe(expected);
+          });
+        </code>
+      </pre>
     </section>
 
     <section class="slide chapter" id="mock">
